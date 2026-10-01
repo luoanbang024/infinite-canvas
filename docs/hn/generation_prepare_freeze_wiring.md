@@ -1,10 +1,15 @@
 # HN R4 Generation prepare/freeze
 
 EXECUTION_ID = HN_AI_IC_P0_B_R4_GENERATION_PREPARE_FREEZE_WIRING
-STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not formally audited/adopted.
+STATE = AUDITED / INTEGRATED; GPT_AUDIT = PASS.
+R4_FEATURE_HEAD = f03a79522c2bc4e723502fee1297bf5b27c92269; R4_COMPLETION_SHA256 = f37292070ef501689b7a1c702d90fe096d8cd2ae516c480c8e93295a2cb1addd.
+CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R4_AUDIT_CLOSEOUT_INTEGRATION; stable resulting SHA is recorded in external closeout evidence.
+GENERATION_WIRING = PREPARE_FREEZE_ONLY; REAL_SUBMIT/TASKBINDING_WIRING/RESULT_ARCHIVE_WIRING = NONE.
+PROVIDER_SELECTION = DEFERRED; REAL_PROVIDER_CALLS/PAID_CALLS = NONE.
+SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION = YES.
 BASE_OUR_COMMIT = 418ffbde3dbea33d374356588cb672336ec38353; IMPLEMENTATION_COMMIT = 92349f02c5a06594a003ba41e49409dc490f4239.
 
-Canvas video intent -> exact local image ReferenceVersion bindings -> Generation -> FreezeGeneration -> PREPARED / not submitted. This is an internal audited-boundary candidate; it is not inserted into the live Provider path and has no new button or user workflow. Call the builder with the same effective AiConfig and NodeGenerationContext as Canvas video generation and its optional cameraControl. The existing camera prompt helper supplies the prompt snapshot. Caller project identity must already be compatible; unsafe project IDs require PROJECT_ID_MAPPING_REQUIRED, with no hidden mapping. Node ID is nonempty, bounded correlation text, never the Generation primary key.
+Canvas video intent -> exact local image ReferenceVersion bindings -> Generation -> FreezeGeneration -> PREPARED / not submitted. This is the audited internal prepare boundary; it is not inserted into the live Provider path and has no new button or user workflow. Call the builder with the same effective AiConfig and NodeGenerationContext as Canvas video generation and its optional cameraControl. The existing camera prompt helper supplies the prompt snapshot. Caller project identity must already be compatible; unsafe project IDs require PROJECT_ID_MAPPING_REQUIRED, with no hidden mapping. Node ID is nonempty, bounded correlation text, never the Generation primary key.
 
 ## Source and persistence
 
@@ -36,4 +41,4 @@ Smoke uses isolated synthetic Canvas nodes through the existing buildNodeGenerat
 
 Full go mod verify/root Go/Bridge, 24 existing + 8 R4 frontend tests, independent TypeScript and production build passed. Lockfiles, dependency versions, foundation/R3 source and Provider/Auth/upstream schema remained unchanged. Initial fixture byte-length and negative-test type assertion were fixed in tests only and verified again. Bun smoke emitted a nonfatal tsconfig directory-handle diagnostic after the successful operation (exit 0); persisted state was independently verified. Completion retains these logs.
 
-Next workstream is only a candidate after R4 GPT Review/Audit/integration: prepared Generation + successful local media -> Result/ArchiveJob. No such work starts here.
+R4 GPT Audit PASS approved this scope; closeout preserves all implementation/test bytes and documented caveats. Next workstream remains only a candidate after closeout Completion Review and separate execution approval: prepared Generation + successful local media -> Result/ArchiveJob. No such work starts here.

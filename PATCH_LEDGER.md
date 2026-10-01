@@ -132,7 +132,13 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - DATA_SCHEMA_IMPACT = existing independent HN Generation/reference tables only; no schema change or historical Generation rewrite. R3/foundation raw bytes unchanged.
 - REAL_SUBMIT = NONE; RESULT_ARCHIVE_WIRING = NONE; PROVIDER_SELECTION = DEFERRED; PROVIDER_CALLS/PAID_CALLS = NONE; PROVIDER/PROTOCOL/POLLER/AUTH/UPSTREAM_DB_SCHEMA_CHANGE = NONE.
 - VERIFICATION = go mod verify, full root Go, independent Bridge, 32 frontend tests (24 existing + 8 R4), independent tsc, production build, production local router + frontend adapter restart/reopen immutable-attempt smoke, protected-source/lockfile and secret scans PASS; evidence in R4 completion.
-- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not integrated, not externally pushed. Test commit 4b99d0fa4e00dd4586282c4de8e5c70b474dcfbe.
+- ADOPTION_STATE = AUDITED / INTEGRATED; fast-forward preserves all four audited R4 commits. Test commit 4b99d0fa4e00dd4586282c4de8e5c70b474dcfbe.
+- GPT_AUDIT = PASS; HN_AI_IC_P0_B_R4_GPT_AUDIT_PASS_20261001.md.
+- R4_FEATURE_HEAD = f03a79522c2bc4e723502fee1297bf5b27c92269; R4_COMPLETION_SHA256 = f37292070ef501689b7a1c702d90fe096d8cd2ae516c480c8e93295a2cb1addd.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R4_AUDIT_CLOSEOUT_INTEGRATION; resulting stable SHA and exact remote refs recorded externally in closeout completion.
+- GENERATION_WIRING = PREPARE_FREEZE_ONLY; TASKBINDING_WIRING = NONE; REAL_SUBMIT/RESULT_ARCHIVE_WIRING = NONE; PROVIDER_SELECTION = DEFERRED; REAL_PROVIDER_CALLS/PAID_CALLS = NONE.
+- SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION = YES; audited SourceBaseline binding remains 418ffbde3dbea33d374356588cb672336ec38353, no implementation/historical record rewrite.
+- EXTERNAL_WRITE_BOUNDARY = user authorized only normal non-force pushes of the audited R4 feature and governance-closed our-main to the checked current origin; no other branch/tag/PR/Release/settings action.
 - R4_VALIDATION_FIX = 4d0bab236ee4fdc14aec62e0f09ed5f0b92b7e33; reject JSON null scalar/shot values so the backend preserves the client string-only business vocabulary. Full root Go and final local restart/reopen smoke reverified; no broader implementation change.
 - REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit identity/data mapping review; no automatic user-store deletion.
 - ROLLBACK = revert isolated R4 commits or omit HN_PROJECTS_ROOT; preserve project workspaces/references/generations.

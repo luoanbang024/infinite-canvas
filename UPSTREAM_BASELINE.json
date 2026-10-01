@@ -35,28 +35,7 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [
-    {
-      "executionId": "HN_AI_IC_P0_B_R4_GENERATION_PREPARE_FREEZE_WIRING",
-      "patchId": "HN-AI-IC-P0-B-R4-GENERATION-PREPARE-001",
-      "type": "OUR_INTEGRATION_PATCH",
-      "baseOurCommit": "418ffbde3dbea33d374356588cb672336ec38353",
-      "sourceBaseline": "418ffbde3dbea33d374356588cb672336ec38353",
-      "branch": "feature/p0-b-r4-generation-prepare-freeze",
-      "introducedInCommit": "92349f02c5a06594a003ba41e49409dc490f4239",
-      "validationFixCommit": "4d0bab236ee4fdc14aec62e0f09ed5f0b92b7e33",
-      "state": "LOCAL_FEATURE_PENDING_GPT_REVIEW",
-      "externalPush": false,
-      "mergeToOurMain": false,
-      "generationWiring": "PREPARE_FREEZE_ONLY",
-      "realSubmit": "NONE",
-      "resultArchiveWiring": "NONE",
-      "providerSelection": "DEFERRED",
-      "realProviderCalls": "NONE",
-      "paidCalls": "NONE",
-      "baselineAdoptionRule": "SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION"
-    }
-  ],
+  "pendingReview": [],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
@@ -78,6 +57,33 @@
       "resultArchiveWiring": "NONE",
       "realProviderCalls": "NONE",
       "paidCalls": "NONE"
+    },
+    {
+      "executionId": "HN_AI_IC_P0_B_R4_GENERATION_PREPARE_FREEZE_WIRING",
+      "patchId": "HN-AI-IC-P0-B-R4-GENERATION-PREPARE-001",
+      "type": "OUR_INTEGRATION_PATCH",
+      "baseOurCommit": "418ffbde3dbea33d374356588cb672336ec38353",
+      "sourceBaseline": "418ffbde3dbea33d374356588cb672336ec38353",
+      "branch": "feature/p0-b-r4-generation-prepare-freeze",
+      "introducedInCommit": "92349f02c5a06594a003ba41e49409dc490f4239",
+      "validationFixCommit": "4d0bab236ee4fdc14aec62e0f09ed5f0b92b7e33",
+      "state": "AUDITED_INTEGRATED",
+      "externalPush": true,
+      "mergeToOurMain": true,
+      "generationWiring": "PREPARE_FREEZE_ONLY",
+      "realSubmit": "NONE",
+      "resultArchiveWiring": "NONE",
+      "providerSelection": "DEFERRED",
+      "realProviderCalls": "NONE",
+      "paidCalls": "NONE",
+      "baselineAdoptionRule": "SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION",
+      "featureHead": "f03a79522c2bc4e723502fee1297bf5b27c92269",
+      "gptAudit": "PASS",
+      "auditedCompletionSha256": "f37292070ef501689b7a1c702d90fe096d8cd2ae516c480c8e93295a2cb1addd",
+      "closeoutExecution": "HN_AI_IC_P0_B_R4_AUDIT_CLOSEOUT_INTEGRATION",
+      "taskBindingWiring": "NONE",
+      "referenceVersionWiring": "EXPLICIT_LOCAL_IMAGE_ONLY",
+      "sourceBaselineReviewRequiredOnNextBaselineAdoption": true
     }
   ]
 }
