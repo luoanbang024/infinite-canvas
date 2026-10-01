@@ -64,3 +64,20 @@ For every future upstream patch, record at minimum:
 | Rollback note | Yes when risk is non-trivial |
 
 Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Director core modifications.
+
+## HN Extension implementation — P0-B R2
+
+- PATCH_ID = HN-AI-IC-P0-B-R2-FOUNDATION-001
+- TYPE = OUR_EXTENSION; SOURCE_COMMIT=None (locally authored, not upstream backport).
+- EXECUTION_ID = HN_AI_IC_P0_B_R2_PROVIDER_NEUTRAL_LOCAL_FOUNDATION.
+- BASE_OUR_COMMIT = 852fd2128770136d037f92dfef2655dd3d6ac1d5.
+- INTRODUCED_IN_COMMIT = b08a968a84a1796cc2ff2dbb4bb60bcac30890a2.
+- LOCATION = hn/foundation; isolated Go library, no runtime wiring.
+- OUR_CHANGE = project-local workspace/SQLite v1, immutable references, frozen Generation, TaskBinding/Result ownership, file ArchiveJob recovery, explicit Shot/Candidate selection, stable SequenceItem and offline export manifests.
+- UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; no blocking equivalent local foundation; see docs/hn/upstream-watch.md.
+- DATA_SCHEMA_IMPACT = new independent metadata/hn-extension.sqlite only; upstream application schema unchanged. No migration of user production data.
+- PROVIDER/AUTH/CANVAS/NODE_CHANGE = NONE; REAL_EXTERNAL_GENERATION = NONE.
+- VERIFICATION = 12 local foundation tests plus subprocess reopen, SQLite integrity, root Go, Bridge, independent tsc, existing 18 frontend tests and production build; details in R2 completion.
+- REMOVAL_CONDITION = if a formally reviewed/adopted upstream equivalent replaces this HN layer, review identity/data mapping before removing or deprecating it; no automatic data deletion.
+- ROLLBACK = revert isolated HN implementation/governance commits before integration; preserve project workspaces. Do not drop user stores.
+- ADOPTION_STATE = FEATURE_BRANCH_ONLY / PENDING_GPT_REVIEW; do not merge to our-main in this execution.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
++ [新增] HN 独立本地生产基础与离线有序交接结构（feature 分支待审查，未接线 Provider/UI）。
+
 ## v0.8.0 - 2026-09-24
 
 + [新增] 新增 RunningHub 与 ComfyUI 工作流渠道

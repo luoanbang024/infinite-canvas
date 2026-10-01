@@ -484,3 +484,7 @@ RunningHub/ComfyUI 不加入上述普通模型筛选：系统工作流公开列�
 | `admin_adjust` | 后台手动调整 |
 | `ai_consume` | 调用后端模型接口消费 |
 | `ai_refund` | 后端模型接口调用失败返还 |
+
+## HN 独立 ExtensionStore
+
+HN 本地基础仅使用项目 metadata/hn-extension.sqlite（schema v1），未增加上述 upstream application DB 表/字段。独立关系与版本 gate 见 [ExtensionStore schema](../hn/extension_store_schema.md)，不是 upstream migration。
