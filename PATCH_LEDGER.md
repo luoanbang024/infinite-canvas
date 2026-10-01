@@ -7,7 +7,46 @@ This ledger tracks OUR changes that alter upstream-owned product behavior or sou
 
 ## Active patches
 
-None.
+### HN-AI-IC-P0-R1-RW-BRIDGE-001
+
+- TYPE = `UPSTREAM_BACKPORT`
+- EXECUTION_ID = `HN_AI_IC_P0_R1_REWORK_R1_VERIFICATION_FIXES`
+- BOUND_BASE = `v0.8.0 / edd4452cb9b0d93dbb9c1ea5acdea1ee14015800`
+- SOURCE_COMMIT = `f4e557ebf656cafb7f6a69d1d44959a5845b1b65`
+- FILES/HUNKS = `canvas-agent/native/comfy-bridge/workflow_test.go`, one payload line in `TestWorkflowFieldsKeepOriginalBridgeExecution`: replace legacy `params.count` with `workflowOverrides` for node `2`, field `steps`, value `5`.
+- REASON = Close the reproduced P0-R1 Bridge verification failure; v0.8.0 production code already consumes `workflowOverrides`.
+- OUR_CHANGE = Test fixture only; no Bridge production behavior change.
+- INTRODUCED_IN_COMMIT = `5f4fa932f3e7dbe44993c2ae481e1f66d0736113`.
+- VERIFICATION = `go test -count=1 ./...` in the Bridge module passed after this backport; full regression results are recorded in the rework completion package.
+- DATA_SCHEMA_IMPACT = None.
+- REMOVAL_CONDITION = Remove the backport when a reviewed, adopted upstream baseline already contains this test correction.
+- ROLLBACK = Revert this fixture line and its governance records; no user-data operation.
+
+### HN-AI-IC-P0-R1-RW-TYPE-001
+
+- TYPE = `OUR_VERIFICATION_FIX`
+- EXECUTION_ID = `HN_AI_IC_P0_R1_REWORK_R1_VERIFICATION_FIXES`
+- BOUND_BASE = `v0.8.0 / edd4452cb9b0d93dbb9c1ea5acdea1ee14015800`
+- SOURCE_COMMIT = None; this one-line annotation is locally authored, not an upstream backport.
+- FILES/HUNKS = `web/src/components/model-picker.tsx`, `currentOption` declaration: `useMemo` becomes `useMemo<PickerOption | undefined>`.
+- REASON = Preserve the declared picker union through TypeScript inference and close the four reproduced type errors without changing runtime logic.
+- UPSTREAM_FIRST_EVIDENCE = Inspected `f4e557ebf656cafb7f6a69d1d44959a5845b1b65` and `6571143e4f51da7494d38572c76202b752cc5e0c`; the isolated upstream change and full virtual upstream frontend both retain all four errors. No upstream-authored correction was found in those candidates.
+- AUTHORIZATION = Human explicitly authorized this exact one-line local annotation in the rework chat on 2026-10-01 after reviewing its scope and provenance.
+- INTRODUCED_IN_COMMIT = `effb0960bf05abb0e64389e9258fba1f118734c4`.
+- VERIFICATION = Virtual compiler reports zero diagnostics; emitted JavaScript is byte-identical. Final independent typecheck and full focused regression are recorded in the completion package.
+- DATA_SCHEMA_IMPACT = None.
+- REMOVAL_CONDITION = Remove when a reviewed, adopted upstream baseline fixes this inference or makes the annotation unnecessary; confirm with independent typecheck.
+- ROLLBACK = Remove the generic annotation and its governance records; no user-data operation.
+
+## Audited baseline closeout
+
+- GPT_REVIEW = `HN_AI_IC_P0_R1_REWORK_R1_GPT_AUDIT_PASS` (2026-10-01), result `PASS`.
+- SOURCE_ADOPTION_DECISION = `APPROVED`.
+- SOURCE_ADOPTION_STATE = `ADOPTED`: fixed v0.8.0 plus the two audited scoped patches above.
+- EXECUTION_ID = `HN_AI_IC_P0_B_R1_BASELINE_ADOPTION_AND_CHOICES`.
+- Audited completion SHA-256 = `942cdf50768b568da0dd35896cb83aa305aca0a54a84044fb90f8fdd7ebe9a22`.
+- Automatic upstream upgrade remains disabled. Upstream main is not adopted.
+- Stable pushed OUR baseline SHA is recorded externally in the Stage A completion evidence to avoid self-reference in this governance commit.
 
 ## Rules
 

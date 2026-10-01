@@ -6,14 +6,33 @@
     "tag": "v0.8.0",
     "commit": "edd4452cb9b0d93dbb9c1ea5acdea1ee14015800"
   },
-  "status": "CANDIDATE",
-  "adopted": false,
+  "status": "ADOPTED",
+  "adopted": true,
   "autoUpgrade": false,
   "ourMainBranch": "our-main",
   "integrationBranch": "integration/tiger-v0.8.0",
   "checkedAt": "2026-10-01",
+  "sourceAdoptionDecision": "APPROVED",
+  "auditResult": "HN_AI_IC_P0_R1_REWORK_R1_GPT_AUDIT_PASS",
+  "auditedCompletionSha256": "942cdf50768b568da0dd35896cb83aa305aca0a54a84044fb90f8fdd7ebe9a22",
+  "primaryRuntime": "Windows Source Build",
+  "auditedPatches": [
+    {
+      "patchId": "HN-AI-IC-P0-R1-RW-BRIDGE-001",
+      "type": "UPSTREAM_BACKPORT",
+      "introducedInCommit": "5f4fa932f3e7dbe44993c2ae481e1f66d0736113",
+      "sourceCommit": "f4e557ebf656cafb7f6a69d1d44959a5845b1b65"
+    },
+    {
+      "patchId": "HN-AI-IC-P0-R1-RW-TYPE-001",
+      "type": "OUR_VERIFICATION_FIX",
+      "introducedInCommit": "effb0960bf05abb0e64389e9258fba1f118734c4",
+      "sourceCommit": null
+    }
+  ],
   "notes": [
-    "P0-R1 validates the fixed v0.8.0 candidate before any adoption decision.",
-    "Post-v0.8.0 upstream changes may be reviewed later but do not replace this bound source automatically."
+    "GPT Review passed P0-A; the adopted source is fixed v0.8.0 plus the two audited scoped patches.",
+    "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
+    "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ]
 }
