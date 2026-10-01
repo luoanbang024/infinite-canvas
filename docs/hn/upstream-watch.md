@@ -24,3 +24,10 @@ R3_BASE = b8fe4fb164fa45caf1fffd3141c703988df94c79; FETCHED_TIP = 6571143e4f51da
 R4_BASE = 418ffbde3dbea33d374356588cb672336ec38353; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
 
 Fetched origin/tiger-upstream again; local/origin our-main match the supplied stable baseline. Checked post-v0.8.0 hn/handler/service/router, Canvas generation context/helper and generation service trees. Relevant upstream changes remain TokenDance/Agent/model-channel/provider work; no equivalent local HN identity + immutable ReferenceVersion binding + pre-submit frozen request endpoint. Existing upstream task/cache records do not establish this boundary. No upstream main adoption, Provider backport or protocol/poller changes. Scope and exact diff are in R4 completion; conclusion is limited to this tip/scope.
+
+
+## R5 narrow local Result/archive watch
+
+R5_BASE = 879d531a03cbdbb815474261cc87afb68b72e610; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
+
+Fetched origin/tiger-upstream and verified stable our-main. Checked hn/, handler/storage.go, service/storage.go and web/src/services/file-storage.ts from v0.8.0 to fetched tip: no delta in those archive/local-media paths. Existing remote media downloading is deliberately outside R5; the new adapter only invokes getMediaBlob. No equivalent local Generation-owned Result + ArchiveJob reliability wiring in the checked scope, no upstream adoption or Provider backport. Exact tip/scope recorded in R5 Completion.

@@ -24,3 +24,10 @@ description: 当前版本已实现但仍需人工验证的变更项
 - 内部 Canvas 视频 intent builder 与本机 Generation prepare/freeze 端点已实现；T2V 或 R3 精确本地图片版本绑定 -> PREPARED；当前 reviewed baseline 显式记录，无旧默认值。未接 live submit/UI。
 - root Go、Bridge、32 frontend tests、独立 tsc、production build、真实本机 API + production adapter 的合成 restart/reopen/二次 attempt 验证与 scope/secret scans PASS；审计 feature 正常推送并 fast-forward 集成，governance-only closeout 保持实现字节不变；收尾核验和 stable SHA 见 closeout Completion，详见 docs/hn/generation_prepare_freeze_wiring.md 和 Completion。
 - workflow/element/video/audio/remote-only 参考、带 URL 文本、任意未标注秘密、跨进程 writer、安全 ID 映射、真实 browser/submit idempotency 均保留后续评审约束。Provider 选择仍 DEFERRED；Result/Archive runtime 无接线。
+
+
+## HN P0-B R5（本地 feature 完成，等待 GPT Review / Audit）
+
+- 已冻结 HN Generation + video:/file: 精确本地 Blob -> Result/ArchiveJob/generated/，显式本地附件不声明 Provider 成功；失败返回 Job ID，重试同 Job 不新建 Generation/Result。
+- 完整回归及本机 API restart/reopen/hash/byteLength/receipt/failure-retry smoke PASS；详见 docs/hn/local_result_archive_wiring.md 和 Completion。未 push、未 merge our-main。
+- 64 MiB 与 MP4/WebM 签名边界、非 codec 验证、CreateResult/CreateArchive 非原子步骤、未完成 copy 的期待值不持久固定、初始请求不确定响应、跨进程 writer 等限制保留后续审核。Shot/Candidate/Sequence/剪映及 live Provider 未开始。

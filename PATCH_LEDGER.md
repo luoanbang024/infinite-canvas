@@ -142,3 +142,23 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - R4_VALIDATION_FIX = 4d0bab236ee4fdc14aec62e0f09ed5f0b92b7e33; reject JSON null scalar/shot values so the backend preserves the client string-only business vocabulary. Full root Go and final local restart/reopen smoke reverified; no broader implementation change.
 - REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit identity/data mapping review; no automatic user-store deletion.
 - ROLLBACK = revert isolated R4 commits or omit HN_PROJECTS_ROOT; preserve project workspaces/references/generations.
+
+
+## HN local Result / ArchiveJob wiring — P0-B R5
+
+- PATCH_ID = HN-AI-IC-P0-B-R5-LOCAL-ARCHIVE-001.
+- TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT=None (locally authored, not upstream backport).
+- EXECUTION_ID = HN_AI_IC_P0_B_R5_LOCAL_RESULT_ARCHIVE_WIRING; BASE_OUR_COMMIT = 879d531a03cbdbb815474261cc87afb68b72e610.
+- INTRODUCED_IN_COMMIT = f2d828f296ea2e8600550a89974cf04695092b2a; TEST_COMMIT = b5582e5661ce85e1ccf8d4e79bca29429fd79365.
+- PURPOSE = local exact-byte Result + ArchiveJob wiring; FILES = handler/service hn_result_archive.go, router R5 registrations, HN frontend local-result-archive.ts, internal Canvas hn-local-result-archive.ts, focused tests.
+- FOUNDATION_REUSE = Open/CreateResult/CreateArchive/RunArchive/reconcile plus shared HN writer lock; no duplicate runtime hashing/copy/retry logic or foundation/R3/R4 semantic change.
+- PROVENANCE = LOCAL_RESULT_ARCHIVE_DOES_NOT_ASSERT_PROVIDER_SUCCESS; TaskBindingID/ProviderResultID/SourceURLRef empty. R5 creates no Generation/TaskBinding and does not modify Generation SourceBaseline.
+- LOCAL_INPUT = video:/file: durable Blob only, getMediaBlob; MP4/WebM signature/MIME; 64 MiB max, bounded multipart/disk temporary storage. Filename ignored. SHA-256 expectation supplied by client and verified by foundation. No codec validation claim.
+- RETRY = existing ArchiveJob only; no new Result/Generation; completed file verified/reused. Failures preserve IDs/history with controlled 422 response. Existing foundation limitations documented in docs/hn/local_result_archive_wiring.md.
+- PROVIDER_SUCCESS_ASSERTION = NONE; TASKBINDING_WIRING = NONE; REMOTE_DOWNLOAD = NONE; REAL_PROVIDER_CALLS/PAID_CALLS = NONE; PROVIDER/AUTH/UPSTREAM_DB_SCHEMA_CHANGE = NONE.
+- UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; no overlap in checked HN/local file storage/archive paths; no upstream main adoption.
+- DATA_SCHEMA_IMPACT = only existing independent HN Result/ArchiveJob records and generated/ files; no schema changes or user media deletion.
+- VERIFICATION = go mod verify, full root Go, Bridge, 38 frontend tests, independent tsc, production build, success/failure/same-job-retry/restart/receipt/hash smoke and scope/secret scans PASS; Completion retains evidence.
+- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not audited/integrated, not externally pushed. OUR_MAIN remains 879d531a03cbdbb815474261cc87afb68b72e610.
+- REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit ownership/data compatibility review; never auto-delete stores/media.
+- ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R5 commits before integration; preserve all Result/Archive history and files.
