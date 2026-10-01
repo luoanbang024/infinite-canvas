@@ -88,3 +88,24 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - PROVIDER_WIRING = NONE; UI_WIRING = NONE; REAL_PROVIDER_CALLS = NONE; PAID_CALLS = NONE.
 - SOURCE_BASELINE_BINDING = audited code remains bound to 852fd2128770136d037f92dfef2655dd3d6ac1d5; review the binding before future wiring creates new Generations. No implementation change is authorized by this closeout.
 - Stable resulting OUR commit is recorded in the external closeout evidence; no self-referential SHA in this commit.
+
+
+## HN local reference snapshot wiring — P0-B R3
+
+- PATCH_ID = HN-AI-IC-P0-B-R3-REFERENCE-WIRING-001
+- TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT=None (locally authored, not upstream backport).
+- EXECUTION_ID = HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING.
+- BASE_OUR_COMMIT = b8fe4fb164fa45caf1fffd3141c703988df94c79.
+- INTRODUCED_IN_COMMIT = 1fc693be121f1a297a3097ad785dd2a3f26f7f80.
+- FILES/HUNKS = handler/hn_reference.go (+tests), service/hn_reference.go; router/router.go HN POST/OPTIONS registration; web/src/services/hn/local-reference.ts (+tests); web/src/app/api/hn/local-endpoint/route.ts read-only discovery; existing catch-all API proxy HN-only refusal; canvas-client-page.tsx imports/in-flight guard/callback/one prop; canvas-node-hover-toolbar.tsx one local-image action and its visibility filtering.
+- OUR_CHANGE = reuse existing local image Blob/storageKey; explicit freeze -> audited foundation Open/Snapshot/Close; deterministic logical ID and per-event version ID; no image/node mutation, no new browser store.
+- UPSTREAM_FIRST = fetched 6571143e4f51da7494d38572c76202b752cc5e0c; original image-storage/hover toolbar/server storage/router have no new overlapping changes; Canvas candidate hunk is unrelated Agent channel classification. No upstream main adoption.
+- LOCAL_API = actual loopback RemoteAddr/Host, explicit custom header, loopback-only Origin/CORS, direct transport and HN-only proxy exclusion. HN_PROJECTS_ROOT runtime parent config; no hardcoded workspace path in source.
+- FOUNDATION_SOURCE_CHANGE = NONE, 7 files raw-byte verified against audited base.
+- PROVIDER/AUTH/UPSTREAM_DB_SCHEMA/CANVAS_NODE_MODEL_CHANGE = NONE; Generation/TaskBinding/Result/Archive runtime = NONE; KEY_CONFIGURATION/REAL/FREE/PAID_GENERATION = NONE.
+- VERIFICATION = go mod verify, root Go, independent Bridge, independent tsc, existing 18 + new 6 frontend tests, production build, synthetic image UI/restart/hash/store smoke, scope/lockfile and secret scans PASS; details in R3 completion.
+- ID_MAPPING = no hidden mapping; actual smoke Canvas ID is safe; incompatible existing IDs require PROJECT_ID_MAPPING_REQUIRED review.
+- DATA_SCHEMA_IMPACT = no schema changes; writes only existing independent HN ReferenceVersion records/files in explicitly configured project parent.
+- ADOPTION_STATE = PENDING_REVIEW / NOT_ADOPTED; no external push and no merge to our-main.
+- REMOVAL_CONDITION = after formal reviewed upstream equivalent adoption, review identity/data compatibility then retire this OUR wiring; never automatically delete HN stores.
+- ROLLBACK = revert R3 local commits or omit HN_PROJECTS_ROOT; preserve all workspaces/references, no destructive data operation.
