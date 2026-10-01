@@ -35,7 +35,28 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [],
+  "pendingReview": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R4_GENERATION_PREPARE_FREEZE_WIRING",
+      "patchId": "HN-AI-IC-P0-B-R4-GENERATION-PREPARE-001",
+      "type": "OUR_INTEGRATION_PATCH",
+      "baseOurCommit": "418ffbde3dbea33d374356588cb672336ec38353",
+      "sourceBaseline": "418ffbde3dbea33d374356588cb672336ec38353",
+      "branch": "feature/p0-b-r4-generation-prepare-freeze",
+      "introducedInCommit": "92349f02c5a06594a003ba41e49409dc490f4239",
+      "validationFixCommit": "4d0bab236ee4fdc14aec62e0f09ed5f0b92b7e33",
+      "state": "LOCAL_FEATURE_PENDING_GPT_REVIEW",
+      "externalPush": false,
+      "mergeToOurMain": false,
+      "generationWiring": "PREPARE_FREEZE_ONLY",
+      "realSubmit": "NONE",
+      "resultArchiveWiring": "NONE",
+      "providerSelection": "DEFERRED",
+      "realProviderCalls": "NONE",
+      "paidCalls": "NONE",
+      "baselineAdoptionRule": "SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION"
+    }
+  ],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",

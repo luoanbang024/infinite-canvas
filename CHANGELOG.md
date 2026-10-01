@@ -2,6 +2,8 @@
 
 ## Unreleased
 
++ [新增] HN provider-neutral Generation prepare/freeze 本地边界（R4 本地 feature，待 GPT Review；无真实提交）。
+
 + [新增] 已有本地图片的显式参考快照冻结（R3 GPT Audit PASS，已集成，Provider 未接线）。
 
 + [新增] HN 独立本地生产基础与离线有序交接结构（GPT Audit PASS，已集成本地库，Provider 未接线）。

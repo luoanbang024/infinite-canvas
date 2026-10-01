@@ -115,3 +115,24 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - EXTERNAL_WRITE_BOUNDARY = human explicitly authorizes only normal non-force pushes of the reviewed R3 feature and our-main to current origin; resulting stable SHA and remote verification are recorded in external closeout evidence.
 - REMOVAL_CONDITION = after formal reviewed upstream equivalent adoption, review identity/data compatibility then retire this OUR wiring; never automatically delete HN stores.
 - ROLLBACK = revert R3 local commits or omit HN_PROJECTS_ROOT; preserve all workspaces/references, no destructive data operation.
+
+
+## HN Generation prepare/freeze wiring — P0-B R4
+
+- PATCH_ID = HN-AI-IC-P0-B-R4-GENERATION-PREPARE-001.
+- TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT=None (locally authored, not upstream backport).
+- EXECUTION_ID = HN_AI_IC_P0_B_R4_GENERATION_PREPARE_FREEZE_WIRING.
+- BASE_OUR_COMMIT = 418ffbde3dbea33d374356588cb672336ec38353; INTRODUCED_IN_COMMIT = 92349f02c5a06594a003ba41e49409dc490f4239.
+- PURPOSE = provider-neutral Generation prepare/freeze boundary. LOCATION = handler/hn_generation.go, service/hn_generation.go, router HN POST/OPTIONS registration, web/services/hn/local-generation.ts, Canvas internal hn-video-generation-prepare.ts; focused backend/frontend tests.
+- UPSTREAM_FIRST = fetched tiger-upstream tip 6571143e4f51da7494d38572c76202b752cc5e0c; no equivalent local Generation identity/frozen-request integration in the checked scope; upstream main not adopted.
+- OUR_CHANGE = explicit Canvas intent -> R3 exact local image ReferenceVersion ID/hash/role -> foundation CreateGeneration -> FreezeGeneration -> PREPARED. No live submit path or UI added.
+- SOURCE_BASELINE = 418ffbde3dbea33d374356588cb672336ec38353, explicitly required in every R4 input and persisted record; old foundation default never used by this adapter. SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION.
+- LOCAL_BOUNDARY = existing R3 actual loopback peer/Host/Origin guard, custom header, direct transport, JSON-only 256 KiB limit, HN_PROJECTS_ROOT runtime config; credentialRef and unknown fields rejected.
+- PARAMETERS = closed deterministic video business vocabulary; empty prompt rejected; URL/recognizable credential literals rejected; no broad AiConfig; workflow/element bundles/video/audio/remote-only references unsupported in R4.
+- DATA_SCHEMA_IMPACT = existing independent HN Generation/reference tables only; no schema change or historical Generation rewrite. R3/foundation raw bytes unchanged.
+- REAL_SUBMIT = NONE; RESULT_ARCHIVE_WIRING = NONE; PROVIDER_SELECTION = DEFERRED; PROVIDER_CALLS/PAID_CALLS = NONE; PROVIDER/PROTOCOL/POLLER/AUTH/UPSTREAM_DB_SCHEMA_CHANGE = NONE.
+- VERIFICATION = go mod verify, full root Go, independent Bridge, 32 frontend tests (24 existing + 8 R4), independent tsc, production build, production local router + frontend adapter restart/reopen immutable-attempt smoke, protected-source/lockfile and secret scans PASS; evidence in R4 completion.
+- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not integrated, not externally pushed. Test commit 4b99d0fa4e00dd4586282c4de8e5c70b474dcfbe.
+- R4_VALIDATION_FIX = 4d0bab236ee4fdc14aec62e0f09ed5f0b92b7e33; reject JSON null scalar/shot values so the backend preserves the client string-only business vocabulary. Full root Go and final local restart/reopen smoke reverified; no broader implementation change.
+- REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit identity/data mapping review; no automatic user-store deletion.
+- ROLLBACK = revert isolated R4 commits or omit HN_PROJECTS_ROOT; preserve project workspaces/references/generations.

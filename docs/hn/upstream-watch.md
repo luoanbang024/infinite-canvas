@@ -17,3 +17,10 @@ ADOPTED_OUR_BASE = 852fd2128770136d037f92dfef2655dd3d6ac1d5
 R3_BASE = b8fe4fb164fa45caf1fffd3141c703988df94c79; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
 
 本轮重新实际 fetch origin/tiger-upstream。精确检查原 image-storage、hover toolbar、handler/storage、router 与 Canvas page 的 v0.8.0→tip diff；前四处无差异，Canvas page 仅 Agent get_generation_config 的 audio/video channel 路由变更。没有当前范围等价的显式本地图片 -> immutable ReferenceVersion 接线，故不触发重叠停止门；未采用该 Agent/Provider hunk。新增路径属于 OUR integration，详见 local_reference_snapshot_wiring.md 与 R3 scoped evidence。
+
+
+## R4 narrow Generation identity/freeze watch
+
+R4_BASE = 418ffbde3dbea33d374356588cb672336ec38353; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
+
+Fetched origin/tiger-upstream again; local/origin our-main match the supplied stable baseline. Checked post-v0.8.0 hn/handler/service/router, Canvas generation context/helper and generation service trees. Relevant upstream changes remain TokenDance/Agent/model-channel/provider work; no equivalent local HN identity + immutable ReferenceVersion binding + pre-submit frozen request endpoint. Existing upstream task/cache records do not establish this boundary. No upstream main adoption, Provider backport or protocol/poller changes. Scope and exact diff are in R4 completion; conclusion is limited to this tip/scope.
