@@ -71,8 +71,8 @@ func validateHNPrepare(input HNGenerationPrepareInput) error {
 	}
 	for name, raw := range params {
 		if hnVideoParameterNames[name] {
-			var value string
-			if json.Unmarshal(raw, &value) != nil || len(value) > 32768 || hnUnsafeText.MatchString(value) {
+			var value *string
+			if json.Unmarshal(raw, &value) != nil || value == nil || len(*value) > 32768 || hnUnsafeText.MatchString(*value) {
 				return bad()
 			}
 		} else if name == "videoMultiPrompt" {
@@ -85,8 +85,8 @@ func validateHNPrepare(input HNGenerationPrepareInput) error {
 					return bad()
 				}
 				for _, key := range []string{"prompt", "duration"} {
-					var value string
-					if json.Unmarshal(shot[key], &value) != nil || len(value) > 32768 || hnUnsafeText.MatchString(value) {
+					var value *string
+					if json.Unmarshal(shot[key], &value) != nil || value == nil || len(*value) > 32768 || hnUnsafeText.MatchString(*value) {
 						return bad()
 					}
 				}

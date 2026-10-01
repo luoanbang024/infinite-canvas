@@ -26,6 +26,10 @@ func TestHNGenerationValidation(t *testing.T) {
 		{"old-baseline", func(i *HNGenerationPrepareInput) { i.SourceBaseline = foundation.SourceBaseline }},
 		{"array-parameters", func(i *HNGenerationPrepareInput) { i.Parameters = json.RawMessage(`[]`) }},
 		{"null-parameters", func(i *HNGenerationPrepareInput) { i.Parameters = json.RawMessage(`null`) }},
+		{"null-scalar", func(i *HNGenerationPrepareInput) { i.Parameters = json.RawMessage(`{"size":null}`) }},
+		{"null-shot-value", func(i *HNGenerationPrepareInput) {
+			i.Parameters = json.RawMessage(`{"videoMultiPrompt":[{"prompt":null,"duration":"1"}]}`)
+		}},
 		{"secret-field", func(i *HNGenerationPrepareInput) { i.Parameters = json.RawMessage(`{"apiKey":"synthetic"}`) }},
 		{"nested-secret", func(i *HNGenerationPrepareInput) {
 			i.Parameters = json.RawMessage(`{"videoMultiPrompt":[{"prompt":"ok","duration":"1","token":"synthetic"}]}`)
