@@ -1,0 +1,19 @@
+{
+  "projectId": "HN_AI_IC",
+  "projectName": "HN AI Infinite Canvas — Local AI Video Workbench",
+  "primaryUpstream": {
+    "repository": "https://github.com/tigerowo/infinite-canvas",
+    "tag": "v0.8.0",
+    "commit": "edd4452cb9b0d93dbb9c1ea5acdea1ee14015800"
+  },
+  "status": "CANDIDATE",
+  "adopted": false,
+  "autoUpgrade": false,
+  "ourMainBranch": "our-main",
+  "integrationBranch": "integration/tiger-v0.8.0",
+  "checkedAt": "2026-10-01",
+  "notes": [
+    "P0-R1 validates the fixed v0.8.0 candidate before any adoption decision.",
+    "Post-v0.8.0 upstream changes may be reviewed later but do not replace this bound source automatically."
+  ]
+}
