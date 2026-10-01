@@ -1,8 +1,8 @@
-# HN P0-B R3 本地图片显式快照接线（待 GPT Review / Audit）
+# HN P0-B R3 本地图片显式快照接线（GPT Audit PASS / 已集成）
 
 EXECUTION_ID = HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING
 TYPE = OUR_INTEGRATION_PATCH
-STATE = PENDING_REVIEW / NOT_ADOPTED
+STATE = AUDITED / INTEGRATED
 BASE_OUR_COMMIT = b8fe4fb164fa45caf1fffd3141c703988df94c79
 INTRODUCED_IN_COMMIT = 1fc693be121f1a297a3097ad785dd2a3f26f7f80
 
@@ -36,8 +36,17 @@ service 对 Open -> Snapshot -> Close 整个操作持进程 mutex，避免不同
 
 ## 范围与后续约束
 
-hn/foundation 7 个文件的 raw bytes 与审计基线一致；原 image-storage、Provider、Auth、upstream DB schema、Canvas/Node 数据模型、依赖与锁文件不变。无 Generation/TaskBinding/Result/Archive runtime，未配置 Key，无真实/免费/付费生成、无 external push/PR/tag/Release、无 merge。保持一个受控后端 writer；不同独立进程对同项目并发写入仍不在 foundation 支持范围。Generation SourceBaseline 复核与 paid idempotency 保留旧审计约束，本轮不开展。
+hn/foundation 7 个文件的 raw bytes 与审计基线一致；原 image-storage、Provider、Auth、upstream DB schema、Canvas/Node 数据模型、依赖与锁文件不变。无 Generation/TaskBinding/Result/Archive runtime，未配置 Key，无真实/免费/付费生成。R3 closeout 按明确授权仅正常非 force 推送已审计 feature 与 our-main；无 PR/tag/Release 或仓库设置修改。保持一个受控后端 writer；不同独立进程对同项目并发写入仍不在 foundation 支持范围。Generation SourceBaseline 复核与 paid idempotency 保留旧审计约束，本轮不开展。
 
 ## 退役与回滚
 
-审查并正式采用的上游若包含等效显式 immutable reference/local guard 接线，再复核原来源 ID、项目 ID、持久数据映射后替换或移除这份 OUR integration；禁止自动删除旧 HN workspaces。回滚本 R3 implementation/governance commits，或停止配置 HN_PROJECTS_ROOT；保留所有已冻结文件/store，无 schema migration。下一步仅等待 GPT Review / Audit，后续 Archive 候选需要另行授权。
+审查并正式采用的上游若包含等效显式 immutable reference/local guard 接线，再复核原来源 ID、项目 ID、持久数据映射后替换或移除这份 OUR integration；禁止自动删除旧 HN workspaces。回滚本 R3 implementation/governance commits，或停止配置 HN_PROJECTS_ROOT；保留所有已冻结文件/store，无 schema migration。R3 已经 GPT Audit PASS 并 fast-forward 集成；下一步先 Review closeout Completion Package，后续 Archive 候选需要独立执行授权，未在 closeout 开展。
+
+## Governance-only audit closeout
+
+GPT_AUDIT = PASS
+R3_FEATURE_HEAD = 17141d547551874676112314483f2b67d118a851
+R3_COMPLETION_SHA256 = 6ec629faea0bff479373398bf483f447dbb458efdc09abc31da35fe1d4b31c84
+CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R3_AUDIT_CLOSEOUT_INTEGRATION
+
+保留两个已审计 R3 commits 原样，closeout 仅更新治理/progress 状态。10 个 R3 实现/test 文件和 7 个 foundation 文件的原始字节哈希与审计材料一致；focused verification 和最终远端 stable SHA 在 closeout Completion Package 记录，避免自引用 commit SHA。审计保留的单 writer、ID 映射审核、MIME 签名限制、现有边缘工具栏、未来 SourceBaseline/submit idempotency/剪映实测约束不变。

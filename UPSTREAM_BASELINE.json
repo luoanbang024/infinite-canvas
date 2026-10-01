@@ -35,7 +35,8 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [
+  "pendingReview": [],
+  "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
       "patchId": "HN-AI-IC-P0-B-R3-REFERENCE-WIRING-001",
@@ -43,9 +44,19 @@
       "baseOurCommit": "b8fe4fb164fa45caf1fffd3141c703988df94c79",
       "branch": "feature/p0-b-r3-local-reference-snapshot",
       "introducedInCommit": "1fc693be121f1a297a3097ad785dd2a3f26f7f80",
-      "state": "PENDING_REVIEW_NOT_ADOPTED",
-      "externalPush": false,
-      "mergeToOurMain": false
+      "state": "AUDITED_INTEGRATED",
+      "externalPush": true,
+      "mergeToOurMain": true,
+      "featureHead": "17141d547551874676112314483f2b67d118a851",
+      "gptAudit": "PASS",
+      "auditedCompletionSha256": "6ec629faea0bff479373398bf483f447dbb458efdc09abc31da35fe1d4b31c84",
+      "closeoutExecution": "HN_AI_IC_P0_B_R3_AUDIT_CLOSEOUT_INTEGRATION",
+      "referenceVersionWiring": "EXPLICIT_LOCAL_IMAGE_ONLY",
+      "providerWiring": "NONE",
+      "generationWiring": "NONE",
+      "resultArchiveWiring": "NONE",
+      "realProviderCalls": "NONE",
+      "paidCalls": "NONE"
     }
   ]
 }

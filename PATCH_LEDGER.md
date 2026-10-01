@@ -106,6 +106,12 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - VERIFICATION = go mod verify, root Go, independent Bridge, independent tsc, existing 18 + new 6 frontend tests, production build, synthetic image UI/restart/hash/store smoke, scope/lockfile and secret scans PASS; details in R3 completion.
 - ID_MAPPING = no hidden mapping; actual smoke Canvas ID is safe; incompatible existing IDs require PROJECT_ID_MAPPING_REQUIRED review.
 - DATA_SCHEMA_IMPACT = no schema changes; writes only existing independent HN ReferenceVersion records/files in explicitly configured project parent.
-- ADOPTION_STATE = PENDING_REVIEW / NOT_ADOPTED; no external push and no merge to our-main.
+- ADOPTION_STATE = AUDITED / INTEGRATED; fast-forward preserves both audited R3 commits.
+- GPT_AUDIT = PASS; HN_AI_IC_P0_B_R3_GPT_AUDIT_PASS_20261001.md.
+- R3_FEATURE_HEAD = 17141d547551874676112314483f2b67d118a851.
+- R3_COMPLETION_SHA256 = 6ec629faea0bff479373398bf483f447dbb458efdc09abc31da35fe1d4b31c84.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R3_AUDIT_CLOSEOUT_INTEGRATION.
+- REFERENCEVERSION_WIRING = EXPLICIT_LOCAL_IMAGE_ONLY; PROVIDER_WIRING = NONE; GENERATION_WIRING = NONE; RESULT_ARCHIVE_WIRING = NONE; REAL_PROVIDER_CALLS = NONE; PAID_CALLS = NONE.
+- EXTERNAL_WRITE_BOUNDARY = human explicitly authorizes only normal non-force pushes of the reviewed R3 feature and our-main to current origin; resulting stable SHA and remote verification are recorded in external closeout evidence.
 - REMOVAL_CONDITION = after formal reviewed upstream equivalent adoption, review identity/data compatibility then retire this OUR wiring; never automatically delete HN stores.
 - ROLLBACK = revert R3 local commits or omit HN_PROJECTS_ROOT; preserve all workspaces/references, no destructive data operation.

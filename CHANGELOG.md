@@ -2,9 +2,9 @@
 
 ## Unreleased
 
-+ [新增] 已有本地图片的显式参考快照冻结（R3 待审分支，未合并，Provider 未接线）。
++ [新增] 已有本地图片的显式参考快照冻结（R3 GPT Audit PASS，已集成，Provider 未接线）。
 
-+ [新增] HN 独立本地生产基础与离线有序交接结构（GPT Audit PASS，已集成本地库，未接线 Provider/UI）。
++ [新增] HN 独立本地生产基础与离线有序交接结构（GPT Audit PASS，已集成本地库，Provider 未接线）。
 
 ## v0.8.0 - 2026-09-24
 
