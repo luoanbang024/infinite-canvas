@@ -80,4 +80,11 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - VERIFICATION = 12 local foundation tests plus subprocess reopen, SQLite integrity, root Go, Bridge, independent tsc, existing 18 frontend tests and production build; details in R2 completion.
 - REMOVAL_CONDITION = if a formally reviewed/adopted upstream equivalent replaces this HN layer, review identity/data mapping before removing or deprecating it; no automatic data deletion.
 - ROLLBACK = revert isolated HN implementation/governance commits before integration; preserve project workspaces. Do not drop user stores.
-- ADOPTION_STATE = FEATURE_BRANCH_ONLY / PENDING_GPT_REVIEW; do not merge to our-main in this execution.
+- ADOPTION_STATE = AUDITED / INTEGRATED_LIBRARY_ONLY; feature integrated by fast-forward without rewriting the two audited commits.
+- GPT_AUDIT = PASS; input record HN_AI_IC_P0_B_R2_GPT_AUDIT_PASS_20261001.md.
+- R2_FEATURE_HEAD = 35b22aa65fc3b90b3134a7ec20057e6b1cc955ce.
+- R2_COMPLETION_SHA256 = f7ead792f34ce9335d2dd93e2b3048cf5a62930a772cb6558a896a17f2d78c3e.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R2_AUDIT_CLOSEOUT_INTEGRATION.
+- PROVIDER_WIRING = NONE; UI_WIRING = NONE; REAL_PROVIDER_CALLS = NONE; PAID_CALLS = NONE.
+- SOURCE_BASELINE_BINDING = audited code remains bound to 852fd2128770136d037f92dfef2655dd3d6ac1d5; review the binding before future wiring creates new Generations. No implementation change is authorized by this closeout.
+- Stable resulting OUR commit is recorded in the external closeout evidence; no self-referential SHA in this commit.

@@ -4,7 +4,16 @@ EXECUTION_ID = HN_AI_IC_P0_B_R2_PROVIDER_NEUTRAL_LOCAL_FOUNDATION
 BOUND_BASELINE = 852fd2128770136d037f92dfef2655dd3d6ac1d5
 LOCATION = hn/foundation
 PROVENANCE = OUR_EXTENSION / SOURCE_COMMIT=None
-AUDIT_STATE = PENDING_GPT_REVIEW
+AUDIT_STATE = GPT_AUDIT_PASS
+GPT_AUDIT = PASS
+R2_FEATURE_HEAD = 35b22aa65fc3b90b3134a7ec20057e6b1cc955ce
+R2_COMPLETION_SHA256 = f7ead792f34ce9335d2dd93e2b3048cf5a62930a772cb6558a896a17f2d78c3e
+R2_IMPLEMENTATION_STATE = INTEGRATED_LIBRARY_ONLY
+PROVIDER_WIRING = NONE
+UI_WIRING = NONE
+REAL_PROVIDER_CALLS = NONE
+PAID_CALLS = NONE
+CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R2_AUDIT_CLOSEOUT_INTEGRATION
 
 独立 Go library，未接入应用启动、HTTP router、UI、Provider 或 upstream DB。复用已锁定的 github.com/glebarez/go-sqlite 和 github.com/google/uuid，不新增版本/lock。单一 package 内按类型、workspace、store、records、file/archive、export 分文件，不引入新框架。
 
@@ -39,6 +48,8 @@ Read/List 支持所有 8 类 JSON records。写入只通过 typed invariant-pres
 ## 验证及实际限制
 
 12 个主测试 PASS（另一个 helper 在 standalone runner 中 Skip，但子进程测试明确调用并完成它）；覆盖率 76.6%。SQLite integrity_check=ok；真实子进程重开、同进程断点模拟和损坏/缺失档案均已验证。Windows junction 的首个专项测试捕获旧 EvalSymlinks 校验缺口，现用 Go 1.25 os.Root.Stat/parent guard 校验，最终测试通过。
+
+审计保留事项：SourceBaseline 常量仍绑定原 adopted baseline 852fd2128770136d037f92dfef2655dd3d6ac1d5；未来正式 baseline/wiring 在创建新 Generations 前须复核绑定，不通过本 governance closeout 改实现。后续真实 submit wiring 仍须落实每 generationId 最多主动提交一次，不能把 TaskBinding primitives 当成已实现 paid idempotency gate。
 
 本 package 按一个受控 writer owning workspace 使用；同一 Workspace 的写操作 mutex 串行。尚未支持多独立进程同时打开/写同一项目，也不宣称可抵御敌对进程在验证与 path-based IO 之间替换目录。后续接线必须保持单 writer、受控目录权限。SQLite 事务与文件 rename 是两个持久化步骤，reopen 对账覆盖该窗口；没有承诺跨 store 事务或 Windows 断电情况下全局原子持久性。atomic-finalization PASS 指测试中完整 temp→final 发布与 metadata 对账协议。
 

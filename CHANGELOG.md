@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-+ [新增] HN 独立本地生产基础与离线有序交接结构（feature 分支待审查，未接线 Provider/UI）。
++ [新增] HN 独立本地生产基础与离线有序交接结构（GPT Audit PASS，已集成本地库，未接线 Provider/UI）。
 
 ## v0.8.0 - 2026-09-24
 
