@@ -13,6 +13,10 @@ func New() *gin.Engine {
 	router.RedirectTrailingSlash = false
 	_ = router.SetTrustedProxies(nil)
 	api := router.Group("/api")
+	api.POST("/hn/projects/:projectId/references", func(c *gin.Context) {
+		handler.HNFreezeReference(c.Writer, c.Request, c.Param("projectId"))
+	})
+	api.OPTIONS("/hn/projects/:projectId/references", gin.WrapF(handler.HNReferenceOptions))
 	api.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})

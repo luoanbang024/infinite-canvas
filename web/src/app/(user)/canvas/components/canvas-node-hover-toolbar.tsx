@@ -30,6 +30,7 @@ type CanvasNodeHoverToolbarProps = {
     onSaveAsset: (node: CanvasNodeData) => void;
     onUploadMediaToCloud: (node: CanvasNodeData) => void;
     onUploadImageToCloud: (node: CanvasNodeData) => void;
+    onFreezeReference: (node: CanvasNodeData) => void;
     onMaskEdit: (node: CanvasNodeData) => void;
     onCrop: (node: CanvasNodeData) => void;
     onSplit: (node: CanvasNodeData) => void;
@@ -70,6 +71,7 @@ export function CanvasNodeHoverToolbar({
     onSaveAsset,
     onUploadMediaToCloud,
     onUploadImageToCloud,
+    onFreezeReference,
     onMaskEdit,
     onCrop,
     onSplit,
@@ -159,6 +161,7 @@ export function CanvasNodeHoverToolbar({
         { id: "delete", title: "移除节点", label: "删除", icon: <Trash2 className="size-4" />, onClick: () => onDelete(node), danger: true },
     ];
     const nodeToolbarTools: ToolbarTool[] = [
+        ...(hasImage && node.metadata?.storageKey?.startsWith("image:") ? [{ id: "freezeReference", title: "冻结为生成参考", label: "冻结为生成参考", icon: <FolderPlus className="size-4" />, onClick: () => onFreezeReference(node) }] : []),
         ...(canRetry ? [{ id: "retry", title: "重新生成", label: "重试", icon: <RefreshCw className="size-4" />, onClick: () => onRetry(node) }] : []),
         ...(hasImage || hasVideo || isText ? [{ id: "saveAsset", title: "加入我的素材", label: "存素材", icon: <FolderPlus className="size-4" />, onClick: () => onSaveAsset(node) }] : []),
         ...((hasVideo || hasAudio) && !node.metadata?.storageKey?.startsWith("server:") ? [{ id: "uploadMediaToCloud", title: "上传至云存储", label: "上传至云存储", icon: <Upload className="size-4" />, onClick: () => onUploadMediaToCloud(node) }] : []),
@@ -188,8 +191,8 @@ export function CanvasNodeHoverToolbar({
         ...(isAudio ? [{ id: "uploadAudio", title: hasAudio ? "替换音频" : "上传音频", label: hasAudio ? "替换音频" : "上传音频", icon: <Music2 className="size-4" />, onClick: () => onUpload(node) }] : []),
         ...(hasImage ? imageTools.map((tool) => ({ id: tool.id, title: tool.title, label: tool.label, icon: tool.icon, active: tool.active, onClick: tool.onClick })) : []),
     ];
-    const toolbarTools = hasImage ? [...baseToolbarTools, ...nodeToolbarTools].filter((tool) => tool.id === "uploadImageToCloud" || quickImageToolIdSet.has(tool.id as ImageQuickToolId)) : [...baseToolbarTools, ...nodeToolbarTools];
-    const selectableImageToolbarTools = [...baseToolbarTools, ...nodeToolbarTools].filter((tool) => tool.id !== "retry" && tool.id !== "uploadImageToCloud") as ImageToolbarSettingsTool[];
+    const toolbarTools = hasImage ? [...baseToolbarTools, ...nodeToolbarTools].filter((tool) => tool.id === "freezeReference" || tool.id === "uploadImageToCloud" || quickImageToolIdSet.has(tool.id as ImageQuickToolId)) : [...baseToolbarTools, ...nodeToolbarTools];
+    const selectableImageToolbarTools = [...baseToolbarTools, ...nodeToolbarTools].filter((tool) => tool.id !== "freezeReference" && tool.id !== "retry" && tool.id !== "uploadImageToCloud") as ImageToolbarSettingsTool[];
 
     const closeImageToolSettings = () => {
         setImageToolSettingsOpen(false);

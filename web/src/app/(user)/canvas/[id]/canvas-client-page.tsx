@@ -14,7 +14,8 @@ import { createVideoGenerationTask, pollVideoGenerationTaskStatus, VIDEO_POLL_IN
 import { comfyOutputStorageKey, getWorkflowTask, submitWorkflowTask, workflowMediaSource, type WorkflowGenerationTask } from "@/services/api/workflow-generation";
 import type { WorkflowRef } from "@/lib/workflow-channel";
 import { channelProtocolForConfig, defaultConfig, resolveModelForCapability, type AiConfig, useConfigStore, useEffectiveConfig } from "@/stores/use-config-store";
-import { collectImageStorageKeys, deleteStoredImages, resolveImageUrl, uploadImage, uploadRemoteImageToServer, type UploadedImage } from "@/services/image-storage";
+import { collectImageStorageKeys, deleteStoredImages, getImageBlob, resolveImageUrl, uploadImage, uploadRemoteImageToServer, type UploadedImage } from "@/services/image-storage";
+import { freezeLocalReference } from "@/services/hn/local-reference";
 import { downloadRemoteMedia, resolveMediaUrl, uploadMediaFile, uploadRemoteMediaToServer, type UploadedFile } from "@/services/file-storage";
 import { nanoid } from "nanoid";
 import { getDataUrlByteSize, readImageMeta } from "@/lib/image-utils";
@@ -307,6 +308,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
     const { message } = App.useApp();
     const router = useRouter();
     const containerRef = useRef<HTMLDivElement>(null);
+    const freezingReferenceRef = useRef(false);
     const imageInputRef = useRef<HTMLInputElement>(null);
     const assetInsertPositionRef = useRef<Position | null>(null);
     const draggedAssetPayloadRef = useRef<InsertAssetPayload | null>(null);
@@ -2272,6 +2274,21 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
             uploadingMediaNodeIdsRef.current.delete(node.id);
         }
     }, [message]);
+
+    const freezeNodeReference = useCallback(async (node: CanvasNodeData) => {
+        if (!isCanvasImageNodeType(node.type) || !node.metadata?.storageKey?.startsWith("image:") || freezingReferenceRef.current) return;
+        freezingReferenceRef.current = true;
+        const hideLoading = message.loading("正在冻结本地参考...", 0);
+        try {
+            const reference = await freezeLocalReference({ projectId, storageKey: node.metadata.storageKey }, { readBlob: getImageBlob });
+            message.success(`本地参考已冻结 ${reference.id.slice(0, 8)} · SHA-256 ${reference.sha256.slice(0, 12)}`);
+        } catch (error) {
+            message.error(error instanceof Error ? error.message : "本地参考冻结失败");
+        } finally {
+            hideLoading();
+            freezingReferenceRef.current = false;
+        }
+    }, [message, projectId]);
 
     const uploadNodeImageToCloud = useCallback(async (node: CanvasNodeData) => {
         if (!isCanvasImageNodeType(node.type) || !node.metadata?.content || node.metadata.storageKey?.startsWith("server:") || uploadingImageNodeIdsRef.current.has(node.id)) return;
@@ -4310,6 +4327,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
                     onSaveAsset={(node) => void saveNodeAsset(node)}
                     onUploadMediaToCloud={(node) => void uploadNodeMediaToCloud(node)}
                     onUploadImageToCloud={(node) => void uploadNodeImageToCloud(node)}
+                    onFreezeReference={(node) => void freezeNodeReference(node)}
                     onMaskEdit={(node) => {
                         const nodeConfig = buildGenerationConfig(effectiveConfig, node, "image");
                         setMaskEditModel(nodeConfig.model);
