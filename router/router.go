@@ -21,6 +21,14 @@ func New() *gin.Engine {
 		handler.HNPrepareGeneration(c.Writer, c.Request, c.Param("projectId"))
 	})
 	api.OPTIONS("/hn/projects/:projectId/generations/prepare", gin.WrapF(handler.HNReferenceOptions))
+	api.POST("/hn/projects/:projectId/generations/:generationId/results/local-archive", func(c *gin.Context) {
+		handler.HNLocalResultArchive(c.Writer, c.Request, c.Param("projectId"), c.Param("generationId"), "")
+	})
+	api.POST("/hn/projects/:projectId/archive-jobs/:archiveJobId/retry", func(c *gin.Context) {
+		handler.HNLocalResultArchive(c.Writer, c.Request, c.Param("projectId"), "", c.Param("archiveJobId"))
+	})
+	api.OPTIONS("/hn/projects/:projectId/generations/:generationId/results/local-archive", gin.WrapF(handler.HNReferenceOptions))
+	api.OPTIONS("/hn/projects/:projectId/archive-jobs/:archiveJobId/retry", gin.WrapF(handler.HNReferenceOptions))
 	api.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
