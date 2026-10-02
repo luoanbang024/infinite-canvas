@@ -60,6 +60,28 @@ export async function addSequenceItem(input: { projectId: string; sequenceId: st
     return i;
 }
 
+// Pass every current item in its desired order. Snapshot before discovery and
+// reject any returned change beyond orderIndex, including updatedAt.
+export async function reorderSequence(input: { projectId: string; sequenceId: string; items: HNSequenceItem[] }, dependencies: Dependencies = {}): Promise<HNSequenceItem[]> {
+    const { projectId, sequenceId } = input; ids(projectId, sequenceId);
+    if (!Array.isArray(input.items) || input.items.length > 256) throw new Error("HN Sequence reorder 列表无效");
+    const items = input.items.map((i) => ({ ...i }));
+    const seen = new Set<string>();
+    for (const i of items) {
+        validateItem(i, projectId, sequenceId);
+        if (seen.has(i.sequenceItemId)) throw new Error("HN Sequence reorder 不接受重复 item");
+        seen.add(i.sequenceItemId);
+    }
+    const ordered = await command<HNSequenceItem[]>(projectId, `sequences/${sequenceId}/reorder`, { sequenceItemIds: items.map((i) => i.sequenceItemId) }, dependencies);
+    if (!Array.isArray(ordered) || ordered.length !== items.length) throw new Error("HN Sequence reorder 返回列表无效");
+    ordered.forEach((i, index) => {
+        validateItem(i, projectId, sequenceId);
+        const expected = { ...items[index], orderIndex: index };
+        if (Object.keys(i).sort().join(",") !== Object.keys(expected).sort().join(",") || Object.entries(expected).some(([key, value]) => (i as unknown as Record<string, unknown>)[key] !== value)) throw new Error("HN Sequence reorder 改变了顺序以外的字段");
+    });
+    return ordered;
+}
+
 // Explicit compound command; default sequence is documented "main", caller may override.
 // No Canvas state, media read, Generation, archive or Provider dependency is accepted.
 export async function commitArchivedResultToSequence(input: HNEditorialInput, dependencies: Dependencies = {}) {

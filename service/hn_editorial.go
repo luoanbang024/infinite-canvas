@@ -10,6 +10,9 @@ import (
 var ErrHNEditorialInput = errors.New("invalid HN editorial input")
 var ErrHNEditorialOwnership = errors.New("EDITORIAL_OWNERSHIP_CONFLICT")
 var ErrHNCandidateIdentity = errors.New("CANDIDATE_IDENTITY_CONFLICT")
+var ErrHNSequenceIdentity = errors.New("SEQUENCE_IDENTITY_CONFLICT")
+
+const HNSequenceMaxItems = 256
 
 type HNCandidate struct {
 	CandidateID        string `json:"candidateId"`
@@ -189,4 +192,65 @@ func AddLocalSequenceItem(root, projectID, sequenceID, candidateID string) (HNSe
 	}
 	i, err := w.AddSequenceItem(sequenceID, c.ID)
 	return hnSequenceFacts(i), err
+}
+
+// Full-set reorder delegates the atomic invariant-preserving write to foundation.
+// Response order is the exact requested order, never map/record-list order.
+func ReorderLocalSequence(root, projectID, sequenceID string, ids []string) ([]HNSequenceItem, error) {
+	if !hnEditorialIDs(projectID, sequenceID) || ids == nil || len(ids) > HNSequenceMaxItems {
+		return nil, ErrHNEditorialInput
+	}
+	seen := map[string]bool{}
+	for _, id := range ids {
+		if !validHNReferenceName(id) || seen[id] {
+			return nil, ErrHNEditorialInput
+		}
+		seen[id] = true
+	}
+	ids = append([]string{}, ids...)
+	hnReferenceWriter.Lock()
+	defer hnReferenceWriter.Unlock()
+	w, err := foundation.Open(root, projectID)
+	if err != nil {
+		return nil, err
+	}
+	defer w.Close()
+	rows, err := w.List("sequence_items")
+	if err != nil {
+		return nil, err
+	}
+	items := map[string]foundation.SequenceItem{}
+	for _, raw := range rows {
+		var i foundation.SequenceItem
+		if json.Unmarshal(raw, &i) != nil {
+			return nil, ErrHNSequenceIdentity
+		}
+		if i.SequenceID != sequenceID {
+			continue
+		}
+		if i.ProjectID != projectID || !hnEditorialIDs(i.ID, i.ShotID, i.CandidateID, i.ResultID) || i.OrderIndex < 0 {
+			return nil, ErrHNSequenceIdentity
+		}
+		items[i.ID] = i
+	}
+	if len(items) != len(ids) {
+		return nil, ErrHNSequenceIdentity
+	}
+	for _, id := range ids {
+		if _, ok := items[id]; !ok {
+			return nil, ErrHNSequenceIdentity
+		}
+	}
+	if err = w.Reorder(sequenceID, ids); err != nil {
+		return nil, err
+	}
+	out := make([]HNSequenceItem, 0, len(ids))
+	for _, id := range ids {
+		var i foundation.SequenceItem
+		if err = hnReadRecord(w, "sequence_items", id, &i); err != nil {
+			return nil, err
+		}
+		out = append(out, hnSequenceFacts(i))
+	}
+	return out, nil
 }

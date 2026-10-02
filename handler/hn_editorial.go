@@ -53,7 +53,7 @@ func hnEditorialResponse(w http.ResponseWriter, data any, err error) {
 		FailWithStatus(w, 400, "HN 剪辑标识或输入无效")
 		return
 	}
-	if errors.Is(err, service.ErrHNCandidateIdentity) || errors.Is(err, service.ErrHNEditorialOwnership) {
+	if errors.Is(err, service.ErrHNCandidateIdentity) || errors.Is(err, service.ErrHNEditorialOwnership) || errors.Is(err, service.ErrHNSequenceIdentity) {
 		FailWithStatus(w, 409, err.Error())
 		return
 	}
@@ -95,5 +95,17 @@ func HNAddSequenceItem(w http.ResponseWriter, r *http.Request, projectID, sequen
 		return
 	}
 	data, err := service.AddLocalSequenceItem(root, projectID, sequenceID, input.CandidateID)
+	hnEditorialResponse(w, data, err)
+}
+
+func HNReorderSequence(w http.ResponseWriter, r *http.Request, projectID, sequenceID string) {
+	var input struct {
+		SequenceItemIDs []string `json:"sequenceItemIds"`
+	}
+	root, ok := hnEditorialRequest(w, r, &input)
+	if !ok {
+		return
+	}
+	data, err := service.ReorderLocalSequence(root, projectID, sequenceID, input.SequenceItemIDs)
 	hnEditorialResponse(w, data, err)
 }
