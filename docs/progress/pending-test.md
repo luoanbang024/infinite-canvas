@@ -5,6 +5,12 @@ description: 当前版本已实现但仍需人工验证的变更项
 
 # 待测试
 
+## HN P0-B R12（已实现，等待 GPT Review / Audit）
+
+- HN prepare 仅为显式选中的 exact official global metaso/H3 channel 冻结 minimax-official-global-v2，gateway 不误标；新 Generation 的 backend/frontend SourceBaseline 经 R12 identity review 更新为 16047f46e2186373ea824e12e84ae8dfa2ccde32，历史记录不改写。
+- submit-only service adapter 在 Begin 前拒绝无效冻结请求/channel；复用不变 R10，owned snapshot 再校验后仅一次 pinned official POST。仅 localhost TLS fake 验证；完整回归与并发/redirect/429/500/drop/timeout/unsafe ID/persistence/subprocess crash/reopen 的实际 server POST count 见 Completion。
+- 无 production submit route、Canvas submit UI、默认启用、真实 Key/Provider/task、polling、Result/download/archive；PRIMARY_VIDEO_PROVIDER/ACCOUNT_MODE 仍 DEFERRED。详见 docs/hn/minimax_official_submit_adapter.md。业务/live 接线需后续独立授权；本轮不 merge/push。
+
 ## HN P0-B R2 本地基础（GPT Audit PASS / 已集成本地库，待用户接线验证）
 
 - 独立 hn/foundation 已实现 project workspace、SQLite v1、ReferenceVersion、冻结 Generation、TaskBinding/Result、可靠本地 ArchiveJob、Shot/Candidate/Sequence 和离线 JSON/CSV 交接结构；合成 fixtures 的自动验证通过，R2 当时未接线 UI/Provider；R3 已审计集成仅本地图片显式 ReferenceVersion UI，Provider 仍未接线。
