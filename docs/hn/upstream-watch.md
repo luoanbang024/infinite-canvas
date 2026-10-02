@@ -38,3 +38,10 @@ Fetched origin/tiger-upstream and verified stable our-main. Checked hn/, handler
 R6_BASE = ff32dc249811130a3db69be456e295be100b6e9f; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
 
 Fetched origin/tiger-upstream; exact stable local/origin our-main matched. Narrow v0.8.0->tip diff of hn/, service/hn_generation.go, handler/hn_generation.go, web/src/services/hn and router/router.go is empty. Exact ShotID/CreateShot/FreezeGeneration search in upstream hn/service/handler/web services found no equivalent. Upstream storyboard prompts/director UI use other correlation concepts and do not establish immutable HN Shot-owned Generation; they are not adopted. No upstream main adoption or Provider backport. Conclusion limited to exact tip/scope; evidence in R6 Completion.
+
+
+## R7 narrow editorial identity watch
+
+R7_BASE = f3babca6bcdf96f1f692c23bd5c145f06e534973; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_UPSTREAM_OVERLAP.
+
+Origin/tiger-upstream fetch succeeded and local/origin our-main matched the exact stable base. Narrow v0.8.0->tip diff in hn/, service/hn_generation.go, handler/hn_generation.go, web/src/services/hn and router/router.go is empty. Search for CreateCandidate/SelectCandidate/AddSequenceItem/SequenceItem in upstream hn/service/handler/frontend services found no equivalent. Conclusion is scoped to this exact tip/search. No upstream adoption or Provider backport. A separate existing HN foundation Reorder timestamp API gap requires review and is not an upstream overlap.

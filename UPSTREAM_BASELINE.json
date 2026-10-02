@@ -35,7 +35,26 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [],
+  "pendingReview": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R7_CANDIDATE_SEQUENCE_WIRING",
+      "type": "OUR_INTEGRATION_PATCH",
+      "baseOurCommit": "f3babca6bcdf96f1f692c23bd5c145f06e534973",
+      "state": "LOCAL_FEATURE_INCOMPLETE_FOUNDATION_GAP_REVIEW_REQUIRED",
+      "candidateIdentity": "STABLE_SHOT_AND_RESULT",
+      "autoSelection": "NONE",
+      "sequenceAdd": "EXPLICIT",
+      "sequenceReorder": "BLOCKED_FOUNDATION_API_GAP_REVIEW_REQUIRED",
+      "sourceBaseline": "ff32dc249811130a3db69be456e295be100b6e9f",
+      "generationSourceBaselineChange": "NONE",
+      "foundationSemanticsChange": "NONE",
+      "externalPush": false,
+      "mergeToOurMain": false,
+      "editorExport": "NONE",
+      "providerCalls": "NONE",
+      "gap": "Reorder updates UpdatedAt in addition to OrderIndex; isolated reproduction captured; single-line removal proposal unapplied pending explicit review authorization"
+    }
+  ],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
