@@ -2,6 +2,8 @@
 
 ## Unreleased
 
++ [验证] HN R14 provider archive → R7 Candidate/显式选择/稳定 sequence → R8 export 跨边界验证（R15 GPT Audit PASS / AUDITED_VALIDATED；B,A 顺序、精确 hash/bytes、reopen 与下游零 Provider 网络，无产品代码修改或 live 调用）。
+
 + [新增] HN MiniMax H3 成功任务的 provider-result/archive 独立接线（R14 GPT Audit PASS / 已 fast-forward 集成；仅本地 fake TLS，SSRF 防护、MP4 验证、同 job 重试与归档去重，无 raw URL 持久化或生产入口）。
 
 + [新增] HN MiniMax H3 已接受任务的显式 polling/recovery（R13 GPT Audit PASS / 已 fast-forward 集成；仅 localhost fake，单次 GET，poll 失败保留 SUBMITTED/BOUND，静态安全失败类与 LastPolledAt，无 raw URL 持久化/下载或生产接线）。

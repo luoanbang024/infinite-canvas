@@ -364,3 +364,34 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - FULL_CODEC_DECODE_VALIDATION = NOT_CLAIMED.
 - CORRUPT_IMMUTABLE_FINAL_ARTIFACT_OVERWRITE = REJECTED.
 - CORRUPT_IMMUTABLE_FINAL_ARTIFACT_RECOVERY = NOT_CLAIMED.
+
+## R15 provider Result editorial bridge — audited validation
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R15_PROVIDER_RESULT_EDITORIAL_BRIDGE_VALIDATION; TYPE = VALIDATION_ONLY / CROSS_BOUNDARY; STATE = AUDITED_VALIDATED; GPT_AUDIT = PASS; BASE_OUR_COMMIT = 243f8e68031265d3e8f5b5be8ea4f4b2a98ee52b; AUDITED_COMPLETION_SHA256 = f009105631232c3a38ab7ffd09f864f85f6c254e79c711fbd7be8f6e97ca0b36.
+- SOURCE_CODE_CHANGE / FEATURE_BRANCH / IMPLEMENTATION_COMMIT / VALIDATION_COMMIT / VALIDATION_PUSH = NONE. This record is not an integration patch, verification fix or upstream backport.
+- VALIDATION = R14 exact archived provider Result -> explicit existing R7 EnsureCandidate/select/AddLocalSequenceItem/reorder -> R8 ExportLocalSequence; same Shot, two distinct provider Results and Candidates; exact TaskBinding/ProviderResultID provenance and empty SourceURLRef retained.
+- CANDIDATE = arrival auto-selection/auto-placement NONE; repeat SAME_ID_NO_RENAME including unchanged CreatedAt/UpdatedAt; late B does not replace A; explicit selection PASS; non-ARCHIVED and ARCHIVE_FAILED eligibility REJECTED with no editorial mutation.
+- SEQUENCE / EXPORT = B,A; reorder only OrderIndex; exportItemCount 2; exact source Result/export media hash+bytes; close/reopen and separate-process reopen PASS; already ARCHIVED R14 repeat same ResultID/ArchiveJobID and zero network.
+- DOWNSTREAM_ADDITIONAL_PROVIDER_QUERY / MEDIA_GET / SUBMIT_POST = 0; RAW_PROVIDER_RESULT_URL_PUBLIC_PERSISTENCE_LOGGING = NONE.
+- PRESERVATION = R7/R8 independent OUR_VERIFICATION_FIX, R9 AUDITED_VALIDATED, R10/R12/R13/R14 audited implementations/tests and Foundation unchanged; temporary R15 test absent; NEW_GENERATION_SOURCE_BASELINE remains 16047f46e2186373ea824e12e84ae8dfa2ccde32; historical Generation rewrite NONE.
+- GOVERNANCE_CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R15_GOVERNANCE_CLOSEOUT; exactly one governance-only commit on current our-main and user-authorized normal non-force our-main push only. No feature integration. Actual closeout SHA recorded only in Completion; await GPT Review of closeout.
+- fixtureMedia = SYNTHETIC_MP4_BOUNDARY_FIXTURES.
+- fullCodecDecodePlayback = NOT_CLAIMED.
+- jianyingEditorRerun = NONE.
+- liveProviderCompatibility = NOT_YET_VALIDATED.
+- liveCdnCompatibility = NOT_YET_VALIDATED.
+- minimaxAccountEntitlement = NOT_YET_VALIDATED.
+- mediaUrlTtl = NOT_INFERRED.
+- providerRecoveryBeyondRecentHistory = NOT_CLAIMED.
+- multiProcessAvailability = NOT_CLAIMED.
+- proxyRequiredEnvironment = NOT_VALIDATED.
+- productionOrchestration = NONE.
+- canvasUi = NONE.
+- automaticCandidateCreation = NONE.
+- corruptImmutableFinalArtifactRecovery = NOT_CLAIMED.
+- realProviderCalls = 0.
+- paidCalls = 0.
+- realTaskCreated = 0.
+- realCredentialRead = NONE.
+- realRemoteMediaDownload = NONE.
+- liveValidationAuthorization = NOT_AUTHORIZED.
