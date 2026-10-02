@@ -48,6 +48,10 @@ func New() *gin.Engine {
 	for _, path := range []string{"/hn/projects/:projectId/shots/:shotId/candidates/ensure", "/hn/projects/:projectId/shots/:shotId/candidates/:candidateId/select", "/hn/projects/:projectId/sequences/:sequenceId/items", "/hn/projects/:projectId/sequences/:sequenceId/reorder"} {
 		api.OPTIONS(path, gin.WrapF(handler.HNReferenceOptions))
 	}
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/export", func(c *gin.Context) {
+		handler.HNExportSequence(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/export", gin.WrapF(handler.HNReferenceOptions))
 	api.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
