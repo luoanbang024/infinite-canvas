@@ -14,4 +14,4 @@ JIANying_USER_DATA_MODIFIED = NO
 R2 示例清单由实际离线测试生成（synthetic-media-one/two 的合成字节）；不含 media 文件，不证明文件 codec 可播放。国际/国内剪映兼容性、本机导入/顺序/播放留待独立后续验证；没有原生 manifest importer 承诺，没有 XML/EDL，没有编辑器草稿目录写入。
 
 
-R8 本地 export API 与 exportLocalSequence 已实现，仍待 GPT Review / Audit；没有 UI 或剪映自动导入。每次显式请求新 exportId，无自动 retry；丢失响应时旧 bundle 可能已完成，再次显式导出可能生成第二份，保留旧 bundle 不自动清理。R8 运行 smoke 用 24-byte MP4 signature 合成 fixture；安全可播放素材 -> export bundle -> 剪映人工导入/顺序/播放是下一独立 human gate。
+R8 本地 export API 与 exportLocalSequence 已 GPT Audit PASS 并 fast-forward 集成；没有 UI 或剪映自动导入。每次显式请求新 exportId，无自动 retry；丢失响应时旧 bundle 可能已完成，再次显式导出可能生成第二份，保留旧 bundle 不自动清理。R8 运行 smoke 用 24-byte MP4 signature 合成 fixture；安全可播放素材 -> export bundle -> 剪映人工导入/顺序/播放是下一独立 human gate。

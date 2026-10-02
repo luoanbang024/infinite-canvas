@@ -35,47 +35,7 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [
-    {
-      "executionId": "HN_AI_IC_P0_B_R8_OFFLINE_EXPORT_WIRING",
-      "patchId": "HN-AI-IC-P0-B-R8-EXPORT-WIRING-001",
-      "type": "OUR_INTEGRATION_PATCH",
-      "baseOurCommit": "fdb4178d05d2937659416e42e545505fd34278ca",
-      "state": "LOCAL_FEATURE_PENDING_GPT_REVIEW",
-      "branch": "feature/p0-b-r8-offline-export",
-      "foundationReuse": "Workspace.Export under shared HN writer serialization after Open reconciliation",
-      "stableSequencePlacements": true,
-      "currentSelectionRequired": false,
-      "immutableExplicitExportBundles": true,
-      "externalPush": false,
-      "mergeToOurMain": false,
-      "editorMutation": "NONE",
-      "providerCalls": "NONE",
-      "generationSourceBaselineChange": "NONE",
-      "historicalGenerationRewrite": "NONE",
-      "createdByR8": {
-        "generation": false,
-        "result": false,
-        "archiveJob": false,
-        "taskBinding": false
-      }
-    },
-    {
-      "executionId": "HN_AI_IC_P0_B_R8_OFFLINE_EXPORT_WIRING",
-      "patchId": "HN-AI-IC-P0-B-R8-EXPORT-PLACEMENT-VERIFY-001",
-      "type": "OUR_VERIFICATION_FIX",
-      "introducedInCommit": "307dba5594e78e095f37e1a6b4bb64900db93bcf",
-      "sourceCommit": null,
-      "upstreamBackport": false,
-      "state": "LOCAL_FEATURE_PENDING_GPT_REVIEW",
-      "authorizedDelta": "Remove only s.SelectedCandidateID != c.ID || from Workspace.Export eligibility",
-      "otherFoundationProductionChange": "NONE",
-      "redBefore": "PASS_EXPECTED_EXPORT_REJECTION",
-      "greenAfter": "PASS",
-      "r7ReorderVerificationFix": "PRESERVED",
-      "removalCondition": "Retire only after formal adoption of equivalent upstream stable-placement export semantics"
-    }
-  ],
+  "pendingReview": [],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
@@ -224,6 +184,39 @@
       "auditedCompletionSha256": "bd3cf1a54fc71cb1cabebb86dff6353e48cc8767a60df8f8a48bd83f4a71e824",
       "closeoutExecution": "HN_AI_IC_P0_B_R7_AUDIT_CLOSEOUT_INTEGRATION",
       "realSubmit": "NONE"
+    },
+    {
+      "executionId": "HN_AI_IC_P0_B_R8_OFFLINE_EXPORT_WIRING",
+      "patchId": "HN-AI-IC-P0-B-R8-EXPORT-WIRING-001",
+      "type": "OUR_INTEGRATION_PATCH",
+      "baseOurCommit": "fdb4178d05d2937659416e42e545505fd34278ca",
+      "state": "AUDITED_INTEGRATED",
+      "branch": "feature/p0-b-r8-offline-export",
+      "foundationReuse": "Workspace.Export under shared HN writer serialization after Open reconciliation",
+      "stableSequencePlacements": true,
+      "currentSelectionRequired": false,
+      "immutableExplicitExportBundles": true,
+      "externalPush": true,
+      "mergeToOurMain": true,
+      "editorMutation": "NONE",
+      "providerCalls": "NONE",
+      "generationSourceBaselineChange": "NONE",
+      "historicalGenerationRewrite": "NONE",
+      "createdByR8": {
+        "generation": false,
+        "result": false,
+        "archiveJob": false,
+        "taskBinding": false
+      },
+      "featureHead": "303904795f0cc3f0875575f3655c27759b099a49",
+      "gptAudit": "PASS",
+      "auditedCompletionSha256": "8159c886f155d7dcc25704934d3e4fd75103f31e811041981d2e893f5440e3b8",
+      "closeoutExecution": "HN_AI_IC_P0_B_R8_AUDIT_CLOSEOUT_INTEGRATION",
+      "offlineExportWiring": "LOCAL_SEQUENCE_EXPORT",
+      "exportIdentity": "FRESH_EXPLICIT_BUNDLE",
+      "jianyingImportValidation": "DEFERRED",
+      "realProviderCalls": "NONE",
+      "paidCalls": "NONE"
     }
   ],
   "auditedVerificationFixes": [
@@ -240,6 +233,26 @@
       "otherFoundationChanges": "NONE",
       "removalCondition": "Retire local patch when a formally adopted upstream baseline includes equivalent only-OrderIndex behavior; do not restore timestamp mutation",
       "closeoutExecution": "HN_AI_IC_P0_B_R7_AUDIT_CLOSEOUT_INTEGRATION"
+    },
+    {
+      "executionId": "HN_AI_IC_P0_B_R8_OFFLINE_EXPORT_WIRING",
+      "patchId": "HN-AI-IC-P0-B-R8-EXPORT-PLACEMENT-VERIFY-001",
+      "type": "OUR_VERIFICATION_FIX",
+      "introducedInCommit": "307dba5594e78e095f37e1a6b4bb64900db93bcf",
+      "sourceCommit": null,
+      "upstreamBackport": false,
+      "state": "AUDITED_INTEGRATED",
+      "authorizedDelta": "Remove only s.SelectedCandidateID != c.ID || from Workspace.Export eligibility",
+      "otherFoundationProductionChange": "NONE",
+      "redBefore": "PASS_EXPECTED_EXPORT_REJECTION",
+      "greenAfter": "PASS",
+      "r7ReorderVerificationFix": "PRESERVED",
+      "removalCondition": "Retire only after formal adoption of equivalent upstream stable-placement export semantics; do not restore current-selection invalidation",
+      "commit": "307dba5594e78e095f37e1a6b4bb64900db93bcf",
+      "gptAudit": "PASS",
+      "auditedCompletionSha256": "8159c886f155d7dcc25704934d3e4fd75103f31e811041981d2e893f5440e3b8",
+      "closeoutExecution": "HN_AI_IC_P0_B_R8_AUDIT_CLOSEOUT_INTEGRATION",
+      "regression": "Stable SequenceItem placement export after later selection change/clear; ownership/archive integrity still mandatory"
     }
   ]
 }

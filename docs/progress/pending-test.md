@@ -49,9 +49,9 @@ description: 当前版本已实现但仍需人工验证的变更项
 - 审计 feature 已正常推送并 fast-forward 集成，七个审计提交保持；governance-only closeout 不改任何实现/测试字节。afc8c28867028f95ea33028ad24757566b567711 独立 OUR_VERIFICATION_FIX provenance、单行差异和全字段回归保持；focused verification 与实际 stable local/remote SHA 见 closeout Completion。无 UI/codec/剪映 handoff 验证声明；跨进程 writer、显式 add 不确定响应和既有 R5 归档限制保留。
 
 
-## HN P0-B R8（本地执行完成，待 GPT Review / Audit）
+## HN P0-B R8（GPT Audit PASS，已集成本地 offline export 接线）
 
 - stable SequenceItem -> Workspace.Export -> 本地 API/exportLocalSequence -> 新 UUID 离线 bundle；JSON 最后完成标记，CSV/媒体 hash/byteLength/order 验证；重复 placement 保留，旧 bundle 对 selection/reorder/reopen 不变。
 - 明确授权仅移除 Export 当前 selection 依赖，独立 OUR_VERIFICATION_FIX，保留 RED BEFORE/GREEN AFTER 与所有权/归档回归；R7 Reorder 修正不变。
 - 无 Provider/真实免费付费调用，无新生成/归档对象，由现有 R6/R5 API 构建合成 smoke 前置数据；无 SourceBaseline 改写，无剪映/草稿/XML/EDL。
-- 合成 MP4 signature 不证明 codec 可播放；安全可播放素材的人工导入/顺序/播放为后续独立 human gate。重复显式 export 可新建第二份 bundle，无自动 retry/删除；跨进程 writer 和用户业务工作区继续保留原限制。未 merge/push。
+- 合成 MP4 signature 不证明 codec 可播放；安全可播放素材的人工导入/顺序/播放为后续独立 human gate。重复显式 export 可新建第二份 bundle，无自动 retry/删除；跨进程 writer 和用户业务工作区继续保留原限制。审计 feature 已正常推送并 fast-forward 集成，治理收口只改文档；实现/测试字节和 R7/R8 两项独立 OUR_VERIFICATION_FIX 保持。实际 stable local/remote SHA 与 focused checks 见 closeout Completion，等待收口 Review。

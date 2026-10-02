@@ -233,14 +233,17 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 ## HN offline sequence export wiring — P0-B R8
 
 - PATCH_ID = HN-AI-IC-P0-B-R8-EXPORT-WIRING-001; TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT = None.
-- EXECUTION_ID = HN_AI_IC_P0_B_R8_OFFLINE_EXPORT_WIRING; BASE_OUR_COMMIT = fdb4178d05d2937659416e42e545505fd34278ca; STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW.
+- EXECUTION_ID = HN_AI_IC_P0_B_R8_OFFLINE_EXPORT_WIRING; BASE_OUR_COMMIT = fdb4178d05d2937659416e42e545505fd34278ca; STATE = AUDITED / INTEGRATED.
+- GPT_AUDIT = PASS; HN_AI_IC_P0_B_R8_GPT_AUDIT_PASS_20261002.md.
+- R8_FEATURE_HEAD = 303904795f0cc3f0875575f3655c27759b099a49; R8_COMPLETION_SHA256 = 8159c886f155d7dcc25704934d3e4fd75103f31e811041981d2e893f5440e3b8.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R8_AUDIT_CLOSEOUT_INTEGRATION; actual stable local/remote SHA recorded in Completion, avoiding self-reference.
 - PURPOSE = stable SequenceItem placements -> Workspace.Export -> local HN export API -> frontend exportLocalSequence -> immutable offline bundle.
 - FOUNDATION_REUSE = Open reconciliation / Export / Resolve; shared HN writer lock. No duplicate sorting/copy/hash/CSV/JSON/export-ID generation. Service validates returned manifest, completion marker, CSV existence and media lengths; Foundation checks source/copy hash and receipts.
 - API = POST /api/hn/projects/:projectId/sequences/:sequenceId/export with exact {}; existing loopback peer/Host/Origin/header/CORS boundary, runtime HN_PROJECTS_ROOT. Return only project-relative facts.
 - EXPLICIT_REPEAT = fresh export ID, no automatic retry/delete/overwrite. JSON last completion marker; partial without JSON is not successful. Existing completed bundle immutable after selection/reorder/reopen.
 - PROVIDER_CALLS / PAID_CALLS / EDITOR_MUTATION / XML_EDL = NONE. GENERATION / RESULT / ARCHIVEJOB / TASKBINDING_CREATED_BY_R8 = NO. Existing R6/R5 local synthetic prerequisites are attributed separately.
 - GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE; current constant remains ff32dc249811130a3db69be456e295be100b6e9f. R7 fix afc8c28867028f95ea33028ad24757566b567711 preserved unchanged.
-- EXTERNAL_PUSH = NOT_AUTHORIZED / NONE; MERGE_TO_OUR_MAIN = NONE; GPT_AUDIT = PENDING. No Provider/Auth/schema/dependency/lockfile changes.
+- EXTERNAL_WRITE_BOUNDARY = user-authorized normal non-force pushes only of the reviewed R8 feature and governance-closed our-main to checked origin; MERGE_TO_OUR_MAIN = FAST_FORWARD_ONLY; GPT_AUDIT = PASS. No Provider/Auth/schema/dependency/lockfile changes.
 - VERIFICATION = full required Go/Bridge/frontend/typecheck/build, RED BEFORE/GREEN AFTER, exact delta, local production-router/adapter export/restart/hash/bytes/JSON/CSV/immutability evidence in Completion.
 - REMOVAL_CONDITION = retire after formal adoption of equivalent upstream export wiring and ownership/data compatibility review. Preserve local bundles/data; omit HN_PROJECTS_ROOT to disable endpoint.
 
@@ -252,4 +255,4 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - RED BEFORE = old Export rejects valid A placements after selecting B and clearing selection; failing log retained. GREEN AFTER = same scenarios pass after exact deletion; old invalidation assertion superseded by persisted-placement contract.
 - REGRESSION = Candidate/Shot/Result/Generation binding, ARCHIVED Result, archive receipt/file/hash/bytes still mandatory; no fallback or record mutation; order, repeated placements, new ID, old bundle integrity and reopen verified.
 - REMOVAL_CONDITION = retire only after formal adoption of equivalent upstream stable-placement export semantics; do not restore current-selection invalidation.
-- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not audited/integrated and not upstream-derived.
+- ADOPTION_STATE = AUDITED / INTEGRATED; GPT Audit PASS. Separate ledger section and auditedVerificationFixes record retain original commit 307dba5594e78e095f37e1a6b4bb64900db93bcf; no squash/rewrite/restoration/expansion or upstream-backport classification. R7 afc8c28867028f95ea33028ad24757566b567711 remains independently recorded and unchanged.

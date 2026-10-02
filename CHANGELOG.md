@@ -2,9 +2,9 @@
 
 ## Unreleased
 
-+ [新增] HN stable SequenceItem 离线 export API/adapter 与不可变 bundle（R8 本地完成，待 GPT Review）。
++ [新增] HN stable SequenceItem 离线 export API/adapter 与不可变 bundle（R8 GPT Audit PASS，已集成）。
 
-+ [修复] 经明确授权，仅移除 HN Export 的当前 selection 依赖，历史 placement 可在改选后导出（独立 OUR_VERIFICATION_FIX）。
++ [修复] 经明确授权，仅移除 HN Export 的当前 selection 依赖，历史 placement 可在改选后导出（独立 OUR_VERIFICATION_FIX，GPT Audit PASS；原提交与回归保持）。
 
 + [新增] HN 本地 Candidate/显式选择/SequenceItem 与 deterministic reorder（R7 GPT Audit PASS，已集成；无 Provider 或 editor export）。
 
