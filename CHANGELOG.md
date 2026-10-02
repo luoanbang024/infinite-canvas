@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-+ [新增] HN 精确本地视频 Result/ArchiveJob 归档与同 Job 重试（R5 本地 feature，待 GPT Review；无 Provider 成功声明）。
++ [新增] HN 精确本地视频 Result/ArchiveJob 归档与同 Job 重试（R5 GPT Audit PASS，已集成本地接线；无 Provider 成功声明）。
 
 + [新增] HN provider-neutral Generation prepare/freeze 本地边界（R4 GPT Audit PASS，已集成 prepare-only；无真实提交）。
 

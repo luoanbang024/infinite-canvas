@@ -26,8 +26,8 @@ description: 当前版本已实现但仍需人工验证的变更项
 - workflow/element/video/audio/remote-only 参考、带 URL 文本、任意未标注秘密、跨进程 writer、安全 ID 映射、真实 browser/submit idempotency 均保留后续评审约束。Provider 选择仍 DEFERRED；Result/Archive runtime 无接线。
 
 
-## HN P0-B R5（本地 feature 完成，等待 GPT Review / Audit）
+## HN P0-B R5（GPT Audit PASS，已集成本地 Result / ArchiveJob 接线）
 
 - 已冻结 HN Generation + video:/file: 精确本地 Blob -> Result/ArchiveJob/generated/，显式本地附件不声明 Provider 成功；失败返回 Job ID，重试同 Job 不新建 Generation/Result。
-- 完整回归及本机 API restart/reopen/hash/byteLength/receipt/failure-retry smoke PASS；详见 docs/hn/local_result_archive_wiring.md 和 Completion。未 push、未 merge our-main。
+- 完整回归及本机 API restart/reopen/hash/byteLength/receipt/failure-retry smoke PASS；已审计 feature 正常推送并 fast-forward 集成，governance-only closeout 保持 R5/R4/R3/foundation 实现和测试字节不变。focused verification 与 stable local/remote SHA 见 closeout Completion；详见 docs/hn/local_result_archive_wiring.md。
 - 64 MiB 与 MP4/WebM 签名边界、非 codec 验证、CreateResult/CreateArchive 非原子步骤、未完成 copy 的期待值不持久固定、初始请求不确定响应、跨进程 writer 等限制保留后续审核。Shot/Candidate/Sequence/剪映及 live Provider 未开始。

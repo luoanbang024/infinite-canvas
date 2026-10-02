@@ -1,7 +1,14 @@
 # HN R5 local Result / ArchiveJob wiring
 
 EXECUTION_ID = HN_AI_IC_P0_B_R5_LOCAL_RESULT_ARCHIVE_WIRING
-STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW
+STATE = AUDITED / INTEGRATED
+GPT_AUDIT = PASS
+R5_FEATURE_HEAD = 81795aadd070370998472722e35add7d24fbbe4f
+R5_COMPLETION_SHA256 = 686bc371b7647c6366071a535ad76f883093b7c5eb3367732e4e664bfec06c47
+CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R5_AUDIT_CLOSEOUT_INTEGRATION
+RESULT_ARCHIVE_WIRING = EXPLICIT_LOCAL_VIDEO_ONLY
+PROVIDER_SUCCESS_ASSERTION = NONE; GENERATION_CREATED_BY_R5 = NO
+TASKBINDING_WIRING = NONE; REMOTE_DOWNLOAD = NONE; REAL_PROVIDER_CALLS = NONE; PAID_CALLS = NONE
 BASE_OUR_COMMIT = 879d531a03cbdbb815474261cc87afb68b72e610
 IMPLEMENTATION_COMMIT = f2d828f296ea2e8600550a89974cf04695092b2a
 TEST_COMMIT = b5582e5661ce85e1ccf8d4e79bca29429fd79365
@@ -42,4 +49,4 @@ Synthetic tests cover local guard/config/input/size/MIME/ownership, failure hist
 
 Smoke uses a 24-byte synthetic MP4 signature fixture, with controlled production adapter Blob lookup/read-only endpoint discovery. It tests exact-byte reliability, not playable media or browser picker UI. The failure fixture injects an incorrect expected hash into a real local multipart request; the backend persists FAILED, then correct-byte retry after restart succeeds. Bun's previously observed nonfatal tsconfig directory-handle diagnostic is retained in logs; operation exits 0 and independent Go verification confirms the durable facts.
 
-No external push or merge; await GPT Review/Audit. Only after separately authorized integration/review is the next candidate archived Result -> Shot/Candidate/explicit selection/SequenceItem -> offline handoff. Provider choice/account/API validation remain deferred.
+GPT Audit PASS; the audited feature was normally pushed and fast-forward integrated without rewriting its three commits. Governance-only closeout preserves R5/R4/R3/foundation implementation and test bytes; focused verification and resulting stable local/remote SHA are recorded in closeout Completion. Await GPT closeout Completion Review and separate execution authorization before archived Result -> Shot/Candidate/explicit selection/SequenceItem -> offline handoff. Provider choice/account/API validation remain deferred. All archive and provenance limitations above remain in effect.

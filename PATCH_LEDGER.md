@@ -159,6 +159,11 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; no overlap in checked HN/local file storage/archive paths; no upstream main adoption.
 - DATA_SCHEMA_IMPACT = only existing independent HN Result/ArchiveJob records and generated/ files; no schema changes or user media deletion.
 - VERIFICATION = go mod verify, full root Go, Bridge, 38 frontend tests, independent tsc, production build, success/failure/same-job-retry/restart/receipt/hash smoke and scope/secret scans PASS; Completion retains evidence.
-- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not audited/integrated, not externally pushed. OUR_MAIN remains 879d531a03cbdbb815474261cc87afb68b72e610.
+- ADOPTION_STATE = AUDITED / INTEGRATED; fast-forward preserves all three audited R5 commits.
+- GPT_AUDIT = PASS; HN_AI_IC_P0_B_R5_GPT_AUDIT_PASS_20261002.md.
+- R5_FEATURE_HEAD = 81795aadd070370998472722e35add7d24fbbe4f; R5_COMPLETION_SHA256 = 686bc371b7647c6366071a535ad76f883093b7c5eb3367732e4e664bfec06c47.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R5_AUDIT_CLOSEOUT_INTEGRATION; stable closeout SHA and verified remote refs recorded externally in Completion, avoiding self-reference.
+- RESULT_ARCHIVE_WIRING = EXPLICIT_LOCAL_VIDEO_ONLY; GENERATION_CREATED_BY_R5 = NO; PROVIDER_SUCCESS_ASSERTION = NONE; TASKBINDING_WIRING/REMOTE_DOWNLOAD/REAL_PROVIDER_CALLS/PAID_CALLS = NONE.
+- EXTERNAL_WRITE_BOUNDARY = user authorizes only normal non-force pushes of this audited feature and governance-closed our-main to checked current origin; no other branch/tag/PR/Release/settings action.
 - REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit ownership/data compatibility review; never auto-delete stores/media.
 - ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R5 commits before integration; preserve all Result/Archive history and files.

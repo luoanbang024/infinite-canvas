@@ -35,27 +35,7 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [
-    {
-      "executionId": "HN_AI_IC_P0_B_R5_LOCAL_RESULT_ARCHIVE_WIRING",
-      "patchId": "HN-AI-IC-P0-B-R5-LOCAL-ARCHIVE-001",
-      "type": "OUR_INTEGRATION_PATCH",
-      "baseOurCommit": "879d531a03cbdbb815474261cc87afb68b72e610",
-      "introducedInCommit": "f2d828f296ea2e8600550a89974cf04695092b2a",
-      "testCommit": "b5582e5661ce85e1ccf8d4e79bca29429fd79365",
-      "branch": "feature/p0-b-r5-local-result-archive",
-      "state": "LOCAL_FEATURE_PENDING_GPT_REVIEW",
-      "externalPush": false,
-      "mergeToOurMain": false,
-      "resultArchiveWiring": "EXPLICIT_LOCAL_VIDEO_ONLY",
-      "providerSuccessAssertion": "NONE",
-      "generationCreation": "NONE",
-      "taskBindingWiring": "NONE",
-      "remoteDownload": "NONE",
-      "realProviderCalls": "NONE",
-      "paidCalls": "NONE"
-    }
-  ],
+  "pendingReview": [],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
@@ -104,6 +84,29 @@
       "taskBindingWiring": "NONE",
       "referenceVersionWiring": "EXPLICIT_LOCAL_IMAGE_ONLY",
       "sourceBaselineReviewRequiredOnNextBaselineAdoption": true
+    },
+    {
+      "executionId": "HN_AI_IC_P0_B_R5_LOCAL_RESULT_ARCHIVE_WIRING",
+      "patchId": "HN-AI-IC-P0-B-R5-LOCAL-ARCHIVE-001",
+      "type": "OUR_INTEGRATION_PATCH",
+      "baseOurCommit": "879d531a03cbdbb815474261cc87afb68b72e610",
+      "introducedInCommit": "f2d828f296ea2e8600550a89974cf04695092b2a",
+      "testCommit": "b5582e5661ce85e1ccf8d4e79bca29429fd79365",
+      "branch": "feature/p0-b-r5-local-result-archive",
+      "state": "AUDITED_INTEGRATED",
+      "externalPush": true,
+      "mergeToOurMain": true,
+      "resultArchiveWiring": "EXPLICIT_LOCAL_VIDEO_ONLY",
+      "providerSuccessAssertion": "NONE",
+      "generationCreation": "NONE",
+      "taskBindingWiring": "NONE",
+      "remoteDownload": "NONE",
+      "realProviderCalls": "NONE",
+      "paidCalls": "NONE",
+      "featureHead": "81795aadd070370998472722e35add7d24fbbe4f",
+      "gptAudit": "PASS",
+      "auditedCompletionSha256": "686bc371b7647c6366071a535ad76f883093b7c5eb3367732e4e664bfec06c47",
+      "closeoutExecution": "HN_AI_IC_P0_B_R5_AUDIT_CLOSEOUT_INTEGRATION"
     }
   ]
 }
