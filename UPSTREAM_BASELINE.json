@@ -40,19 +40,40 @@
       "executionId": "HN_AI_IC_P0_B_R7_CANDIDATE_SEQUENCE_WIRING",
       "type": "OUR_INTEGRATION_PATCH",
       "baseOurCommit": "f3babca6bcdf96f1f692c23bd5c145f06e534973",
-      "state": "LOCAL_FEATURE_INCOMPLETE_FOUNDATION_GAP_REVIEW_REQUIRED",
+      "state": "LOCAL_FEATURE_PENDING_GPT_REVIEW",
       "candidateIdentity": "STABLE_SHOT_AND_RESULT",
       "autoSelection": "NONE",
-      "sequenceAdd": "EXPLICIT",
-      "sequenceReorder": "BLOCKED_FOUNDATION_API_GAP_REVIEW_REQUIRED",
+      "explicitSelection": true,
+      "sequenceAdd": "EXPLICIT_FRESH_PLACEMENT",
+      "sequenceReorder": "EXPLICIT_FULL_SET_ONLY_ORDERINDEX",
+      "restartReopen": "PASS",
       "sourceBaseline": "ff32dc249811130a3db69be456e295be100b6e9f",
       "generationSourceBaselineChange": "NONE",
-      "foundationSemanticsChange": "NONE",
+      "historicalGenerationRewrite": "NONE",
+      "foundationScopeException": {
+        "type": "OUR_VERIFICATION_FIX",
+        "sourceCommit": null,
+        "file": "hn/foundation/records.go",
+        "change": "Remove only i.UpdatedAt = timestamp() inside Reorder",
+        "authorization": "User explicitly authorized the single-line deletion and all-field invariance regression after reproduced API gap",
+        "regression": "hn/foundation/reorder_test.go; every persisted JSON field except OrderIndex unchanged, including UpdatedAt; no-op and reopen",
+        "otherFoundationChanges": "NONE",
+        "removalCondition": "Retire local patch when a formally adopted upstream baseline includes equivalent only-OrderIndex behavior; do not restore timestamp mutation"
+      },
+      "r3R4R5R6SemanticChange": "NONE",
+      "createdByR7": {
+        "generation": false,
+        "result": false,
+        "archiveJob": false,
+        "taskBinding": false
+      },
+      "editorExport": "NONE",
+      "jianyingModification": "NONE",
+      "providerCalls": "NONE",
+      "paidCalls": "NONE",
       "externalPush": false,
       "mergeToOurMain": false,
-      "editorExport": "NONE",
-      "providerCalls": "NONE",
-      "gap": "Reorder updates UpdatedAt in addition to OrderIndex; isolated reproduction captured; single-line removal proposal unapplied pending explicit review authorization"
+      "verification": "go mod verify/root Go/Bridge/53 frontend tests/independent tsc/production build/production local restart-reopen-reorder smoke/scope+secret PASS"
     }
   ],
   "auditedIntegrations": [

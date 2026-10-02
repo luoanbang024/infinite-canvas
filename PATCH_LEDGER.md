@@ -197,19 +197,30 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R6 commits before integration; preserve all Shot/Generation/history/reference data.
 
 
-## HN Candidate / explicit selection / placement — P0-B R7 (incomplete)
+## HN Candidate / explicit selection / SequenceItem / reorder — P0-B R7
 
-- PATCH_ID = HN-AI-IC-P0-B-R7-EDITORIAL-001; TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT = None (locally authored, not an upstream backport).
+- PATCH_ID = HN-AI-IC-P0-B-R7-EDITORIAL-001; TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT = None (locally authored, not upstream backport).
 - EXECUTION_ID = HN_AI_IC_P0_B_R7_CANDIDATE_SEQUENCE_WIRING; BASE_OUR_COMMIT = f3babca6bcdf96f1f692c23bd5c145f06e534973.
-- PURPOSE = archived Result -> stable Candidate -> explicit selection -> explicit SequenceItem; deterministic reorder pending foundation API gap review.
-- CANDIDATE_IDENTITY = STABLE_SHOT_AND_RESULT; repeated ensure retains original ID/label/timestamps, pre-existing duplicate match returns CANDIDATE_IDENTITY_CONFLICT. In-process shared writer only, no DB migration.
-- AUTO_SELECTION = NONE; late Candidate cannot replace selection or existing SequenceItem. SEQUENCE_ADD = EXPLICIT; every add creates a fresh placement, including repeated Candidate use.
-- FOUNDATION_REUSE = Open/reconcile/Read/List/CreateCandidate/SelectCandidate/AddSequenceItem. Candidate/select/add revalidate frozen same-Shot Generation and consistent durable Result/ArchiveJob facts after reopen.
-- SEQUENCE_REORDER = BLOCKED_FOUNDATION_API_GAP_REVIEW_REQUIRED: audited Workspace.Reorder also updates UpdatedAt. No silent change, direct SQL workaround or timestamp-hiding projection. One-line removal proposal exists outside repository and is not applied; explicit authorization pending.
-- ADOPTION_STATE = LOCAL_FEATURE_INCOMPLETE; no formal GPT Audit PASS or integration claim. Existing foundation and R3/R4/R5/R6 source/test bytes unchanged.
-- GENERATION_SOURCE_BASELINE_CHANGE = NONE; audited preparation baseline remains ff32dc249811130a3db69be456e295be100b6e9f; frozen history unchanged.
-- EDITOR_EXPORT/JIANying_MODIFICATION/PROVIDER_CALLS/PAID_CALLS = NONE; Generation/Result/ArchiveJob/TaskBinding created by R7 = NO. Isolated smoke prerequisites created exclusively through existing R6/R5 local adapters.
-- VALIDATION = root Go, Bridge, 50 frontend tests, independent tsc, production build, two-alternative explicit-selection/duplicate-placement/restart-reopen smoke PASS for implemented scope; reorder and full R7 pass criteria remain incomplete. Evidence in R7 audit directory.
-- UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; empty narrow overlap diff and no CreateCandidate/SelectCandidate/AddSequenceItem/SequenceItem equivalent in inspected HN/service/handler/frontend-services scope; no upstream main adoption.
-- REMOVAL_CONDITION = retire after formal adoption of equivalent upstream wiring and explicit ownership/data review; preserve stores/media. ROLLBACK = omit HN_PROJECTS_ROOT or omit isolated R7 commits.
-- EXTERNAL_PUSH = NOT_AUTHORIZED / NONE; MERGE_TO_OUR_MAIN = NONE.
+- PURPOSE = shot-bound frozen Generation + durable archived Result -> Candidate -> explicit selection -> SequenceItem -> deterministic reorder.
+- CANDIDATE_IDENTITY = STABLE_SHOT_AND_RESULT; repeated ensure retains original ID/label/timestamps, duplicate pre-existing match -> CANDIDATE_IDENTITY_CONFLICT. Shared in-process HN writer; no DB uniqueness migration.
+- AUTO_SELECTION = NONE; late alternatives preserve current Shot selection and existing placements. Selection is a separate explicit operation, revalidating durable archived facts after Workspace.Open reconciliation.
+- SEQUENCE_ADD = EXPLICIT; selected archived Candidate required, every add creates a fresh placement, no hidden dedup. SEQUENCE_REORDER = EXPLICIT_FULL_SET; at most 256 item IDs, no duplicate/missing/foreign items, exact requested response order; only OrderIndex changes.
+- FOUNDATION_REUSE = Open/reconcile/Read/List/CreateCandidate/SelectCandidate/AddSequenceItem/Reorder; no duplicated copy/hash/export/generation logic. LOCATION = HN editorial service/handler/router/local-editorial adapter and focused tests.
+- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; complete local execution, no formal GPT Audit PASS / integration claim.
+- GENERATION_SOURCE_BASELINE_CHANGE = NONE; audited preparation baseline remains ff32dc249811130a3db69be456e295be100b6e9f, historical/new frozen Generation records are not rewritten by R7.
+- FOUNDATION_SCOPE_EXCEPTION = only explicitly authorized HN-AI-IC-P0-B-R7-REORDER-VERIFY-001 below. Other foundation and all R3/R4/R5/R6 implementation/test bytes remain unchanged; schema/Provider/Auth/dependencies/lockfiles unchanged.
+- GENERATION/RESULT/ARCHIVEJOB/TASKBINDING_CREATED_BY_R7 = NO. Smoke prerequisites use existing R6/R5 local production adapters only; independent before/after records prove no downstream prerequisite creation by editorial operations.
+- EDITOR_EXPORT/JIANying_MODIFICATION/REAL_PROVIDER_CALLS/PAID_CALLS/REMOTE_DOWNLOAD = NONE; EXTERNAL_PUSH = NOT_AUTHORIZED / NONE; MERGE_TO_OUR_MAIN = NONE.
+- VERIFICATION = go mod verify, full root Go, Bridge, 53 frontend tests (45 existing + 8 R7), independent tsc, production build, two-alternative production local adapter/router late-arrival/select/repeated-add/reorder/no-op/restart-reopen smoke, protected-source and secret scans PASS; evidence in R7 Completion.
+- UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; narrow overlap diff empty, no inspected CreateCandidate/SelectCandidate/AddSequenceItem/SequenceItem equivalent. No upstream main adoption.
+- REMOVAL_CONDITION = retire wiring after formally adopting equivalent upstream identity/selection/sequence contracts and reviewing data ownership; never auto-delete stores/media. ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R7 feature commits before integration, preserving local records/media.
+
+## HN strict reorder field invariance — R7 authorized verification fix
+
+- PATCH_ID = HN-AI-IC-P0-B-R7-REORDER-VERIFY-001; TYPE = OUR_VERIFICATION_FIX; SOURCE_COMMIT = None. This is a local verification fix, not an upstream backport.
+- PROVEN_GAP = audited Workspace.Reorder changed UpdatedAt even on an unchanged one-item order, violating the R7 only-OrderIndex contract. Reproduction and red regression retained in Completion.
+- HUMAN_AUTHORIZATION = user explicitly authorized deleting only `i.UpdatedAt = timestamp()` inside hn/foundation/records.go Reorder and adding full-field invariance regression. No other foundation edits authorized or made.
+- EXACT_DELTA = one deleted implementation line; only new foundation test is hn/foundation/reorder_test.go. All other existing foundation raw bytes remain unchanged; no schema/API signature/transaction/selection/archive/generation change.
+- REGRESSION = compare all persisted SequenceItem JSON fields, allowing only OrderIndex to differ; UpdatedAt/CreatedAt/identity/schemaVersion/ownership retained; exact reordered indexes, repeated no-op and reopen, all other entity lists unchanged. Red before removal, green after.
+- REMOVAL_CONDITION = remove the local patch when a formally adopted upstream baseline already implements equivalent only-OrderIndex behavior; never reintroduce UpdatedAt mutation during removal.
+- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; independently attributed exception to the original foundation-semantics-no-change rule, not concealed under OUR_INTEGRATION_PATCH.
