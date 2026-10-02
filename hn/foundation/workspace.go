@@ -87,6 +87,9 @@ func Open(projectsRoot, projectID string) (*Workspace, error) {
 	if err = w.initialize(); err == nil {
 		err = w.reconcile()
 	}
+	if err == nil {
+		err = w.reconcileSubmissions()
+	}
 	if err != nil {
 		w.db.Close()
 		return nil, err
