@@ -12,7 +12,8 @@ import (
 
 // SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE.
 // This reviewed integration baseline never replaces the foundation's historical default.
-const HNGenerationSourceBaseline = "ff32dc249811130a3db69be456e295be100b6e9f"
+// R12 provider identity freeze review: new preparation only.
+const HNGenerationSourceBaseline = "16047f46e2186373ea824e12e84ae8dfa2ccde32"
 
 var ErrHNGenerationInput = errors.New("invalid HN generation prepare input")
 

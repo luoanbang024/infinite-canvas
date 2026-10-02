@@ -147,7 +147,7 @@ func TestHNShotGenerationBindingHistoricalReopen(t *testing.T) {
 		t.Fatal(err)
 	}
 	b, err := PrepareLocalGeneration(root, "test", i)
-	if err != nil || a.GenerationID == b.GenerationID || a.ShotID != s.ShotID || b.ShotID != s.ShotID || !a.Frozen || a.SourceBaseline != "ff32dc249811130a3db69be456e295be100b6e9f" {
+	if err != nil || a.GenerationID == b.GenerationID || a.ShotID != s.ShotID || b.ShotID != s.ShotID || !a.Frozen || a.SourceBaseline != "16047f46e2186373ea824e12e84ae8dfa2ccde32" {
 		t.Fatal("Shot-aware attempts", err)
 	}
 	w, err = foundation.Open(root, "test")

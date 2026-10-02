@@ -73,7 +73,7 @@ test("Shot-aware prepare requires Shot ID and validates returned binding; curren
     const source = input();
     const request = (async (url, opts) => { source.shotId = "later-edit"; return t.request(url, opts); }) as typeof fetch;
     const g = await prepareLocalShotGeneration(source, { ...t, request }); assert.equal(g.shotId, "shot-1");
-    assert.equal(t.payloads[0].shotId, "shot-1"); assert.equal(g.sourceBaseline, "ff32dc249811130a3db69be456e295be100b6e9f");
+    assert.equal(t.payloads[0].shotId, "shot-1"); assert.equal(g.sourceBaseline, "16047f46e2186373ea824e12e84ae8dfa2ccde32");
     const wrong = (async (url, opts) => { const response = await t.request(url, opts); if (String(url).endsWith("/prepare")) { const data = await response.json(); data.data.shotId = "other"; return Response.json(data); } return response; }) as typeof fetch;
     await assert.rejects(prepareLocalShotGeneration(input(), { ...t, request: wrong }));
     await assert.rejects(prepareLocalShotGeneration({ ...input(), sourceBaseline: "418ffbde3dbea33d374356588cb672336ec38353" }, t));

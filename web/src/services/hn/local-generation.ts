@@ -1,7 +1,8 @@
 import { freezeLocalReference, isHNProjectId, localBackendURL } from "./local-reference";
 
 // SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE.
-export const HN_GENERATION_SOURCE_BASELINE = "ff32dc249811130a3db69be456e295be100b6e9f";
+// R12 provider identity freeze review: new records only, no historical migration.
+export const HN_GENERATION_SOURCE_BASELINE = "16047f46e2186373ea824e12e84ae8dfa2ccde32";
 export type HNReferenceRole = "reference" | "firstFrame" | "lastFrame";
 export type HNReferenceBinding = { referenceVersionId: string; sha256: string; role: HNReferenceRole };
 export type HNGenerationPrepareInput = {
