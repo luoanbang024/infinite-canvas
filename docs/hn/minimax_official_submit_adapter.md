@@ -1,7 +1,8 @@
 # R12 MiniMax H3 official submit adapter
 
 TYPE = OUR_EXTENSION / ADAPTER_WIRING
-STATE = IMPLEMENTED_PENDING_GPT_REVIEW
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 BASE_OUR_COMMIT = 16047f46e2186373ea824e12e84ae8dfa2ccde32
 BRANCH = feature/p0-b-r12-minimax-h3-official-submit
 
@@ -21,6 +22,26 @@ Acceptance requires HTTP 200 and exactly one JSON task_id string, safe under unc
 
 Wire tests count actual server POSTs, including eight concurrent callers, capable HTTP2 peer still seeing HTTP1, 307/308 target count zero, 429/500/drop/timeout/cancel, malformed/unsafe/oversized task acceptance, channel race, persistence faults and process exit after local wire acceptance before local record. Smoke uses one project/Shot and two Generations, reopening BOUND/SUBMITTED and UNBOUND/UNKNOWN, one POST each, no Result/Archive/Candidate. Full regression and final scope/secret evidence are in Completion.
 
-PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE=DEFERRED; ADAPTER_ENABLED_BY_DEFAULT=NO; PRODUCTION_LIVE_ENTRYPOINT=NONE; LIVE_VALIDATION_AUTHORIZATION=NOT_AUTHORIZED. REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED=0; REAL_CREDENTIAL_READ=NONE. No polling/result/download/archive, references/H3-Max, Auth/schema/dependency/lockfile/upstream adapter changes, merge/push. R7/R8 independent fixes, R9 audited validation and R10 production/tests remain unchanged. Any live gate requires later explicit authorization; next candidate is fake-only polling/recovery review.
+PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE=DEFERRED; ADAPTER_ENABLED_BY_DEFAULT=NO; PRODUCTION_LIVE_ENTRYPOINT=NONE; LIVE_VALIDATION_AUTHORIZATION=NOT_AUTHORIZED. REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED=0; REAL_CREDENTIAL_READ=NONE. No polling/result/download/archive, references/H3-Max, Auth/schema/dependency/lockfile/upstream adapter changes. R12 implementation originally had no merge/push; the authorized audit closeout fast-forwards our-main and normally pushes only the audited feature and governance-closed our-main. R7/R8 independent fixes, R9 audited validation and R10 production/tests remain unchanged. Any live gate requires later explicit authorization; next candidate is fake-only polling/recovery review.
 
 Public contract rechecked against [MiniMax official H3 V2 Create](https://platform.minimax.io/docs/api-reference/video-generation-v2-create). No actual API request or live-capability claim.
+
+## Audited integration closeout
+
+R12_FEATURE_HEAD = c38073515e79c2496cccc28258bc3da1dac4c024
+R12_COMPLETION_SHA256 = 5821b22158345fb551edaf3055d960754a45cca6f491e4dbe7355cdc89f7c331
+REVIEWED_COMMITS = 8ebce87585559c82aeb3657f7b7220b710ac9aa8, c38073515e79c2496cccc28258bc3da1dac4c024
+STRICT_SINGLE_WIRE_POST = AUDITED_WITH_LOOPBACK_FAKE
+NEW_GENERATION_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32
+
+The two reviewed commits and implementation/test bytes remain unchanged. Only governance/progress closes review state; the actual resulting stable SHA is recorded in the closeout Completion. Protocol=metaso and ProviderIdentity=minimax-official-global-v2 remain unchanged; historical Generation is not rewritten.
+
+T2V_ONLY = YES
+LIVE_PROVIDER_COMPATIBILITY = NOT_YET_VALIDATED
+MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED
+POLLING_RECOVERY = DEFERRED
+RESULT_DOWNLOAD_ARCHIVE = DEFERRED
+MULTIPROCESS_AVAILABILITY = NOT_CLAIMED
+PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED
+
+REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED / REAL_CREDENTIAL_READ = NONE. PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE remain DEFERRED; LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED. Focused verification and source preservation evidence are in the closeout Completion. Await its GPT Review; no R13 work is authorized here.

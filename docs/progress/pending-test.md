@@ -5,11 +5,12 @@ description: 当前版本已实现但仍需人工验证的变更项
 
 # 待测试
 
-## HN P0-B R12（已实现，等待 GPT Review / Audit）
+## HN P0-B R12（GPT Audit PASS / 已集成，保留真实业务验证限制）
 
 - HN prepare 仅为显式选中的 exact official global metaso/H3 channel 冻结 minimax-official-global-v2，gateway 不误标；新 Generation 的 backend/frontend SourceBaseline 经 R12 identity review 更新为 16047f46e2186373ea824e12e84ae8dfa2ccde32，历史记录不改写。
 - submit-only service adapter 在 Begin 前拒绝无效冻结请求/channel；复用不变 R10，owned snapshot 再校验后仅一次 pinned official POST。仅 localhost TLS fake 验证；完整回归与并发/redirect/429/500/drop/timeout/unsafe ID/persistence/subprocess crash/reopen 的实际 server POST count 见 Completion。
-- 无 production submit route、Canvas submit UI、默认启用、真实 Key/Provider/task、polling、Result/download/archive；PRIMARY_VIDEO_PROVIDER/ACCOUNT_MODE 仍 DEFERRED。详见 docs/hn/minimax_official_submit_adapter.md。业务/live 接线需后续独立授权；本轮不 merge/push。
+- 无 production submit route、Canvas submit UI、默认启用、真实 Key/Provider/task、polling、Result/download/archive；PRIMARY_VIDEO_PROVIDER/ACCOUNT_MODE 仍 DEFERRED。详见 docs/hn/minimax_official_submit_adapter.md。业务/live 接线需后续独立授权；本次 audit closeout 仅治理/进度收口、fast-forward 和正常非 force 推送已审计 feature/our-main，实现和测试字节不变，等待 closeout Completion GPT Review。
+- STRICT_SINGLE_WIRE_POST = AUDITED_WITH_LOOPBACK_FAKE；T2V_ONLY = YES；LIVE_PROVIDER_COMPATIBILITY / MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED；POLLING_RECOVERY / RESULT_DOWNLOAD_ARCHIVE = DEFERRED；MULTIPROCESS_AVAILABILITY = NOT_CLAIMED；PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED。
 
 ## HN P0-B R2 本地基础（GPT Audit PASS / 已集成本地库，待用户接线验证）
 
