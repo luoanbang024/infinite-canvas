@@ -335,9 +335,9 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - UNKNOWN_SUBMISSION_LIST_SEARCH_RECONCILIATION = DEFERRED.
 - R13_POLL_AVAILABILITY_DURING_UNRELATED_SUBMITTING = CONSERVATIVELY_BLOCKED.
 
-## R14 MiniMax H3 successful provider result/archive — pending review
+## R14 MiniMax H3 successful provider result/archive — audited integration
 
-- EXECUTION_ID = HN_AI_IC_P0_B_R14_MINIMAX_H3_RESULT_ARCHIVE; TYPE = OUR_EXTENSION / ADAPTER_WIRING; STATE = IMPLEMENTED_PENDING_GPT_REVIEW; UPSTREAM_BACKPORT = NO; BASE_OUR_COMMIT = 965afe86d22d83b7cfa04f58e3a7e769d252ca87; BRANCH = feature/p0-b-r14-minimax-h3-result-archive.
+- EXECUTION_ID = HN_AI_IC_P0_B_R14_MINIMAX_H3_RESULT_ARCHIVE; TYPE = OUR_EXTENSION / ADAPTER_WIRING; STATE = AUDITED_INTEGRATED; GPT_AUDIT = PASS; UPSTREAM_BACKPORT = NO; BASE_OUR_COMMIT = 965afe86d22d83b7cfa04f58e3a7e769d252ca87; BRANCH = feature/p0-b-r14-minimax-h3-result-archive.
 - TARGET = MINIMAX_H3_OFFICIAL_SUCCESS_RESULT_TO_HN_ARCHIVE; exact frozen SUBMITTED/SUBMITTED Generation + one BOUND TaskBinding + persisted safe ProviderTaskID; Protocol metaso / ProviderIdentity minimax-official-global-v2 / MiniMax-H3. R13 read gate/snapshot and strict parser, R12 frozen mapper/owner-channel resolver reused without source changes.
 - QUERY = one explicit strict succeeded GET before new media attempt/retry; no list/submit/retry/redirect/failover. Private result location discarded; TaskBinding LastPolledAt/ErrorClass and Generation bytes unchanged. Existing terminal ErrorClass rejects as POLL_STATE_CONFLICT.
 - RESULT = exact GenerationID / TaskBindingID; ProviderResultID = ProviderTaskID; ResultKind video; SourceURLRef empty; known frozen duration. CreateResult -> CreateArchive -> RunArchive remains existing Foundation production. Target generated/<generationId>/<resultId>/media.mp4; Foundation owns final hash/bytes/receipt.
@@ -347,4 +347,20 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - PRESERVATION = R5/R10/R12/R13 source/tests and Foundation unchanged; independent R7/R8 OUR_VERIFICATION_FIX and R9 AUDITED_VALIDATED retained. GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE; NEW_GENERATION_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32.
 - LIMITS = fake-only; live Provider/CDN/account compatibility NOT_YET_VALIDATED; MP4 prefix signature is not full codec/decode verification. No redirect/chunked/no-length/WebM/>64 MiB/proxy support; MEDIA_URL_TTL NOT_INFERRED; 7-day provider history does not claim long-term recovery. Multiprocess availability NOT_CLAIMED. Unrelated durable SUBMITTING is conservatively rejected; writer held through bounded I/O. Existing corrupt final bytes/immutable receipt are never overwritten; recovery of those artifacts is not claimed.
 - REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0; REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE; PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED; RESULT_ARCHIVE_ADAPTER_ENABLED_BY_DEFAULT = NO; PRODUCTION_ROUTE / CANVAS_UI / BACKGROUND_WORKER / CANDIDATE_CREATION = NONE.
-- DEPENDENCY / LOCKFILE / AUTH_SCHEMA / UPSTREAM_DB_SCHEMA_CHANGE = NONE; MERGE / EXTERNAL_PUSH = NONE; await GPT Review / Audit. No R15 or live-validation work is authorized here.
+- DEPENDENCY / LOCKFILE / AUTH_SCHEMA / UPSTREAM_DB_SCHEMA_CHANGE = NONE; MERGE_TO_OUR_MAIN = FAST_FORWARD_ONLY; EXTERNAL_PUSH = user-authorized normal non-force R14 feature and our-main only. Await GPT Review of audit closeout Completion. No R15 or live-validation work is authorized here.
+
+- AUDIT_BINDING = FEATURE_HEAD 9299b497007c979d35fee436d9deb1ecf280b1ce; AUDITED_COMPLETION_SHA256 bcdb9092219a016b157c8a4a58f8eac4d00f00fc41439218be8e244840cc9f4e; reviewed commits b6750dc45de29ef195ba015e65903953573651e1 and 9299b497007c979d35fee436d9deb1ecf280b1ce remain exact, unrewritten ancestors.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R14_AUDIT_CLOSEOUT_INTEGRATION; governance/progress only; all protected implementation/test bytes unchanged. Actual resulting stable SHA is recorded only in Completion. NEW_GENERATION_SOURCE_BASELINE remains 16047f46e2186373ea824e12e84ae8dfa2ccde32; historical Generation unchanged.
+- SSRF_GUARD = AUDITED_WITH_LOOPBACK_FAKE; MEDIA_POLICY = HTTPS / PUBLIC_DNS / PINNED_IP / NO_PROXY / NO_REDIRECT / KNOWN_LENGTH_MP4; ARCHIVE_APIS = CreateResult + CreateArchive + RunArchive; FAILED_JOB_RETRY = EXPLICIT_SAME_JOB; ALREADY_ARCHIVED_REPEAT_NETWORK = NONE.
+- RAW_PROVIDER_RESULT_URL_PUBLIC_RETURN / PERSISTENCE / LOGGING = NONE; REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED / REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE.
+- LIVE_PROVIDER_COMPATIBILITY = NOT_YET_VALIDATED.
+- LIVE_CDN_COMPATIBILITY = NOT_YET_VALIDATED.
+- MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED.
+- MEDIA_URL_TTL = NOT_INFERRED.
+- PROVIDER_QUERY_HISTORY_WINDOW = 7_DAYS_DOCUMENTED.
+- HN_LONG_TERM_RECOVERY_AFTER_PROVIDER_HISTORY_EXPIRY = NOT_CLAIMED.
+- MULTIPROCESS_AVAILABILITY = NOT_CLAIMED.
+- PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED.
+- FULL_CODEC_DECODE_VALIDATION = NOT_CLAIMED.
+- CORRUPT_IMMUTABLE_FINAL_ARTIFACT_OVERWRITE = REJECTED.
+- CORRUPT_IMMUTABLE_FINAL_ARTIFACT_RECOVERY = NOT_CLAIMED.

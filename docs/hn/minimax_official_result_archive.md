@@ -1,7 +1,8 @@
 # R14 MiniMax H3 successful provider result/archive
 
 TYPE = OUR_EXTENSION / ADAPTER_WIRING
-STATE = IMPLEMENTED_PENDING_GPT_REVIEW
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 BASE_OUR_COMMIT = 965afe86d22d83b7cfa04f58e3a7e769d252ca87
 BRANCH = feature/p0-b-r14-minimax-h3-result-archive
 RESULT_ARCHIVE_ADAPTER_ENABLED_BY_DEFAULT = NO
@@ -24,4 +25,27 @@ RAW_RESULT_URL_PUBLIC_RETURN / PERSISTENCE / LOGGING / COMPLETION = NONE. Genera
 
 NEW_GENERATION_SOURCE_BASELINE remains 16047f46e2186373ea824e12e84ae8dfa2ccde32; historical Generation is unchanged. Foundation, R5/R10/R12/R13, R7/R8 independent fixes and R9 validation remain audited and byte-identical. Dependency/lockfile/Auth/upstream DB schema unchanged.
 
-PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED. REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0. REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE. LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED. Live Provider/CDN compatibility and account entitlement NOT_YET_VALIDATED; proxy-required environment NOT_VALIDATED; MEDIA_URL_TTL NOT_INFERRED; MULTIPROCESS_AVAILABILITY NOT_CLAIMED. Redirect/chunked/no-length/other MIME/>64 MiB live compatibility is deferred. Await GPT Review / Audit of Completion; no merge/push or next-phase development.
+PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED. REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0. REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE. LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED. Live Provider/CDN compatibility and account entitlement NOT_YET_VALIDATED; proxy-required environment NOT_VALIDATED; MEDIA_URL_TTL NOT_INFERRED; MULTIPROCESS_AVAILABILITY NOT_CLAIMED. Redirect/chunked/no-length/other MIME/>64 MiB live compatibility is deferred. Audit PASS; authorized closeout fast-forwards our-main and normally pushes only the audited R14 feature and governance-closed our-main. Await GPT Review of audit closeout Completion; no R15 or live validation.
+
+## Audited integration closeout
+
+R14_FEATURE_HEAD = 9299b497007c979d35fee436d9deb1ecf280b1ce
+R14_COMPLETION_SHA256 = bcdb9092219a016b157c8a4a58f8eac4d00f00fc41439218be8e244840cc9f4e
+REVIEWED_COMMITS = b6750dc45de29ef195ba015e65903953573651e1, 9299b497007c979d35fee436d9deb1ecf280b1ce
+NEW_GENERATION_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32
+
+The two reviewed commits and protected implementation/test bytes remain unchanged. Actual stable closeout SHA is recorded only in Completion. Governance/progress closure does not authorize live Provider/API/CDN, credentials/tasks or R15.
+
+```text
+LIVE_PROVIDER_COMPATIBILITY = NOT_YET_VALIDATED
+LIVE_CDN_COMPATIBILITY = NOT_YET_VALIDATED
+MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED
+MEDIA_URL_TTL = NOT_INFERRED
+PROVIDER_QUERY_HISTORY_WINDOW = 7_DAYS_DOCUMENTED
+HN_LONG_TERM_RECOVERY_AFTER_PROVIDER_HISTORY_EXPIRY = NOT_CLAIMED
+MULTIPROCESS_AVAILABILITY = NOT_CLAIMED
+PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED
+FULL_CODEC_DECODE_VALIDATION = NOT_CLAIMED
+CORRUPT_IMMUTABLE_FINAL_ARTIFACT_OVERWRITE = REJECTED
+CORRUPT_IMMUTABLE_FINAL_ARTIFACT_RECOVERY = NOT_CLAIMED
+```
