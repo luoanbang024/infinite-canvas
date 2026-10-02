@@ -482,7 +482,6 @@ func (w *Workspace) Reorder(sequenceID string, ids []string) error {
 		}
 		seen[id] = true
 		i.OrderIndex = index
-		i.UpdatedAt = timestamp()
 		if err = put(tx, "sequence_items", id, i); err != nil {
 			return err
 		}
