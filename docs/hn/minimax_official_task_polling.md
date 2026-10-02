@@ -1,7 +1,8 @@
 # R13 MiniMax H3 known-task polling/recovery
 
 TYPE = OUR_EXTENSION / ADAPTER_WIRING
-STATE = IMPLEMENTED_PENDING_GPT_REVIEW
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 BASE_OUR_COMMIT = 6e8ca04b7bf20241a90a0c1b602b3bea1a23adac
 BRANCH = feature/p0-b-r13-minimax-h3-task-polling
 
@@ -42,4 +43,25 @@ The public [Query Task](https://platform.minimax.io/docs/api-reference/video-gen
 
 R7/R8 original independent verification fixes, R9 validation, Foundation, R10 submission guard, R12 submit/identity files and tests remain unchanged. GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE; new preparation still binds 16047f46e2186373ea824e12e84ae8dfa2ccde32, not this governance baseline.
 
-PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0; REAL_CREDENTIAL_READ = NONE; LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED. POLL_ADAPTER_ENABLED_BY_DEFAULT = NO. Live provider compatibility/account entitlement, proxy-required environment and multiprocess availability remain unvalidated/not claimed. Await GPT Review / Audit of Completion; no merge/push or R14 work.
+PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0; REAL_CREDENTIAL_READ = NONE; LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED. POLL_ADAPTER_ENABLED_BY_DEFAULT = NO. Live provider compatibility/account entitlement, proxy-required environment and multiprocess availability remain unvalidated/not claimed. Audit PASS; authorized closeout fast-forwards our-main and normally pushes only the audited R13 feature and governance-closed our-main. Await GPT Review of audit closeout Completion; no R14 work.
+
+## Audited integration closeout
+
+R13_FEATURE_HEAD = acf4bd8d5c50d12389de5eaf065cebe8320dcb01
+R13_COMPLETION_SHA256 = 03059bad0da507dcb47a3256f90019f9172ae2a18dc5bd7b55a2bf70359f414a
+REVIEWED_COMMITS = 301fa8676dd69a7933578f12497673f53a33294f, acf4bd8d5c50d12389de5eaf065cebe8320dcb01
+NEW_GENERATION_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32
+
+Implementation/test bytes and earlier audited records remain unchanged. The actual stable closeout commit is recorded only in Completion. No real credentials, API or task access, result download, or R14 development.
+
+```text
+PROVIDER_QUERY_HISTORY_WINDOW = 7_DAYS_DOCUMENTED
+HN_LONG_TERM_RECOVERY_AFTER_PROVIDER_HISTORY_EXPIRY = NOT_CLAIMED
+LIVE_PROVIDER_COMPATIBILITY = NOT_YET_VALIDATED
+MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED
+MULTIPROCESS_AVAILABILITY = NOT_CLAIMED
+PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED
+MEDIA_URL_TTL = NOT_INFERRED
+UNKNOWN_SUBMISSION_LIST_SEARCH_RECONCILIATION = DEFERRED
+R13_POLL_AVAILABILITY_DURING_UNRELATED_SUBMITTING = CONSERVATIVELY_BLOCKED
+```

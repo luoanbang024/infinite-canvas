@@ -307,9 +307,9 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - STRICT_SINGLE_WIRE_POST = AUDITED_WITH_LOOPBACK_FAKE; T2V_ONLY = YES; LIVE_PROVIDER_COMPATIBILITY / MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED; POLLING_RECOVERY / RESULT_DOWNLOAD_ARCHIVE = DEFERRED; MULTIPROCESS_AVAILABILITY = NOT_CLAIMED; PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED.
 - REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED / REAL_CREDENTIAL_READ = NONE; PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED. No R13 work; closeout Completion requires GPT Review.
 
-## R13 MiniMax H3 known-task polling/recovery — pending review
+## R13 MiniMax H3 known-task polling/recovery — audited integration
 
-- EXECUTION_ID = HN_AI_IC_P0_B_R13_MINIMAX_H3_TASK_POLLING_RECOVERY; TYPE = OUR_EXTENSION / ADAPTER_WIRING; STATE = IMPLEMENTED_PENDING_GPT_REVIEW; UPSTREAM_BACKPORT = NO. Not a verification fix or live validation.
+- EXECUTION_ID = HN_AI_IC_P0_B_R13_MINIMAX_H3_TASK_POLLING_RECOVERY; TYPE = OUR_EXTENSION / ADAPTER_WIRING; STATE = AUDITED_INTEGRATED; GPT_AUDIT = PASS; UPSTREAM_BACKPORT = NO. Not a verification fix or live validation.
 - BASE_OUR_COMMIT = 6e8ca04b7bf20241a90a0c1b602b3bea1a23adac; BRANCH = feature/p0-b-r13-minimax-h3-task-polling; TARGET = MINIMAX_H3_OFFICIAL_GLOBAL_V2_QUERY; PROTOCOL = metaso; PROVIDER_IDENTITY = minimax-official-global-v2; MODEL = MiniMax-H3.
 - KNOWN_TASK = frozen SUBMITTED/SUBMITTED Generation, one exact BOUND TaskBinding and persisted safe ProviderTaskID; frozen request hash and channel/ownership checked. Read-only pre-Open gate avoids existing Open reconciliation for rejected/other in-flight submissions; no Foundation change.
 - QUERY = internally pinned /v2/query/video_generation/{task_id}; fresh HTTP/1 one explicit GET; no proxy, keepalive, HTTP2, SDK/application retry, redirect follow or failover; bounded timeout/headers/body. Synthetic resolver and authenticated loopback TLS tests only.
@@ -320,4 +320,17 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - PRESERVATION = Foundation, R10/R12 implementation/tests, R12 identity/SourceBaseline and historical Generation unchanged; R7 afc8c28867028f95ea33028ad24757566b567711 and R8 307dba5594e78e095f37e1a6b4bb64900db93bcf retain independent OUR_VERIFICATION_FIX; R9 AUDITED_VALIDATED unchanged. GENERATION_SOURCE_BASELINE_CHANGE = NONE; 16047f46e2186373ea824e12e84ae8dfa2ccde32 remains current new-Generation request provenance.
 - LIMITS = PROVIDER_QUERY_HISTORY_WINDOW 7_DAYS_DOCUMENTED; HN_LONG_TERM_RECOVERY_AFTER_PROVIDER_HISTORY_EXPIRY NOT_CLAIMED; no media URL TTL inference, UNKNOWN list/search/manual reconciliation, live compatibility/entitlement or cross-process availability guarantee. Unrelated durable SUBMITTING blocks poll preflight conservatively. Proxy-required deployment not validated.
 - PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; LIVE_VALIDATION_AUTHORIZATION = NOT_AUTHORIZED; REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0; REAL_CREDENTIAL_READ = NONE; DEPENDENCY / LOCKFILE / AUTH_SCHEMA / UPSTREAM_DB_SCHEMA_CHANGE = NONE.
-- VALIDATION = production local boundaries with synthetic accepted tasks; strict fake wire GET counters, failure/nonmutation, stale/concurrent updates, result secrecy, restart/reopen and full regression evidence in Completion. MERGE / EXTERNAL_PUSH = NONE; await GPT Review / Audit before any next workstream.
+- VALIDATION = production local boundaries with synthetic accepted tasks; strict fake wire GET counters, failure/nonmutation, stale/concurrent updates, result secrecy, restart/reopen and full regression evidence in Completion. MERGE_TO_OUR_MAIN = FAST_FORWARD_ONLY; EXTERNAL_PUSH = user-authorized normal non-force R13 feature and our-main only. Await GPT Review of audit closeout Completion; no R14 work.
+
+- AUDIT_BINDING = FEATURE_HEAD acf4bd8d5c50d12389de5eaf065cebe8320dcb01; AUDITED_COMPLETION_SHA256 03059bad0da507dcb47a3256f90019f9172ae2a18dc5bd7b55a2bf70359f414a; reviewed commits 301fa8676dd69a7933578f12497673f53a33294f and acf4bd8d5c50d12389de5eaf065cebe8320dcb01 remain exact, unrewritten ancestors.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R13_AUDIT_CLOSEOUT_INTEGRATION; governance/progress only; all protected implementation/test bytes unchanged. Actual resulting stable SHA is recorded only in Completion. NEW_GENERATION_SOURCE_BASELINE remains 16047f46e2186373ea824e12e84ae8dfa2ccde32; historical Generation unchanged.
+- KNOWN_TASK_BOUNDARY = SUBMITTED_GENERATION_AND_BOUND_TASKBINDING; SUBMISSION_UNKNOWN_NOT_POLLED = YES; POLL_FAILURE_CHANGES_SUBMISSION_STATE = NO.
+- PROVIDER_QUERY_HISTORY_WINDOW = 7_DAYS_DOCUMENTED.
+- HN_LONG_TERM_RECOVERY_AFTER_PROVIDER_HISTORY_EXPIRY = NOT_CLAIMED.
+- LIVE_PROVIDER_COMPATIBILITY = NOT_YET_VALIDATED.
+- MINIMAX_ACCOUNT_ENTITLEMENT = NOT_YET_VALIDATED.
+- MULTIPROCESS_AVAILABILITY = NOT_CLAIMED.
+- PROXY_REQUIRED_ENVIRONMENT = NOT_VALIDATED.
+- MEDIA_URL_TTL = NOT_INFERRED.
+- UNKNOWN_SUBMISSION_LIST_SEARCH_RECONCILIATION = DEFERRED.
+- R13_POLL_AVAILABILITY_DURING_UNRELATED_SUBMITTING = CONSERVATIVELY_BLOCKED.

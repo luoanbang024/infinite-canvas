@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-+ [新增] HN MiniMax H3 已接受任务的显式 polling/recovery（R13 待 GPT Review；仅 localhost fake，单次 GET，poll 失败保留 SUBMITTED/BOUND，静态安全失败类与 LastPolledAt，无 raw URL 持久化/下载或生产接线）。
++ [新增] HN MiniMax H3 已接受任务的显式 polling/recovery（R13 GPT Audit PASS / 已 fast-forward 集成；仅 localhost fake，单次 GET，poll 失败保留 SUBMITTED/BOUND，静态安全失败类与 LastPolledAt，无 raw URL 持久化/下载或生产接线）。
 
 + [新增] HN MiniMax H3 官方 T2V submit-only adapter 与明确 ProviderIdentity 冻结（R12 GPT Audit PASS / 已 fast-forward 集成；新准备基线经复核更新、历史记录不改写，复用 R10 guard；仅 localhost fake 验证，无生产 route/UI 或真实调用）。
 

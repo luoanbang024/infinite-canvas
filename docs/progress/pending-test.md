@@ -5,11 +5,11 @@ description: 当前版本已实现但仍需人工验证的变更项
 
 # 待测试
 
-## HN P0-B R13（已实现，等待 GPT Review / Audit）
+## HN P0-B R13（GPT Audit PASS / 已集成，保留真实业务验证限制）
 
 - 已知 SUBMITTED Generation + 唯一 BOUND TaskBinding 增加 explicit MiniMax H3 Query adapter；复用 R12 owner/channel 和冻结参数映射，实际 fake server 每次显式调用仅一次 GET、0 submit POST。
 - 仅 queued/running/succeeded/failed/cancelled；严格身份与已报告 request facts 校验，更新既有 LastPolledAt，失败/取消仅静态 ErrorClass；HTTP/协议失败不会进入 SUBMISSION_UNKNOWN，stale terminal conflict 不覆盖持久化事实。仅由已持久化 TaskBinding reopen/query，raw result URL 不公开/持久化/日志/下载。
-- 无 Foundation/schema/R10/R12/SourceBaseline 改动，无真实 Key/API/task、Result/ArchiveJob、scheduler/route/UI；完整验证与限制见 docs/hn/minimax_official_task_polling.md 和 Completion。7 天查询窗口、长期恢复、跨进程 availability 和真实兼容性限制保持；本轮不 merge/push，后续 R14 未授权。
+- 无 Foundation/schema/R10/R12/SourceBaseline 改动，无真实 Key/API/task、Result/ArchiveJob、scheduler/route/UI；完整验证与限制见 docs/hn/minimax_official_task_polling.md 和 Completion。7 天查询窗口、长期恢复、跨进程 availability 和真实兼容性限制保持；本次 audit closeout 仅治理/进度收口、fast-forward 和正常非 force 推送已审计 R13 feature/our-main，实现和测试字节不变，等待 closeout Completion GPT Review；后续 R14 未授权。R13_POLL_AVAILABILITY_DURING_UNRELATED_SUBMITTING = CONSERVATIVELY_BLOCKED。
 
 ## HN P0-B R12（GPT Audit PASS / 已集成，保留真实业务验证限制）
 
