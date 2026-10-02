@@ -33,6 +33,18 @@ func New() *gin.Engine {
 	})
 	api.OPTIONS("/hn/projects/:projectId/generations/:generationId/results/local-archive", gin.WrapF(handler.HNReferenceOptions))
 	api.OPTIONS("/hn/projects/:projectId/archive-jobs/:archiveJobId/retry", gin.WrapF(handler.HNReferenceOptions))
+	api.POST("/hn/projects/:projectId/shots/:shotId/candidates/ensure", func(c *gin.Context) {
+		handler.HNEnsureCandidate(c.Writer, c.Request, c.Param("projectId"), c.Param("shotId"))
+	})
+	api.POST("/hn/projects/:projectId/shots/:shotId/candidates/:candidateId/select", func(c *gin.Context) {
+		handler.HNSelectCandidate(c.Writer, c.Request, c.Param("projectId"), c.Param("shotId"), c.Param("candidateId"))
+	})
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/items", func(c *gin.Context) {
+		handler.HNAddSequenceItem(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	for _, path := range []string{"/hn/projects/:projectId/shots/:shotId/candidates/ensure", "/hn/projects/:projectId/shots/:shotId/candidates/:candidateId/select", "/hn/projects/:projectId/sequences/:sequenceId/items"} {
+		api.OPTIONS(path, gin.WrapF(handler.HNReferenceOptions))
+	}
 	api.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
