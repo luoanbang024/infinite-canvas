@@ -184,7 +184,14 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - PROVIDER_SELECTION = DEFERRED; TASKBINDING/RESULT/ARCHIVEJOB/CANDIDATE/SEQUENCEITEM_CREATED_BY_R6 = NONE; PROVIDER_CALLS/PAID_CALLS = NONE; PROVIDER/AUTH/UPSTREAM_DB_SCHEMA_CHANGE = NONE.
 - UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; no equivalent ShotID/CreateShot/FreezeGeneration in checked service/handler/HN service scope and empty narrow v0.8.0->tip diff; upstream main not adopted.
 - VERIFICATION = go mod verify, root Go, Bridge, 45 frontend tests (38 existing + 7 R6), independent tsc, production build, production local router + Canvas helper ensure/freeze/restart/second-attempt/reopen count/hash smoke, protected source/lockfile and secret scans PASS; evidence in R6 Completion.
-- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not audited/integrated; external push/merge NONE. our-main remains ff32dc249811130a3db69be456e295be100b6e9f.
+- ADOPTION_STATE = AUDITED / INTEGRATED; fast-forward preserves all three audited R6 commits.
+- GPT_AUDIT = PASS; HN_AI_IC_P0_B_R6_GPT_AUDIT_PASS_20261002.md.
+- R6_FEATURE_HEAD = afea14e17e57177b6fc530cc61e6f203eebe9e54; R6_COMPLETION_SHA256 = 352921726ea9cdda91389c56c686b4e9b7be6765b3af5597e7940583cfc6fa55.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R6_AUDIT_CLOSEOUT_INTEGRATION; actual stable closeout SHA and exact remote refs recorded externally in Completion, without self-reference.
+- SHOT_IDENTITY = STABLE_PROJECT_AND_EXACT_SOURCE_NODE; GENERATION_WIRING = SHOT_AWARE_PREPARE_FREEZE_ONLY; HISTORICAL_GENERATION_REWRITE = NONE.
+- CANDIDATE_WIRING/SEQUENCE_WIRING/REAL_SUBMIT/TASKBINDING_WIRING/REAL_PROVIDER_CALLS/PAID_CALLS = NONE.
+- SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE = YES; reviewed R6 source binding remains ff32dc249811130a3db69be456e295be100b6e9f, with no implementation/historical record rewrite in closeout.
+- EXTERNAL_WRITE_BOUNDARY = user authorizes only normal non-force pushes of this audited feature and governance-closed our-main to checked current origin; no other branch/tag/PR/Release/settings action.
 - LIMITATIONS = separate Ensure/Reference/Create/Freeze durable steps can retain a Shot/reference/DRAFT on later failure; no automatic Generation retry; no arbitrary unlabeled secret guarantee; no live UI/submit/editor or cross-process uniqueness claim.
 - REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit identity/data compatibility review; no automatic HN data deletion.
 - ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R6 commits before integration; preserve all Shot/Generation/history/reference data.

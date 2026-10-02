@@ -1,7 +1,17 @@
 # HN R6 stable Shot / Generation binding
 
 EXECUTION_ID = HN_AI_IC_P0_B_R6_SHOT_GENERATION_BINDING_WIRING
-STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW
+STATE = AUDITED / INTEGRATED
+GPT_AUDIT = PASS
+R6_FEATURE_HEAD = afea14e17e57177b6fc530cc61e6f203eebe9e54
+R6_COMPLETION_SHA256 = 352921726ea9cdda91389c56c686b4e9b7be6765b3af5597e7940583cfc6fa55
+CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R6_AUDIT_CLOSEOUT_INTEGRATION
+SHOT_IDENTITY = STABLE_PROJECT_AND_EXACT_SOURCE_NODE
+GENERATION_WIRING = SHOT_AWARE_PREPARE_FREEZE_ONLY
+NEW_R6_SOURCE_BASELINE = ff32dc249811130a3db69be456e295be100b6e9f
+HISTORICAL_GENERATION_REWRITE = NONE; CANDIDATE_WIRING = NONE; SEQUENCE_WIRING = NONE
+REAL_SUBMIT = NONE; TASKBINDING_WIRING = NONE; REAL_PROVIDER_CALLS = NONE; PAID_CALLS = NONE
+SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE = YES
 BASE_OUR_COMMIT = ff32dc249811130a3db69be456e295be100b6e9f
 IMPLEMENTATION_COMMIT = 0a06a6451d072b2b2ae76c4e96d3e233268370df
 TEST_COMMIT = eefc641e0bd0ff76eb0a02ceef86fd79bf7eb0cb
@@ -25,7 +35,7 @@ Historical R4/R5 frozen Generations retain their original SourceBaseline and emp
 
 Ensure Shot, ReferenceVersion snapshot, CreateGeneration and FreezeGeneration remain independent durable steps. Later invalid/missing media/storage/transport failure can retain a Shot/reference/DRAFT; no destructive rollback, automatic Generation retry or new idempotency claim. Shot ensure itself reuses exact identity in the supported single-writer scope. Arbitrary unlabeled secrets must never be supplied; validators are not general DLP. R4 video/audio/remote/workflow/element restrictions remain.
 
-R6 creates no TaskBinding/Result/ArchiveJob/Candidate/SequenceItem, submits/polls no Provider, performs no external free/paid generation. R3/R5 source semantics, foundation bytes, Provider/Auth/upstream schema/dependencies/locks unchanged; router only adds Shot POST/OPTIONS. No external push or our-main merge.
+R6 creates no TaskBinding/Result/ArchiveJob/Candidate/SequenceItem, submits/polls no Provider, performs no external free/paid generation. R3/R5 source semantics, foundation bytes, Provider/Auth/upstream schema/dependencies/locks unchanged; router only adds Shot POST/OPTIONS. The audited R6 feature was normally pushed and fast-forward integrated without rewriting its three commits; governance-only closeout preserves all reviewed implementation/test bytes.
 
 ## Verification
 
@@ -33,4 +43,4 @@ Backend tests exercise input/HTTP guard/config, exact identity/default/label ret
 
 Isolated T2V synthetic Canvas source uses production ensure + Canvas helper + Generation adapter and production router. Read-only backend discovery is injected; no browser UI claim or Provider worker started. Ensure twice and title change retain one Shot; first Generation frozen before stop; independent process Open validates ShotID/hash/SQLite integrity. Restart and second prepare create another ID/same Shot; final independent reopen confirms first raw Generation/Shot unchanged and zero TaskBinding/Result/ArchiveJob/Candidate/SequenceItem. Services stopped. Bun emits its pre-existing nonfatal tsconfig directory diagnostic after operation (exit 0); durable independent evidence confirms success.
 
-Full regression and scope/secret evidence in R6 Completion. Await GPT Review / Audit before integration and separately authorized Candidate/Sequence work.
+R6 GPT Audit PASS; full regression/smoke evidence remains in the audited execution Completion. Focused closeout checks, unchanged-source evidence and resulting stable local/remote SHA are recorded in closeout Completion. Await GPT closeout Completion Review and separate execution authorization before Candidate/Sequence work. All audit caveats above remain in effect; the audited SourceBaseline is not rewritten by this governance-only closeout.

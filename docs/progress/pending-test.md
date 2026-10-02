@@ -33,9 +33,9 @@ description: 当前版本已实现但仍需人工验证的变更项
 - 64 MiB 与 MP4/WebM 签名边界、非 codec 验证、CreateResult/CreateArchive 非原子步骤、未完成 copy 的期待值不持久固定、初始请求不确定响应、跨进程 writer 等限制保留后续审核。Shot/Candidate/Sequence/剪映及 live Provider 未开始。
 
 
-## HN P0-B R6（本地 feature 完成，等待 GPT Review / Audit）
+## HN P0-B R6（GPT Audit PASS，已集成稳定 Shot / Generation 绑定）
 
 - 同 project + exact sourceNodeId ensure 稳定 Shot；重复返回原 ID/初始 label/timestamps，多个既有同源 Shot 返回 SHOT_IDENTITY_CONFLICT。仅 in-process shared writer 序列化，不宣称跨进程唯一约束。
 - Canvas 内部 helper 复用 R4 非敏感参数/本地图片 ReferenceVersion 投影，冻结前绑定 ShotID；当前新 Generation 基线 ff32dc249811130a3db69be456e295be100b6e9f，历史冻结记录保持原样。legacy API 允许省略 ShotID，新 R6 helper 必须提供有效 Shot。
 - 完整 root Go、Bridge、45 frontend tests、独立 tsc、production build、生产 adapter/router 的隔离 ensure/restart/reopen/第二次 attempt/hash/零禁用实体 smoke，以及 scope/secret scans PASS；详见 docs/hn/shot_generation_binding_wiring.md 和 Completion。
-- 未 push、未 merge our-main；无 live UI/Provider/TaskBinding/Result/ArchiveJob/Candidate/Sequence 接线。Ensure/Reference/Create/Freeze 仍为独立 durable steps，后续失败保留已创建数据，无自动 retry 或清理。
+- 已审计 feature 正常推送并 fast-forward 集成，governance-only closeout 保持 R6/R5/R4/R3/foundation 实现和测试字节不变；focused verification 与 stable local/remote SHA 见 closeout Completion。无 live UI/Provider/TaskBinding/Result/ArchiveJob/Candidate/Sequence 接线。Ensure/Reference/Create/Freeze 仍为独立 durable steps，后续失败保留已创建数据，无自动 retry 或清理。

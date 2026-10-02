@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-+ [新增] 稳定本地 HN Shot 与冻结前 Generation.ShotID 绑定（R6 本地 feature，待 GPT Review；历史 Generation 不改写，无外部生成）。
++ [新增] 稳定本地 HN Shot 与冻结前 Generation.ShotID 绑定（R6 GPT Audit PASS，已集成 prepare-only；历史 Generation 不改写，无外部生成）。
 
 + [新增] HN 精确本地视频 Result/ArchiveJob 归档与同 Job 重试（R5 GPT Audit PASS，已集成本地接线；无 Provider 成功声明）。
 
