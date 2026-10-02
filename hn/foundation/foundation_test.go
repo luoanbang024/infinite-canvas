@@ -524,10 +524,13 @@ func TestSequenceStableReorderAndOfflineExport(t *testing.T) {
 		okay(t, e)
 		okay(t, os.WriteFile(filepath.Join(output, "ordered-manifest.csv"), csvBytes, 0600))
 	}
-	// Clearing an explicit selection invalidates export; no implicit fallback.
+	// A persisted placement survives later selection changes; no fallback.
 	okay(t, w.SelectCandidate(m.Items[0].ShotID, ""))
-	_, e = w.Export("sequence-a")
-	reject(t, e)
+	next, e := w.Export("sequence-a")
+	okay(t, e)
+	if next.Items[0].CandidateID != m.Items[0].CandidateID {
+		t.Fatal("placement replaced by current selection")
+	}
 }
 
 func TestEntityCRUDAndProjectConstraints(t *testing.T) {
