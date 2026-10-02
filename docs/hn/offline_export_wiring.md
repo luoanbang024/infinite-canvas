@@ -1,0 +1,17 @@
+# HN offline sequence export wiring (R8)
+
+Stable source: fdb4178d05d2937659416e42e545505fd34278ca. Local feature only; pending GPT Review / Audit. No external push/our-main merge.
+
+Workspace.Export is authoritative for ordering, archive verification, copy/hash/length, fresh UUID and manifests. Service ExportLocalSequence validates IDs, acquires the shared HN writer lock, opens/reconciles, delegates Export, checks returned identity/order/paths/hash/bytes and completion JSON/CSV/media existence. It performs no new Generation/Result/ArchiveJob/TaskBinding creation. Open retains audited recovery semantics; no history/SourceBaseline rewrite.
+
+The only authorized Foundation production delta removes current SelectedCandidateID from Export eligibility. Red tests reproduce A placement rejection after selecting B or clearing current selection; green tests prove stable bindings, no fallback, archive/receipt/hash/bytes rejection and unchanged entity records. Independently attributed OUR_VERIFICATION_FIX; retire only after formal adoption of equivalent upstream stable-placement semantics. R7 Reorder fix is untouched.
+
+POST /api/hn/projects/:projectId/sequences/:sequenceId/export consumes exactly {}. Existing local peer/Host/Origin, X-HN-Local-Request: 1, HN_PROJECTS_ROOT, bounded JSON/unknown-field rejection and OPTIONS are reused. Input invalid -> 400; unavailable/ineligible/incomplete export -> controlled 409, disabled root -> 503. No new Auth token or absolute filesystem detail.
+
+Response schemaVersion/projectId/exportId/sequenceId/items plus bundleRelativePath, manifestJsonRelativePath, manifestCsvRelativePath and itemCount. Items retain exportId, contiguous 1-based sequenceIndex, stable placement/Shot/Candidate/Result IDs, relativePath, lowercase SHA-256, positive byteLength, optional known duration. Repeated Results use distinct placement IDs and index-prefixed media paths. Paths are relative to project root; a copied bundle consumer strips exports/<exportId>/ to obtain media/... paths.
+
+Frontend exportLocalSequence snapshots safe IDs before async discovery, validates loopback HTTP endpoint, sends credentials omit/header/{} and validates response ownership/order/duplicates/path escape/hash/length. No media reading/downloading, Canvas mutation, provider import, editor launch or automatic retry. No UI changes are required or claimed.
+
+Explicit repeats create fresh bundles. JSON is the last completion marker, CSV and all referenced media must also exist. A failed partial directory may remain and is not reported complete; no auto-delete. Uncertain response may leave a completed bundle; a new explicit call can create another. Old completed bundle contents stay immutable after selection/reorder and backend restart/reopen.
+
+Verification evidence includes full regression and isolated two-Generation/two-archive R6/R5 local prerequisites, three A/B/repeated-B placements, reordered Export A, selection change, new order Export B, byte/hash/JSON/CSV checks and real server restart. Synthetic 24-byte signature proves byte identity only. No Jianying invocation, draft/project writes, XML/EDL, codec/playability certification or real/free/paid Provider call. Known playable safe local media and manual Jianying import/order/playback remain a separate human gate.

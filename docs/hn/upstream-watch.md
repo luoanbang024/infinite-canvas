@@ -45,3 +45,10 @@ Fetched origin/tiger-upstream; exact stable local/origin our-main matched. Narro
 R7_BASE = f3babca6bcdf96f1f692c23bd5c145f06e534973; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_UPSTREAM_OVERLAP.
 
 Origin/tiger-upstream fetch succeeded, and exact local/origin our-main matched. Narrow v0.8.0->tip diff in hn/, service/hn_generation.go, handler/hn_generation.go, web/src/services/hn and router/router.go is empty. CreateCandidate/SelectCandidate/AddSequenceItem/SequenceItem search in upstream hn/service/handler/frontend services found no equivalent; conclusion limited to exact tip/search. No upstream adoption or Provider backport. Existing local HN Reorder timestamp API gap was independently reproduced and resolved only by user-authorized one-line OUR_VERIFICATION_FIX, not represented as upstream code.
+
+
+## R8 narrow offline sequence export watch
+
+R8_BASE = fdb4178d05d2937659416e42e545505fd34278ca; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
+
+Fetched origin/tiger-upstream; exact local/origin our-main and clean worktree verified before edits. v0.8.0->tip diff of hn/, service/hn_editorial.go, handler/hn_editorial.go, web/src/services/hn, docs/hn/editor_handoff_format.md and router/router.go is empty. ordered-manifest/ExportLocalSequence/exportLocalSequence/SequenceItem search in upstream hn/service/handler/frontend services returns no equivalent. Scope/tip evidence retained; no upstream main adoption. The exact local stable-placement verification fix is separately OUR_VERIFICATION_FIX, never upstream backport.
