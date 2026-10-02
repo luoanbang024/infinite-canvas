@@ -1,6 +1,6 @@
 # HN local Candidate / selection / SequenceItem / reorder wiring (R7)
 
-Base: f3babca6bcdf96f1f692c23bd5c145f06e534973. Feature: feature/p0-b-r7-candidate-sequence. Complete local execution, pending GPT Review / Audit; not audited or integrated.
+Base: f3babca6bcdf96f1f692c23bd5c145f06e534973. Feature: feature/p0-b-r7-candidate-sequence. GPT Audit PASS / AUDITED_INTEGRATED; seven audited commits preserved by fast-forward. Audited feature HEAD 1741b656e9f43aba688dab6bae73a7e1533eb2d2; execution Completion SHA-256 bd3cf1a54fc71cb1cabebb86dff6353e48cc8767a60df8f8a48bd83f4a71e824. Closeout focused verification/source freeze and actual stable remote SHA are recorded in closeout Completion.
 
 ## Ownership and arrival
 
@@ -15,6 +15,8 @@ Candidate arrival never selects. Select is a separate explicit command and reval
 Reorder accepts exactly the full current sequence set in desired order. Missing, duplicate, unsafe, foreign and oversized lists reject before writes. Max 256 items; no hidden mapping. An explicit empty list for an empty safe sequence is supported. Atomic foundation Reorder performs the write; response items follow the requested order.
 
 The original audited Reorder also assigned UpdatedAt. An isolated reproduction plus failing full-field regression established FOUNDATION_API_GAP_REVIEW_REQUIRED. After explicit user authorization, exactly that assignment was removed from records.go, attributed separately as OUR_VERIFICATION_FIX; no other existing foundation line/file changed. The new regression compares every persisted JSON field except OrderIndex, including UpdatedAt and SchemaVersion, across reordered, no-op and reopened states. No timestamp hiding or direct DB repair occurs in production code.
+
+Audited verification-fix commit: afc8c28867028f95ea33028ad24757566b567711; TYPE = OUR_VERIFICATION_FIX; UPSTREAM_BACKPORT = NO. Closeout preserves its exact one-line deletion and all-field regression without implementation/test edits or history rewrite.
 
 Remove the local verification patch only when a formally adopted upstream baseline contains equivalent behavior; retain the only-OrderIndex contract.
 
@@ -39,4 +41,4 @@ Root Go, Bridge, all 53 frontend tests, independent typecheck, production build 
 
 Fixture: 24-byte synthetic MP4 signature, not a codec/playback/handoff claim. Explicit add intentionally creates a fresh placement and is not idempotent after an uncertain response. Cross-process writers, real user UI/codec/handoff and later export/Provider submit remain separate review work. Existing R5 reconciliation/archival limitations are retained.
 
-Generation SourceBaseline remains ff32dc249811130a3db69be456e295be100b6e9f; no historical rewrite. Other foundation/R3–R6/Provider/Auth/upstream DB/Canvas Core/Node Core/dependencies/lockfiles unchanged. No editor export/import, Jianying changes, Provider calls, remote media download, external push or our-main merge.
+Generation SourceBaseline remains ff32dc249811130a3db69be456e295be100b6e9f; no historical rewrite. Other foundation/R3–R6/Provider/Auth/upstream DB/Canvas Core/Node Core/dependencies/lockfiles unchanged. No editor export/import, Jianying changes, Provider calls or remote media download. The user authorized only normal non-force pushes of the audited R7 feature and governance-closed our-main to the checked origin. Audit integration is fast-forward only; no other branch/tag/PR/Release/settings action. Await closeout Completion Review before separately authorized future work.

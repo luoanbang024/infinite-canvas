@@ -2,9 +2,9 @@
 
 ## Unreleased
 
-+ [新增] HN 本地 Candidate/显式选择/SequenceItem 与 deterministic reorder（R7 本地执行完成，待 GPT Review；无 Provider 或 editor export）。
++ [新增] HN 本地 Candidate/显式选择/SequenceItem 与 deterministic reorder（R7 GPT Audit PASS，已集成；无 Provider 或 editor export）。
 
-+ [修复] 经明确授权，仅删除 HN Reorder 的 UpdatedAt 更新，保证 OrderIndex 以外所有字段不变（OUR_VERIFICATION_FIX，完整字段回归通过）。
++ [修复] 经明确授权，仅删除 HN Reorder 的 UpdatedAt 更新，保证 OrderIndex 以外所有字段不变（独立 OUR_VERIFICATION_FIX，GPT Audit PASS；完整字段回归保持）。
 
 + [新增] 稳定本地 HN Shot 与冻结前 Generation.ShotID 绑定（R6 GPT Audit PASS，已集成 prepare-only；历史 Generation 不改写，无外部生成）。
 

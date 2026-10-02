@@ -41,9 +41,9 @@ description: 当前版本已实现但仍需人工验证的变更项
 - 已审计 feature 正常推送并 fast-forward 集成，governance-only closeout 保持 R6/R5/R4/R3/foundation 实现和测试字节不变；focused verification 与 stable local/remote SHA 见 closeout Completion。无 live UI/Provider/TaskBinding/Result/ArchiveJob/Candidate/Sequence 接线。Ensure/Reference/Create/Freeze 仍为独立 durable steps，后续失败保留已创建数据，无自动 retry 或清理。
 
 
-## HN P0-B R7（本地执行完成，等待 GPT Review / Audit；未集成）
+## HN P0-B R7（GPT Audit PASS，已集成本地 editorial 接线）
 
 - Candidate 稳定 ensure、单独显式选择、显式 SequenceItem placement 与完整集 deterministic reorder 已接线；晚到 B 不替换 A 选择/placement，选择切换不改旧 placement，重复 add 创建新 ID。
 - 全量 Go/Bridge/53 frontend tests/独立 tsc/build、生产本地 adapter/router 的 late-arrival/select/repeated-add/reorder/no-op/restart-reopen 和 scope/secret 检查通过；无 Provider 调用、无 export。详见 docs/hn/candidate_sequence_wiring.md 和 Completion。
 - 唯一 foundation 改动经用户明确授权：删除 Reorder 更新 UpdatedAt 的一行，单独记录 OUR_VERIFICATION_FIX；新增全字段不变回归，证明 OrderIndex 之外所有字段（含 UpdatedAt）保持。其余 foundation/R3–R6 保持不变。
-- 尚未 GPT Audit 或合入 our-main，未授权/执行外部 push。无 UI/codec/剪映 handoff 验证声明；跨进程 writer、显式 add 不确定响应等限制保留。
+- 审计 feature 已正常推送并 fast-forward 集成，七个审计提交保持；governance-only closeout 不改任何实现/测试字节。afc8c28867028f95ea33028ad24757566b567711 独立 OUR_VERIFICATION_FIX provenance、单行差异和全字段回归保持；focused verification 与实际 stable local/remote SHA 见 closeout Completion。无 UI/codec/剪映 handoff 验证声明；跨进程 writer、显式 add 不确定响应和既有 R5 归档限制保留。
