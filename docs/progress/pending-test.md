@@ -5,6 +5,12 @@ description: 当前版本已实现但仍需人工验证的变更项
 
 # 待测试
 
+## HN P0-B R14（已实现，等待 GPT Review / Audit）
+
+- MiniMax H3 exact SUBMITTED + BOUND task 的独立 provider-result/archive service boundary；严格 succeeded re-query、SSRF bounded media GET、MP4 header/prefix 校验后复用既有 Foundation 归档。仅 authenticated localhost fake TLS，无生产 route/UI/worker。
+- Result 精确绑定 Generation/TaskBinding，ProviderResultID=ProviderTaskID，SourceURLRef 空；已归档重复调用零网络，失败必须显式 same-job retry，metadata gap 同 Result 修复。并发不创建重复 Result/job；流中断/reopen/hash/bytes/receipt 与瞬时 URL 保密均验证。
+- R5/R10/R12/R13/Foundation 与 SourceBaseline 保持；真实 Key/API/CDN 调用为 0，不自动创建 Candidate。详细边界见 docs/hn/minimax_official_result_archive.md 与 Completion；live CDN/account、完整 codec decode、多进程 availability 和损坏 immutable final artifact 恢复均不宣称通过。本轮不 merge/push，后续工作未授权。
+
 ## HN P0-B R13（GPT Audit PASS / 已集成，保留真实业务验证限制）
 
 - 已知 SUBMITTED Generation + 唯一 BOUND TaskBinding 增加 explicit MiniMax H3 Query adapter；复用 R12 owner/channel 和冻结参数映射，实际 fake server 每次显式调用仅一次 GET、0 submit POST。
