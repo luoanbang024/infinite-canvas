@@ -13,7 +13,7 @@ import (
 )
 
 func TestHNEditorialHTTPTrustAndCommandShapes(t *testing.T) {
-	for _, operation := range []string{"ensure", "select", "add"} {
+	for _, operation := range []string{"ensure", "select", "add", "reorder"} {
 		for _, tc := range []struct {
 			name, body, peer, host, origin, content string
 			status                                  int
@@ -58,6 +58,8 @@ func TestHNEditorialHTTPTrustAndCommandShapes(t *testing.T) {
 					HNSelectCandidate(out, r, "test", "shot", "candidate")
 				case "add":
 					HNAddSequenceItem(out, r, "test", "main")
+				case "reorder":
+					HNReorderSequence(out, r, "test", "main")
 				}
 				if out.Code != tc.status {
 					t.Fatalf("status %d wanted %d", out.Code, tc.status)
@@ -97,6 +99,8 @@ func TestHNEditorialHTTPExplicitProductionPath(t *testing.T) {
 			HNSelectCandidate(out, r, project, shot, candidate)
 		case "add":
 			HNAddSequenceItem(out, r, project, sequence)
+		case "reorder":
+			HNReorderSequence(out, r, project, sequence)
 		}
 		return out
 	}
@@ -124,5 +128,18 @@ func TestHNEditorialHTTPExplicitProductionPath(t *testing.T) {
 	var item struct{ Data service.HNSequenceItem }
 	if out.Code != 200 || json.Unmarshal(out.Body.Bytes(), &item) != nil || item.Data.CandidateID != candidate.Data.CandidateID || item.Data.ResultID != res.ResultID {
 		t.Fatal("add ownership", out.Code)
+	}
+	for _, body := range []string{`{}`, `{"sequenceItemIds":null}`, `{"sequenceItemIds":["../bad"]}`, `{"sequenceItemIds":["` + item.Data.SequenceItemID + `","` + item.Data.SequenceItemID + `"]}`} {
+		if call("reorder", body, "test", "", "", "main").Code != 400 {
+			t.Fatal("malformed reorder accepted")
+		}
+	}
+	if call("reorder", `{"sequenceItemIds":[]}`, "test", "", "", "main").Code != 409 {
+		t.Fatal("missing item accepted")
+	}
+	out = call("reorder", `{"sequenceItemIds":["`+item.Data.SequenceItemID+`"]}`, "test", "", "", "main")
+	var ordered struct{ Data []service.HNSequenceItem }
+	if out.Code != 200 || json.Unmarshal(out.Body.Bytes(), &ordered) != nil || len(ordered.Data) != 1 || ordered.Data[0] != item.Data {
+		t.Fatal("reorder changed fields")
 	}
 }

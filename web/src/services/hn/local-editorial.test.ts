@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ensureCandidate, selectCandidate, addSequenceItem, commitArchivedResultToSequence, type HNCandidate, type HNSequenceItem } from "./local-editorial";
+import { ensureCandidate, selectCandidate, addSequenceItem, reorderSequence, commitArchivedResultToSequence, type HNCandidate, type HNSequenceItem } from "./local-editorial";
 
 const timestamp = "2026-10-02T00:00:00Z";
 const candidate = (): HNCandidate => ({ candidateId: "candidate-a", projectId: "test", shotId: "shot-a", generationId: "generation-a", resultId: "result-a", label: "Candidate", availabilityStatus: "ARCHIVED", createdAt: timestamp, updatedAt: timestamp });
@@ -68,4 +68,38 @@ test("malformed selection/item ownership rejected and remote discovery never pos
     }
     let calls = 0; const request = (async () => { calls++; return Response.json({ code: 0, data: { url: "https://invalid.example" } }); }) as typeof fetch;
     await assert.rejects(ensureCandidate(input(), { request })); assert.equal(calls, 1);
+});
+
+test("reorder sends exactly the desired full ID order, snapshots before async discovery and preserves all other fields", async () => {
+    const items = [{ ...item(), sequenceItemId: "second", orderIndex: 1 }, item()];
+    const snapshot = structuredClone(items), calls: string[] = [];
+    const request = (async (url, options) => {
+        calls.push(String(url)); assert.equal(options?.credentials, "omit");
+        if (url === "/api/hn/local-endpoint") { items[0].resultId = "later-edit"; return Response.json({ code: 0, data: { url: "http://127.0.0.1:8087" } }); }
+        assert.equal(String(url), "http://127.0.0.1:8087/api/hn/projects/test/sequences/main/reorder");
+        assert.equal(options?.method, "POST"); assert.equal((options?.headers as Record<string, string>)["X-HN-Local-Request"], "1");
+        assert.deepEqual(JSON.parse(options?.body as string), { sequenceItemIds: ["second", "item-a"] });
+        return Response.json({ code: 0, data: snapshot.map((i, orderIndex) => ({ ...i, orderIndex })) });
+    }) as typeof fetch;
+    const result = await reorderSequence({ projectId: "test", sequenceId: "main", items }, { request });
+    assert.deepEqual(result, snapshot.map((i, orderIndex) => ({ ...i, orderIndex }))); assert.equal(calls.length, 2);
+});
+
+test("reorder rejects unsafe/bounded/duplicate/foreign input before any network", async () => {
+    let calls = 0; const request = (async () => { calls++; throw new Error("unexpected request"); }) as typeof fetch;
+    for (const items of [[item(), item()], [{ ...item(), sequenceItemId: "../bad" }], [{ ...item(), projectId: "foreign" }], [{ ...item(), sequenceId: "foreign" }], [{ ...item(), orderIndex: -1 }], Array.from({ length: 257 }, () => item()), null]) await assert.rejects(reorderSequence({ projectId: "test", sequenceId: "main", items } as Parameters<typeof reorderSequence>[0], { request }));
+    for (const sequenceId of ["", "../bad", "CON"]) await assert.rejects(reorderSequence({ projectId: "test", sequenceId, items: [] }, { request }));
+    assert.equal(calls, 0);
+});
+
+test("reorder rejects changed timestamps/ownership/IDs/metadata and wrong/incomplete returned order; empty full set valid", async () => {
+    for (const data of [null, {}, [], [item(), item()], [{ ...item(), updatedAt: "2026-10-02T00:00:01Z" }], [{ ...item(), createdAt: "2026-10-02T00:00:01Z" }], [{ ...item(), orderIndex: 1 }], [{ ...item(), sequenceItemId: "other" }], [{ ...item(), projectId: "foreign" }], [{ ...item(), shotId: "other" }], [{ ...item(), candidateId: "other" }], [{ ...item(), resultId: "other" }], [{ ...item(), sequenceId: "foreign" }], [{ ...item(), extra: true }]]) {
+        const request = (async (url) => url === "/api/hn/local-endpoint" ? Response.json({ code: 0, data: { url: "http://127.0.0.1:8087" } }) : Response.json({ code: 0, data })) as typeof fetch;
+        await assert.rejects(reorderSequence({ projectId: "test", sequenceId: "main", items: [item()] }, { request }));
+    }
+    const request = (async (url, opts) => {
+        if (url === "/api/hn/local-endpoint") return Response.json({ code: 0, data: { url: "http://127.0.0.1:8087" } });
+        assert.deepEqual(JSON.parse(opts?.body as string), { sequenceItemIds: [] }); return Response.json({ code: 0, data: [] });
+    }) as typeof fetch;
+    assert.deepEqual(await reorderSequence({ projectId: "test", sequenceId: "empty", items: [] }, { request }), []);
 });

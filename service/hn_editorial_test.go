@@ -153,6 +153,22 @@ func TestHNEditorialStableCandidateLateSelectionAndReopen(t *testing.T) {
 func TestHNEditorialInputOwnershipAndArchiveEligibility(t *testing.T) {
 	root := t.TempDir()
 	s, _, r := hnEditorialFixture(t, root, "test", "node")
+	// A genuine RECEIVED Result has no durable ArchiveJob and must be rejected.
+	w, err := foundation.Open(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	unarchived, err := w.CreateResult(foundation.Result{GenerationID: r.GenerationID, ResultKind: "video"})
+	w.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = EnsureCandidateForArchivedResult(root, "test", s.ShotID, unarchived.ID, ""); !errors.Is(err, ErrHNEditorialOwnership) {
+		t.Fatal("RECEIVED Result accepted", err)
+	}
+	if _, err = SelectLocalCandidate(root, "test", s.ShotID, "missing"); !errors.Is(err, ErrHNEditorialOwnership) {
+		t.Fatal("missing Candidate accepted", err)
+	}
 	for _, bad := range []string{"", "../escape", "CON", "https://invalid.example", strings.Repeat("x", 129)} {
 		for position := 0; position < 3; position++ {
 			ids := []string{"test", s.ShotID, r.ResultID}
@@ -273,5 +289,103 @@ func TestHNEditorialCandidateConflictAndSerializedEnsure(t *testing.T) {
 	}
 	if _, err = EnsureCandidateForArchivedResult(root, "test", s.ShotID, r.ResultID, "A"); !errors.Is(err, ErrHNCandidateIdentity) {
 		t.Fatal("duplicate identity not detected", err)
+	}
+}
+
+func TestHNEditorialReorderFullSetOnlyOrderAndReopen(t *testing.T) {
+	root := t.TempDir()
+	s, _, r := hnEditorialFixture(t, root, "test", "node")
+	c, err := EnsureCandidateForArchivedResult(root, "test", s.ShotID, r.ResultID, "A")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = SelectLocalCandidate(root, "test", s.ShotID, c.CandidateID); err != nil {
+		t.Fatal(err)
+	}
+	items := []HNSequenceItem{}
+	for n := 0; n < 3; n++ {
+		i, e := AddLocalSequenceItem(root, "test", "main", c.CandidateID)
+		if e != nil {
+			t.Fatal(e)
+		}
+		items = append(items, i)
+	}
+	foreign, err := AddLocalSequenceItem(root, "test", "other", c.CandidateID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	before := hnEditorialSnapshot(t, root, "test")
+	for _, tc := range []struct {
+		name     string
+		ids      []string
+		expected error
+	}{
+		{"missing", []string{items[0].SequenceItemID}, ErrHNSequenceIdentity},
+		{"duplicate", []string{items[0].SequenceItemID, items[0].SequenceItemID, items[1].SequenceItemID}, ErrHNEditorialInput},
+		{"foreign", []string{items[0].SequenceItemID, items[1].SequenceItemID, foreign.SequenceItemID}, ErrHNSequenceIdentity},
+		{"unknown", []string{items[0].SequenceItemID, items[1].SequenceItemID, "missing"}, ErrHNSequenceIdentity},
+		{"unsafe", []string{"../escape"}, ErrHNEditorialInput},
+		{"nil", nil, ErrHNEditorialInput},
+		{"bounded", make([]string, HNSequenceMaxItems+1), ErrHNEditorialInput},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if _, e := ReorderLocalSequence(root, "test", "main", tc.ids); !errors.Is(e, tc.expected) {
+				t.Fatal(e)
+			}
+			if !reflect.DeepEqual(before, hnEditorialSnapshot(t, root, "test")) {
+				t.Fatal("rejected reorder mutated data")
+			}
+		})
+	}
+	for _, p := range []string{"../escape", "CON", ""} {
+		if _, err = ReorderLocalSequence(root, p, "main", []string{}); !errors.Is(err, ErrHNEditorialInput) {
+			t.Fatal("unsafe project")
+		}
+		if _, err = ReorderLocalSequence(root, "test", p, []string{}); !errors.Is(err, ErrHNEditorialInput) {
+			t.Fatal("unsafe sequence")
+		}
+	}
+	order := []string{items[2].SequenceItemID, items[0].SequenceItemID, items[1].SequenceItemID}
+	ordered, err := ReorderLocalSequence(root, "test", "main", order)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for n, oldIndex := range []int{2, 0, 1} {
+		expected := items[oldIndex]
+		expected.OrderIndex = n
+		if !reflect.DeepEqual(expected, ordered[n]) {
+			t.Fatal("response changed other fields")
+		}
+	}
+	after := hnEditorialSnapshot(t, root, "test")
+	for kind, old := range before {
+		if kind != "sequence_items" && !reflect.DeepEqual(old, after[kind]) {
+			t.Fatal("other entity changed", kind)
+		}
+	}
+	for _, raw := range after["sequence_items"] {
+		var now foundation.SequenceItem
+		json.Unmarshal(raw, &now)
+		for _, oldRaw := range before["sequence_items"] {
+			var old foundation.SequenceItem
+			json.Unmarshal(oldRaw, &old)
+			if old.ID == now.ID {
+				now.OrderIndex = old.OrderIndex
+				if !reflect.DeepEqual(old, now) {
+					t.Fatal("persisted field mutation")
+				}
+			}
+		}
+	}
+	repeat, err := ReorderLocalSequence(root, "test", "main", order)
+	if err != nil || !reflect.DeepEqual(ordered, repeat) {
+		t.Fatal("no-op reorder changed fields", err)
+	}
+	if !reflect.DeepEqual(after, hnEditorialSnapshot(t, root, "test")) {
+		t.Fatal("restart/reopen changed facts")
+	}
+	empty, err := ReorderLocalSequence(root, "test", "empty", []string{})
+	if err != nil || len(empty) != 0 || empty == nil {
+		t.Fatal("explicit empty sequence", err)
 	}
 }
