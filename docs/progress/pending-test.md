@@ -54,4 +54,11 @@ description: 当前版本已实现但仍需人工验证的变更项
 - stable SequenceItem -> Workspace.Export -> 本地 API/exportLocalSequence -> 新 UUID 离线 bundle；JSON 最后完成标记，CSV/媒体 hash/byteLength/order 验证；重复 placement 保留，旧 bundle 对 selection/reorder/reopen 不变。
 - 明确授权仅移除 Export 当前 selection 依赖，独立 OUR_VERIFICATION_FIX，保留 RED BEFORE/GREEN AFTER 与所有权/归档回归；R7 Reorder 修正不变。
 - 无 Provider/真实免费付费调用，无新生成/归档对象，由现有 R6/R5 API 构建合成 smoke 前置数据；无 SourceBaseline 改写，无剪映/草稿/XML/EDL。
-- 合成 MP4 signature 不证明 codec 可播放；安全可播放素材的人工导入/顺序/播放为后续独立 human gate。重复显式 export 可新建第二份 bundle，无自动 retry/删除；跨进程 writer 和用户业务工作区继续保留原限制。审计 feature 已正常推送并 fast-forward 集成，治理收口只改文档；实现/测试字节和 R7/R8 两项独立 OUR_VERIFICATION_FIX 保持。实际 stable local/remote SHA 与 focused checks 见 closeout Completion，等待收口 Review。
+- 合成 MP4 signature 不证明 codec 可播放；安全可播放素材的人工导入/顺序/播放已由 R9 三条 H.264/MP4 fixture 的独立人工 Gate 完成（3/3 导入、B→A→C、3/3 播放 PASS）；其他 codec/音频/生产项目接线仍待验证。重复显式 export 可新建第二份 bundle，无自动 retry/删除；跨进程 writer 和用户业务工作区继续保留原限制。审计 feature 已正常推送并 fast-forward 集成，治理收口只改文档；实现/测试字节和 R7/R8 两项独立 OUR_VERIFICATION_FIX 保持。实际 stable local/remote SHA 与 focused checks 见 R8 closeout Completion；该收口已 GPT Review PASS。
+
+
+## HN P0-B R9（VALIDATION_ONLY / HUMAN_GATED / AUDITED_VALIDATED）
+
+- 已关闭三条安全 H.264/MP4 fixture 的剪映人工导入/顺序/播放 Gate：3/3 导入、B→A→C 顺序、B/A/C 3/3 播放 PASS，无错误弹窗。正式项目未修改，无手动转码或 export 文件重命名。
+- R9 Handoff Ready 的 hash/bytes、source/export 全量 decode、JSON/CSV 顺序和 store reopen 已验证；人工声明与随包 GPT Review PASS 作为审核依据，详见 docs/hn/jianying_handoff_validation.md。
+- 无产品源码或新功能变更，单独 auditedValidations 记录；Foundation、测试、Provider/Auth/schema/dependency/lockfile 和既有修正保持。R9 只证明该 H.264/MP4/no-audio fixture；其他 codec/音频、自动 editor/draft、正式项目流程、跨进程 writer 与 Provider/TaskBinding 继续保留未验证状态。

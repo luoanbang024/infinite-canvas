@@ -2,6 +2,8 @@
 
 ## Unreleased
 
++ [验证] R9 安全 H.264/MP4 素材已完成剪映人工导入、B→A→C 顺序及 3/3 播放验证（AUDITED_VALIDATED；无产品源码变更，通用 codec/音频/自动 editor 集成仍未验证）。
+
 + [新增] HN stable SequenceItem 离线 export API/adapter 与不可变 bundle（R8 GPT Audit PASS，已集成）。
 
 + [修复] 经明确授权，仅移除 HN Export 的当前 selection 依赖，历史 placement 可在改选后导出（独立 OUR_VERIFICATION_FIX，GPT Audit PASS；原提交与回归保持）。

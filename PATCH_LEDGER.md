@@ -256,3 +256,16 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - REGRESSION = Candidate/Shot/Result/Generation binding, ARCHIVED Result, archive receipt/file/hash/bytes still mandatory; no fallback or record mutation; order, repeated placements, new ID, old bundle integrity and reopen verified.
 - REMOVAL_CONDITION = retire only after formal adoption of equivalent upstream stable-placement export semantics; do not restore current-selection invalidation.
 - ADOPTION_STATE = AUDITED / INTEGRATED; GPT Audit PASS. Separate ledger section and auditedVerificationFixes record retain original commit 307dba5594e78e095f37e1a6b4bb64900db93bcf; no squash/rewrite/restoration/expansion or upstream-backport classification. R7 afc8c28867028f95ea33028ad24757566b567711 remains independently recorded and unchanged.
+
+
+## R9 Jianying manual handoff — validation/audit record
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R9_JIANYING_MANUAL_HANDOFF_VALIDATION; TYPE = VALIDATION_ONLY / HUMAN_GATED; STATE = AUDITED_VALIDATED.
+- BASE_OUR_COMMIT = a1e21382e3037ed10c60fc69f6192bca54b684a1; CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R9_GOVERNANCE_CLOSEOUT; R9_HANDOFF_READY_SHA256 = dec829271e24dd469f922f24b4f58828ceb8b6734653319f4699eea1e11cbe89.
+- AUTOMATED_PREPARATION = PASS; three locally encoded H.264/MP4 yuv420p 1280x720/30fps/2sec/no-audio fixtures; source/archive/export hash and bytes, full decode, JSON/CSV B,A,C order and reopen passed.
+- HUMAN_GATE = supplied GPT Review PASS and current user confirmation: JIANying_IMPORT = 3/3 PASS; JIANying_TIMELINE_ORDER = B,A,C PASS; JIANying_PLAYBACK = 3/3 PASS; ERROR_DIALOG = NONE.
+- PRODUCTION_EDITOR_PROJECT_MODIFIED = NO; MANUAL_TRANSCODING_USED = NO; EXPORT_FILES_RENAMED = NO; disposable manual editor project only.
+- CLASSIFICATION = validation evidence with no product implementation delta; separately stored in auditedValidations. SOURCE_CODE_CHANGE = NONE; no new integration patch or verification fix introduced.
+- SCOPE = three R9 H.264/MP4 fixtures only; no universal codec/container/audio compatibility, automated editor/draft integration or XML/EDL claim.
+- PROVIDER_CALLS / PAID_CALLS = NONE; TASKBINDING_CREATED = 0; GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE. Existing R7/R8 verification-fix records unchanged.
+- EXTERNAL_WRITE_BOUNDARY = one governance-only commit on our-main and one normal non-force our-main push to checked origin; no other branch/tag/PR/Release/settings changes. Actual stable SHA is recorded in Completion.

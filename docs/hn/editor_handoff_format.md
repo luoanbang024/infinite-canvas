@@ -2,7 +2,10 @@
 
 TARGET_EDITOR = 剪映专业版
 IMPLEMENTATION = OFFLINE_STRUCTURE_ONLY
-LIVE_EDITOR_IMPORT_TEST = DEFERRED
+LIVE_EDITOR_IMPORT_TEST = PASS_FOR_R9_H264_MP4_FIXTURE
+TIMELINE_ORDER_TEST = PASS
+PLAYBACK_TEST = PASS
+AUTOMATED_EDITOR_INTEGRATION = NONE
 JIANying_USER_DATA_MODIFIED = NO
 
 `Workspace.Export(sequenceId)` 只复制该序列已显式放置的 SequenceItem 所绑定、ARCHIVED 且 hash/byteLength/sidecar/metadata 一致的本地文件。排序 orderIndex，然后稳定 ID；序列内允许相同 Result 重复引用。导出新的 exportId，媒体名为 001_<resultId>.<原档案扩展名>，JSON/CSV manifest 都出现后才视为完整 bundle；JSON 最后写为完成 marker，失败的 partial export 可能保留文件但没有完成 JSON，不自动删除。
@@ -11,7 +14,7 @@ JIANying_USER_DATA_MODIFIED = NO
 
 复制前核对原档案，temp copy 后重新核对 bytes/hash，再发布 final；清单引用的顺序/ID/hash 冻结成导出快照，后续重排不改已导出清单。R8 经明确授权仅移除当前 selection 依赖：Shot 后续改选或清空不影响已有 placement。Candidate/Shot/Result/Generation 归属与归档校验继续必需；不会按到达顺序或任意 Candidate 替代。
 
-R2 示例清单由实际离线测试生成（synthetic-media-one/two 的合成字节）；不含 media 文件，不证明文件 codec 可播放。国际/国内剪映兼容性、本机导入/顺序/播放留待独立后续验证；没有原生 manifest importer 承诺，没有 XML/EDL，没有编辑器草稿目录写入。
+R2 示例清单由实际离线测试生成（synthetic-media-one/two 的合成字节）；不含 media 文件，不证明文件 codec 可播放。R9 三条 H.264/MP4 fixture 的本机剪映人工导入/顺序/播放已 PASS，其他 codec/container/音频或编辑器版本兼容性继续留待独立验证；没有原生 manifest importer 承诺，没有 XML/EDL，没有编辑器草稿目录写入。
 
 
-R8 本地 export API 与 exportLocalSequence 已 GPT Audit PASS 并 fast-forward 集成；没有 UI 或剪映自动导入。每次显式请求新 exportId，无自动 retry；丢失响应时旧 bundle 可能已完成，再次显式导出可能生成第二份，保留旧 bundle 不自动清理。R8 运行 smoke 用 24-byte MP4 signature 合成 fixture；安全可播放素材 -> export bundle -> 剪映人工导入/顺序/播放是下一独立 human gate。
+R8 本地 export API 与 exportLocalSequence 已 GPT Audit PASS 并 fast-forward 集成；没有 UI 或剪映自动导入。每次显式请求新 exportId，无自动 retry；丢失响应时旧 bundle 可能已完成，再次显式导出可能生成第二份，保留旧 bundle 不自动清理。R8 运行 smoke 用 24-byte MP4 signature 合成 fixture；该独立 human gate 已由 R9 三条安全 H.264/MP4 fixture 完成，3/3 导入、B→A→C 顺序、3/3 播放 PASS；无手动转码或 export 重命名，正式编辑项目未修改。详见 jianying_handoff_validation.md；范围不扩大至通用 codec 或自动 editor 集成。

@@ -254,5 +254,57 @@
       "closeoutExecution": "HN_AI_IC_P0_B_R8_AUDIT_CLOSEOUT_INTEGRATION",
       "regression": "Stable SequenceItem placement export after later selection change/clear; ownership/archive integrity still mandatory"
     }
+  ],
+  "auditedValidations": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R9_JIANYING_MANUAL_HANDOFF_VALIDATION",
+      "type": "VALIDATION_ONLY / HUMAN_GATED",
+      "state": "AUDITED_VALIDATED",
+      "baseOurCommit": "a1e21382e3037ed10c60fc69f6192bca54b684a1",
+      "gptHumanReview": "PASS",
+      "automatedPreparation": "PASS",
+      "jianyingImport": "3/3 PASS",
+      "timelineOrder": "B,A,C PASS",
+      "jianyingPlayback": "3/3 PASS",
+      "playbackBySource": {
+        "B": "PASS",
+        "A": "PASS",
+        "C": "PASS"
+      },
+      "errorDialog": "NONE",
+      "productionEditorProjectModified": false,
+      "manualTranscodingUsed": false,
+      "exportFilesRenamed": false,
+      "handoffReadySha256": "dec829271e24dd469f922f24b4f58828ceb8b6734653319f4699eea1e11cbe89",
+      "projectId": "r9-jianying-handoff-20261002_161254",
+      "exportId": "4ec6d6dd-16b9-41eb-8811-a55aa33cc0f1",
+      "validatedFixture": {
+        "container": "MP4",
+        "videoCodec": "H.264/AVC",
+        "pixelFormat": "yuv420p",
+        "width": 1280,
+        "height": 720,
+        "framesPerSecond": 30,
+        "durationSecondsPerClip": 2,
+        "framesPerClip": 60,
+        "audio": false,
+        "clipCount": 3
+      },
+      "detectedEditorVersionAtPreparation": "11.2.0.14339",
+      "sourceCodeChange": "NONE",
+      "providerCalls": 0,
+      "paidCalls": 0,
+      "taskBindingCreated": 0,
+      "automatedEditorIntegration": "NONE",
+      "generationSourceBaselineChange": "NONE",
+      "historicalGenerationRewrite": "NONE",
+      "humanEvidence": {
+        "basis": "CURRENT_USER_CONFIRMATION_AND_SUPPLIED_GPT_REVIEW_PASS",
+        "reviewDocument": "HN_AI_IC_P0_B_R9_FINAL_HUMAN_GATE_GPT_REVIEW_PASS_20261002.md",
+        "summaryDocument": "HN_AI_IC_P0_B_R9_HUMAN_EVIDENCE_SUMMARY_20261002.md"
+      },
+      "scopeLimit": "Only the three R9 H.264/MP4 no-audio fixtures and manual import/order/playback; no universal codec/audio/automated editor integration claim",
+      "governanceCloseoutExecution": "HN_AI_IC_P0_B_R9_GOVERNANCE_CLOSEOUT"
+    }
   ]
 }
