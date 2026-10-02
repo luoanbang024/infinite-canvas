@@ -35,39 +35,7 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [
-    {
-      "executionId": "HN_AI_IC_P0_B_R10_PROVIDER_NEUTRAL_SUBMISSION_GUARD",
-      "type": "OUR_EXTENSION / RELIABILITY_WIRING",
-      "state": "IMPLEMENTED_PENDING_GPT_REVIEW",
-      "baseOurCommit": "f4c0cd1176bf9f48a49f57281065f224e3288276",
-      "branch": "feature/p0-b-r10-submission-guard",
-      "plannedFoundationAPIs": [
-        "BeginSubmission",
-        "RecordSubmissionAccepted",
-        "SUBMITTING reopen reconciliation"
-      ],
-      "schemaChange": "NONE",
-      "productionSubmitRoute": "NONE",
-      "transport": "INJECTED_FAKE_ONLY",
-      "primaryVideoProvider": "DEFERRED",
-      "accountMode": "DEFERRED",
-      "realProviderCalls": 0,
-      "paidCalls": 0,
-      "realCredentialRead": "NONE",
-      "polling": "NONE",
-      "resultWiring": "NONE",
-      "archiveJobWiring": "NONE",
-      "remoteDownload": "NONE",
-      "generationSourceBaselineChange": "NONE",
-      "historicalGenerationRewrite": "NONE",
-      "r7Fix": "PRESERVED",
-      "r8Fix": "PRESERVED",
-      "externalPush": false,
-      "mergeToOurMain": false,
-      "gptAudit": "PENDING"
-    }
-  ],
+  "pendingReview": [],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
@@ -249,6 +217,60 @@
       "jianyingImportValidation": "DEFERRED",
       "realProviderCalls": "NONE",
       "paidCalls": "NONE"
+    },
+    {
+      "executionId": "HN_AI_IC_P0_B_R10_PROVIDER_NEUTRAL_SUBMISSION_GUARD",
+      "type": "OUR_EXTENSION / RELIABILITY_WIRING",
+      "state": "AUDITED_INTEGRATED",
+      "baseOurCommit": "f4c0cd1176bf9f48a49f57281065f224e3288276",
+      "branch": "feature/p0-b-r10-submission-guard",
+      "plannedFoundationAPIs": [
+        "BeginSubmission",
+        "RecordSubmissionAccepted",
+        "SUBMITTING reopen reconciliation"
+      ],
+      "schemaChange": "NONE",
+      "productionSubmitRoute": "NONE",
+      "transport": "INJECTED_FAKE_ONLY",
+      "primaryVideoProvider": "DEFERRED",
+      "accountMode": "DEFERRED",
+      "realProviderCalls": "NONE",
+      "paidCalls": "NONE",
+      "realCredentialRead": "NONE",
+      "polling": "NONE",
+      "resultWiring": "NONE",
+      "archiveJobWiring": "NONE",
+      "remoteDownload": "NONE",
+      "generationSourceBaselineChange": "NONE",
+      "historicalGenerationRewrite": "NONE",
+      "r7Fix": "PRESERVED",
+      "r8Fix": "PRESERVED",
+      "externalPush": true,
+      "mergeToOurMain": true,
+      "gptAudit": "PASS",
+      "featureHead": "444a5d7a7c7e8a8fe26953c9f1e9e34a587ebce6",
+      "auditedCompletionSha256": "84e571250114418bef21088110c83e4434428c15e6cac3dbf5912ba2736ab242",
+      "closeoutExecution": "HN_AI_IC_P0_B_R10_AUDIT_CLOSEOUT_INTEGRATION",
+      "introducedInCommit": "d6b939f4b865aeca21bf9a93a1fe2d33e21e2e40",
+      "reviewedCommits": [
+        "d6b939f4b865aeca21bf9a93a1fe2d33e21e2e40",
+        "4d27804d65e171dc3f001709c73da92d0d05e4d7",
+        "c0363b5909147ed7c79796ed694fa1656fa0402e",
+        "444a5d7a7c7e8a8fe26953c9f1e9e34a587ebce6"
+      ],
+      "integrationMethod": "FAST_FORWARD_ONLY",
+      "atMostOnceSubmissionGuard": "AUDITED",
+      "beginSubmission": "ATOMIC",
+      "taskBindingOwner": "ONE_PER_GENERATION_ATTEMPT",
+      "submittingReopen": "SUBMISSION_UNKNOWN",
+      "sameGenerationAutoResend": "NONE",
+      "newRetryRequiresNewGenerationId": true,
+      "multiProcessAvailability": "NOT_CLAIMED",
+      "taskRecovery": "DEFERRED",
+      "realProviderIdentifierCompatibility": "DEFERRED",
+      "realTransportRetryPolicyReview": "REQUIRED_BEFORE_PROVIDER_BINDING",
+      "stableCloseoutCommitLocation": "Completion Package",
+      "upstreamBackport": false
     }
   ],
   "auditedVerificationFixes": [

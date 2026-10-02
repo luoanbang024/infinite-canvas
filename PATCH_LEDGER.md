@@ -273,7 +273,7 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 
 ## R10 provider-neutral durable submission guard — planned extension
 
-- EXECUTION_ID = HN_AI_IC_P0_B_R10_PROVIDER_NEUTRAL_SUBMISSION_GUARD; TYPE = OUR_EXTENSION / RELIABILITY_WIRING; STATE = IMPLEMENTED_PENDING_GPT_REVIEW.
+- EXECUTION_ID = HN_AI_IC_P0_B_R10_PROVIDER_NEUTRAL_SUBMISSION_GUARD; TYPE = OUR_EXTENSION / RELIABILITY_WIRING; STATE = AUDITED / INTEGRATED.
 - BASE_OUR_COMMIT = f4c0cd1176bf9f48a49f57281065f224e3288276; BRANCH = feature/p0-b-r10-submission-guard.
 - PURPOSE = frozen Generation at-most-once transport ownership and TaskBinding acceptance/ambiguity lifecycle.
 - PLANNED_FOUNDATION_SCOPE = new submission.go BeginSubmission/RecordSubmissionAccepted/reconciliation plus Open reconciliation hook; existing schema/version and MarkSubmissionUnknown unchanged. This is planned functionality, not OUR_VERIFICATION_FIX or upstream backport.
@@ -283,4 +283,10 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE; R6 ff32dc249811130a3db69be456e295be100b6e9f unchanged.
 - LIMIT = existing writer held across injected call; no re-entry, lease/availability protocol or real Provider acceptance/status reconciliation. A competing process Open can conservatively sacrifice a live attempt as UNKNOWN; no resend.
 - VALIDATION = focused atomic/concurrency/error/panic/subprocess crash/reopen + synthetic local smoke and complete regression evidence in Completion.
-- EXTERNAL_PUSH / MERGE_TO_OUR_MAIN = NO; GPT_AUDIT = PENDING. Future formal upstream equivalent requires ownership/data compatibility review before removal.
+- EXTERNAL_PUSH = user-authorized normal non-force pushes only of the audited feature and governance-closed our-main to checked origin; MERGE_TO_OUR_MAIN = FAST_FORWARD_ONLY; GPT_AUDIT = PASS. Future formal upstream equivalent requires ownership/data compatibility review before removal.
+
+- AUDIT_BINDING = FEATURE_HEAD 444a5d7a7c7e8a8fe26953c9f1e9e34a587ebce6; AUDITED_COMPLETION_SHA256 84e571250114418bef21088110c83e4434428c15e6cac3dbf5912ba2736ab242; four original reviewed commits retained, no rebase/squash/amend/rewrite.
+- CLOSEOUT_EXECUTION = HN_AI_IC_P0_B_R10_AUDIT_CLOSEOUT_INTEGRATION; six governance/progress paths only; audited production/test bytes unchanged. Actual integrated stable SHA recorded in Completion, no self-reference in this commit.
+- AT_MOST_ONCE_SUBMISSION_GUARD = AUDITED; BEGIN_SUBMISSION = ATOMIC; TASKBINDING_OWNER = ONE_PER_GENERATION_ATTEMPT; SUBMITTING_REOPEN = SUBMISSION_UNKNOWN; SAME_GENERATION_AUTO_RESEND = NONE; NEW_RETRY_REQUIRES_NEW_GENERATION_ID = YES.
+- AUDIT_LIMITS = MULTIPROCESS_AVAILABILITY NOT_CLAIMED; TASK_RECOVERY DEFERRED; REAL_PROVIDER_IDENTIFIER_COMPATIBILITY DEFERRED; REAL_TRANSPORT_RETRY_POLICY_REVIEW REQUIRED_BEFORE_PROVIDER_BINDING. PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE remain DEFERRED.
+- NEXT_WORKSTREAM = wait closeout Completion GPT Review before any Provider/account/adapter decision gate; no real Provider, Key, submit, polling or result download authorized by this closeout.

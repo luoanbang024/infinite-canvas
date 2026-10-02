@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-+ [新增] HN 冻结 Generation 的持久化提交 ownership gate 与 injected fake TaskBinding 生命周期（R10 待 GPT Review；并发最多一次调用，异常/reopen 为 UNKNOWN，原 ID 禁止重发；未接真实 Provider）。
++ [新增] HN 冻结 Generation 的持久化提交 ownership gate 与 injected fake TaskBinding 生命周期（R10 GPT Audit PASS / 已 fast-forward 集成，四个原审计 commits 和源码保持；并发最多一次调用，异常/reopen 为 UNKNOWN，原 ID 禁止重发；未接真实 Provider）。
 
 + [验证] R9 安全 H.264/MP4 素材已完成剪映人工导入、B→A→C 顺序及 3/3 播放验证（AUDITED_VALIDATED；无产品源码变更，通用 codec/音频/自动 editor 集成仍未验证）。
 

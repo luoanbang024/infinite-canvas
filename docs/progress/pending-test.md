@@ -64,8 +64,10 @@ description: 当前版本已实现但仍需人工验证的变更项
 - 无产品源码或新功能变更，单独 auditedValidations 记录；Foundation、测试、Provider/Auth/schema/dependency/lockfile 和既有修正保持。R9 只证明该 H.264/MP4/no-audio fixture；其他 codec/音频、自动 editor/draft、正式项目流程、跨进程 writer 与 Provider/TaskBinding 继续保留未验证状态。
 
 
-## HN P0-B R10（已实现，待 GPT Review / Audit）
+## HN P0-B R10（GPT Audit PASS / 已 fast-forward 集成，保持后续业务约束）
 
 - 计划性 provider-neutral Foundation submission APIs + 内部 injected transport service；原子 Begin/accepted、异常 UNKNOWN、并发一次调用、子进程 crash/reopen、相同 ID 禁止重发与新 ID 重试均有合成自动证据。详见 docs/hn/submission_guard.md。
-- 完整 Go/Bridge/frontend/typecheck/build 和 scope/secret 检查结果见 Completion；R7/R8 原修正、R9 auditedValidations、历史 Generation 与 SourceBaseline 保持。此处不声明 audited/integrated。
+- 完整 Go/Bridge/frontend/typecheck/build 和 scope/secret 检查结果见 Completion；R7/R8 原修正、R9 auditedValidations、历史 Generation 与 SourceBaseline 保持。原审计实现保持；feature 444a5d7a7c7e8a8fe26953c9f1e9e34a587ebce6 及原四 commits 已正常 push / fast-forward 集成，仅本次 governance-only closeout。审计 Completion SHA-256 = 84e571250114418bef21088110c83e4434428c15e6cac3dbf5912ba2736ab242；最终 stable SHA 和 focused checks 见 closeout Completion。
 - 无 production submit route/UI、真实 Provider/Key/免费或付费生成、polling、远程 Result/Archive/下载。真实 Provider/account/adapter 绑定与真实业务提交仍需后续决定；跨进程可保守牺牲 live attempt，不承诺 lease/availability。
+
+- R10 TYPE 保持 OUR_EXTENSION / RELIABILITY_WIRING；多进程 availability 不承诺，task recovery / 真实 Provider ID compatibility 延后，真实 transport 必须先评审禁止 hidden retry。等待 closeout Completion Review，不开始真实 Provider 选择/Key/submit/polling/download。

@@ -1,7 +1,7 @@
 # R10 provider-neutral submission guard
 
 TYPE = OUR_EXTENSION / RELIABILITY_WIRING
-STATE = IMPLEMENTED_PENDING_GPT_REVIEW
+STATE = AUDITED / INTEGRATED
 BASE_OUR_COMMIT = f4c0cd1176bf9f48a49f57281065f224e3288276
 BRANCH = feature/p0-b-r10-submission-guard
 
@@ -17,4 +17,27 @@ Reuse of the existing global HN writer serializes Open/Begin/transport/acceptanc
 
 Automated proof includes atomic rollback, invalid/frozen/hash/project/state/owner preconditions, accepted ownership/ID immutability, 16 competing Foundation calls, two independent handles, two service callers, two separate processes, subprocess exits before send and after fake acceptance before local record, and reopen invariance. Synthetic R6 smoke has one Shot and three Generations: SUBMITTED/BOUND, UNKNOWN/UNBOUND, UNKNOWN/UNBOUND; no Result/ArchiveJob.
 
-PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; real Provider/paid calls = 0; real credential read = NONE. No Result, ArchiveJob, remote download, frontend submit UI, router change or dependency/lockfile/schema change. R6 preparation SourceBaseline remains ff32dc249811130a3db69be456e295be100b6e9f; all request-defining/frozen facts and historical Generations unchanged. R7/R8 original verification fixes and R9 audited validation record remain unchanged. No merge/push; GPT Review/Audit pending.
+PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; real Provider/paid calls = 0; real credential read = NONE. No Result, ArchiveJob, remote download, frontend submit UI, router change or dependency/lockfile/schema change. R6 preparation SourceBaseline remains ff32dc249811130a3db69be456e295be100b6e9f; all request-defining/frozen facts and historical Generations unchanged. R7/R8 original verification fixes and R9 audited validation record remain unchanged. GPT Audit PASS; original feature normal push and fast-forward integration authorized, with one governance-only closeout commit. Stable SHA and final remote equality recorded in closeout Completion. Wait that Completion Review before choosing any next decision gate.
+
+## Audited integration closeout
+
+GPT_AUDIT = PASS
+R10_FEATURE_HEAD = 444a5d7a7c7e8a8fe26953c9f1e9e34a587ebce6
+R10_COMPLETION_SHA256 = 84e571250114418bef21088110c83e4434428c15e6cac3dbf5912ba2736ab242
+R10_IMPLEMENTATION_STATE = AUDITED / INTEGRATED
+AT_MOST_ONCE_SUBMISSION_GUARD = AUDITED
+BEGIN_SUBMISSION = ATOMIC
+TASKBINDING_OWNER = ONE_PER_GENERATION_ATTEMPT
+SUBMITTING_REOPEN = SUBMISSION_UNKNOWN
+SAME_GENERATION_AUTO_RESEND = NONE
+NEW_RETRY_REQUIRES_NEW_GENERATION_ID = YES
+MULTIPROCESS_AVAILABILITY = NOT_CLAIMED
+TASK_RECOVERY = DEFERRED
+REAL_PROVIDER_IDENTIFIER_COMPATIBILITY = DEFERRED
+REAL_TRANSPORT_RETRY_POLICY_REVIEW = REQUIRED_BEFORE_PROVIDER_BINDING
+PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED
+REAL_PROVIDER_CALLS / PAID_CALLS / REAL_CREDENTIAL_READ = NONE
+PRODUCTION_SUBMIT_ROUTE / POLLING / RESULT_WIRING / ARCHIVEJOB_WIRING / REMOTE_DOWNLOAD = NONE
+GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE
+
+Four audited commits and all implementation/test bytes preserved. The existing broad MarkSubmissionUnknown recorder remains unchanged; future integration must call it only for genuinely ambiguous outcomes. No manual task recovery, leases, Provider-specific ID mapping or transport retry policy is supplied by this integration. R7/R8 remain independent original verification fixes and R9 remains an unchanged audited validation.
