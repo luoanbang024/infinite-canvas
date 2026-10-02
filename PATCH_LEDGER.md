@@ -269,3 +269,18 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - SCOPE = three R9 H.264/MP4 fixtures only; no universal codec/container/audio compatibility, automated editor/draft integration or XML/EDL claim.
 - PROVIDER_CALLS / PAID_CALLS = NONE; TASKBINDING_CREATED = 0; GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE. Existing R7/R8 verification-fix records unchanged.
 - EXTERNAL_WRITE_BOUNDARY = one governance-only commit on our-main and one normal non-force our-main push to checked origin; no other branch/tag/PR/Release/settings changes. Actual stable SHA is recorded in Completion.
+
+
+## R10 provider-neutral durable submission guard — planned extension
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R10_PROVIDER_NEUTRAL_SUBMISSION_GUARD; TYPE = OUR_EXTENSION / RELIABILITY_WIRING; STATE = IMPLEMENTED_PENDING_GPT_REVIEW.
+- BASE_OUR_COMMIT = f4c0cd1176bf9f48a49f57281065f224e3288276; BRANCH = feature/p0-b-r10-submission-guard.
+- PURPOSE = frozen Generation at-most-once transport ownership and TaskBinding acceptance/ambiguity lifecycle.
+- PLANNED_FOUNDATION_SCOPE = new submission.go BeginSubmission/RecordSubmissionAccepted/reconciliation plus Open reconciliation hook; existing schema/version and MarkSubmissionUnknown unchanged. This is planned functionality, not OUR_VERIFICATION_FIX or upstream backport.
+- DURABLE_GATE = PREPARED -> atomic SUBMITTING + one UNBOUND owner; accepted -> BOUND/SUBMITTED; error/panic/crash ambiguity -> SUBMISSION_UNKNOWN; same-generation resend forbidden.
+- TRANSPORT = explicitly injected fake only; no default network transport, production submit route, Provider selection, credentials or retry loop. PRIMARY_VIDEO_PROVIDER / ACCOUNT_MODE = DEFERRED; REAL_PROVIDER_CALLS / PAID_CALLS = NONE; RESULT_WIRING / POLLING / REMOTE_DOWNLOAD = NONE.
+- EXISTING_SEMANTICS = R3-R9 preserved, R7 afc8c28867028f95ea33028ad24757566b567711 and R8 307dba5594e78e095f37e1a6b4bb64900db93bcf retain original independent OUR_VERIFICATION_FIX provenance/bytes. R9 auditedValidations record unchanged.
+- GENERATION_SOURCE_BASELINE_CHANGE / HISTORICAL_GENERATION_REWRITE = NONE; R6 ff32dc249811130a3db69be456e295be100b6e9f unchanged.
+- LIMIT = existing writer held across injected call; no re-entry, lease/availability protocol or real Provider acceptance/status reconciliation. A competing process Open can conservatively sacrifice a live attempt as UNKNOWN; no resend.
+- VALIDATION = focused atomic/concurrency/error/panic/subprocess crash/reopen + synthetic local smoke and complete regression evidence in Completion.
+- EXTERNAL_PUSH / MERGE_TO_OUR_MAIN = NO; GPT_AUDIT = PENDING. Future formal upstream equivalent requires ownership/data compatibility review before removal.
