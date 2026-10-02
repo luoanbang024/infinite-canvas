@@ -15,4 +15,4 @@ description: 当前项目后续值得处理的事项
 
 - R10 provider-neutral at-most-once guard 已 GPT Audit PASS / fast-forward 集成，保留 pending-test 的真实业务与多进程 availability 限制。等待其 closeout Completion Review。后续候选为 Provider/account/adapter binding 决策，不代表已授权 live submit。
 
-- R11 discovery 已 GPT Review PASS_WITH_REQUIRED_SCOPE_CORRECTION；R12 official H3 T2V adapter 和 identity freeze 修正已 GPT Audit PASS / fast-forward 集成，实现和测试字节保持，等待 audit closeout Completion GPT Review，详见 pending-test。下一候选仅 fake-only polling/recovery（R13），尚未授权，不在本次收口启动；真实 credential/channel 业务接线、生产 route/UI、live 调用与媒体下载各需独立 gate。
+- R11 discovery 已 GPT Review PASS_WITH_REQUIRED_SCOPE_CORRECTION；R12 official H3 T2V adapter 和 identity freeze 修正已 GPT Audit PASS / fast-forward 集成，实现和测试字节保持，等待 audit closeout Completion GPT Review，详见 pending-test。R12 closeout 已 GPT Review PASS；R13 fake-only known-task polling/recovery 已按独立执行授权实现，等待其 GPT Review / Audit；R14 transient result/archive 仍只是后续候选，尚未授权；真实 credential/channel 业务接线、生产 route/UI、live 调用与媒体下载各需独立 gate。
