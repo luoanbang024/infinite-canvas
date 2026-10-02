@@ -10,14 +10,15 @@ import (
 	"github.com/tigerowo/infinite-canvas/hn/foundation"
 )
 
-// SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION.
+// SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE.
 // This reviewed integration baseline never replaces the foundation's historical default.
-const HNGenerationSourceBaseline = "418ffbde3dbea33d374356588cb672336ec38353"
+const HNGenerationSourceBaseline = "ff32dc249811130a3db69be456e295be100b6e9f"
 
 var ErrHNGenerationInput = errors.New("invalid HN generation prepare input")
 
 type HNGenerationPrepareInput struct {
 	NodeID            string                        `json:"nodeId"`
+	ShotID            string                        `json:"shotId,omitempty"`
 	PromptSnapshot    string                        `json:"promptSnapshot"`
 	Protocol          string                        `json:"protocol,omitempty"`
 	ProviderIdentity  string                        `json:"providerIdentity,omitempty"`
@@ -39,6 +40,7 @@ type HNPreparedGeneration struct {
 	SubmissionState   string                        `json:"submissionState"`
 	ReferenceBindings []foundation.ReferenceBinding `json:"referenceBindings"`
 	CreatedAt         string                        `json:"createdAt"`
+	ShotID            string                        `json:"shotId,omitempty"`
 }
 
 var hnUnsafeText = regexp.MustCompile(`(?i)(https?://|data:|bearer\s|-----BEGIN|sk-proj-|ghp_|github_pat_|api[_-]?key\s*[:=]|(?:token|password|secret|authorization|cookie|credential|signature)\s*[:=])`)
@@ -52,6 +54,9 @@ var hnVideoParameterNames = map[string]bool{
 // R4 accepts a closed business vocabulary, never an arbitrary AiConfig or URL bundle.
 func validateHNPrepare(input HNGenerationPrepareInput) error {
 	bad := func() error { return ErrHNGenerationInput }
+	if input.ShotID != "" && !validHNReferenceName(input.ShotID) {
+		return bad()
+	}
 	if strings.TrimSpace(input.NodeID) == "" || len(input.NodeID) > 128 || strings.TrimSpace(input.PromptSnapshot) == "" || len(input.PromptSnapshot) > 32768 || input.SourceBaseline != HNGenerationSourceBaseline {
 		return bad()
 	}
@@ -121,6 +126,13 @@ func PrepareLocalGeneration(root, projectID string, input HNGenerationPrepareInp
 		return HNPreparedGeneration{}, err
 	}
 	defer w.Close()
+	if input.ShotID != "" {
+		raw, e := w.Read("shots", input.ShotID)
+		var shot foundation.Shot
+		if e != nil || json.Unmarshal(raw, &shot) != nil || shot.ID != input.ShotID || shot.ProjectID != projectID {
+			return HNPreparedGeneration{}, ErrHNGenerationInput
+		}
+	}
 	for _, binding := range input.ReferenceBindings {
 		raw, e := w.Read("reference_versions", binding.ReferenceVersionID)
 		var reference foundation.ReferenceVersion
@@ -133,7 +145,7 @@ func PrepareLocalGeneration(root, projectID string, input HNGenerationPrepareInp
 		bindings = []foundation.ReferenceBinding{}
 	}
 	g, err := w.CreateGeneration(foundation.Generation{
-		NodeID: input.NodeID, PromptSnapshot: input.PromptSnapshot, Protocol: input.Protocol,
+		NodeID: input.NodeID, ShotID: input.ShotID, PromptSnapshot: input.PromptSnapshot, Protocol: input.Protocol,
 		ProviderIdentity: input.ProviderIdentity, Model: input.Model, Parameters: input.Parameters,
 		ReferenceBindings: bindings, ConnectionID: input.ConnectionID, SourceBaseline: input.SourceBaseline,
 	})
@@ -144,5 +156,5 @@ func PrepareLocalGeneration(root, projectID string, input HNGenerationPrepareInp
 	if err != nil {
 		return HNPreparedGeneration{}, err
 	}
-	return HNPreparedGeneration{g.ID, g.ProjectID, g.NodeID, g.SourceBaseline, g.Frozen, g.FrozenHash, g.Status, g.SubmissionState, g.ReferenceBindings, g.CreatedAt}, nil
+	return HNPreparedGeneration{g.ID, g.ProjectID, g.NodeID, g.SourceBaseline, g.Frozen, g.FrozenHash, g.Status, g.SubmissionState, g.ReferenceBindings, g.CreatedAt, g.ShotID}, nil
 }

@@ -1,11 +1,12 @@
 import { freezeLocalReference, isHNProjectId, localBackendURL } from "./local-reference";
 
-// SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_BASELINE_ADOPTION.
-export const HN_GENERATION_SOURCE_BASELINE = "418ffbde3dbea33d374356588cb672336ec38353";
+// SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE.
+export const HN_GENERATION_SOURCE_BASELINE = "ff32dc249811130a3db69be456e295be100b6e9f";
 export type HNReferenceRole = "reference" | "firstFrame" | "lastFrame";
 export type HNReferenceBinding = { referenceVersionId: string; sha256: string; role: HNReferenceRole };
 export type HNGenerationPrepareInput = {
     projectId: string; nodeId: string; promptSnapshot: string;
+    shotId?: string;
     protocol?: string; providerIdentity?: string; model?: string; connectionId?: string;
     parameters: Record<string, string | { prompt: string; duration: string }[]>;
     references: { storageKey: string; role: HNReferenceRole }[];
@@ -13,6 +14,7 @@ export type HNGenerationPrepareInput = {
 };
 export type HNPreparedGeneration = {
     generationId: string; projectId: string; nodeId: string; sourceBaseline: string;
+    shotId?: string;
     frozen: true; frozenHash: string; status: "PREPARED"; submissionState: "PREPARED";
     referenceBindings: HNReferenceBinding[]; createdAt: string;
 };
@@ -46,6 +48,7 @@ export function canonicalHNParameters(parameters: HNGenerationPrepareInput["para
 // An explicit call creates a new attempt. No Canvas mutation, submit, poll or retry.
 export async function prepareLocalGeneration(input: HNGenerationPrepareInput, dependencies: Dependencies): Promise<HNPreparedGeneration> {
     if (!isHNProjectId(input.projectId)) throw new Error("项目标识不兼容；需审核 ID 映射");
+    if (input.shotId !== undefined && (typeof input.shotId !== "string" || input.shotId !== "" && !isHNProjectId(input.shotId))) throw new Error("HN Shot 标识无效");
     if (input.sourceBaseline !== HN_GENERATION_SOURCE_BASELINE) throw new Error("Generation 基线需要审核");
     safeText(input.nodeId, 128); safeText(input.promptSnapshot);
     if (!input.nodeId.trim() || !input.promptSnapshot.trim()) throw new Error("HN 准备需要节点标识及非空提示词");
@@ -73,13 +76,22 @@ export async function prepareLocalGeneration(input: HNGenerationPrepareInput, de
     if (!discovery.ok || endpoint.code !== 0 || !endpoint.data) throw new Error("HN 准备需要本机后端地址");
     const base = localBackendURL(endpoint.data.url);
     // Explicit projection: extra caller properties and broad configs never cross this boundary.
-    const payload = { nodeId: input.nodeId, promptSnapshot: input.promptSnapshot, protocol: input.protocol, providerIdentity: input.providerIdentity, model: input.model, connectionId: input.connectionId, parameters, referenceBindings, sourceBaseline: input.sourceBaseline };
+    const payload = { nodeId: input.nodeId, shotId: input.shotId, promptSnapshot: input.promptSnapshot, protocol: input.protocol, providerIdentity: input.providerIdentity, model: input.model, connectionId: input.connectionId, parameters, referenceBindings, sourceBaseline: input.sourceBaseline };
     const response = await request(`${base}/api/hn/projects/${encodeURIComponent(input.projectId)}/generations/prepare`, {
         method: "POST", credentials: "omit", headers: { "Content-Type": "application/json", "X-HN-Local-Request": "1" }, body: JSON.stringify(payload),
     });
     const result = await response.json() as { code: number; data?: HNPreparedGeneration; msg?: string };
     if (!response.ok || result.code !== 0 || !result.data) throw new Error(result.msg || "HN Generation 准备失败");
     const generation = result.data;
+    if ((generation.shotId ?? "") !== (input.shotId ?? "")) throw new Error("HN 冻结 Generation 的 Shot 绑定无效");
     if (!isHNProjectId(generation.generationId) || generation.projectId !== input.projectId || generation.nodeId !== input.nodeId || generation.sourceBaseline !== input.sourceBaseline || generation.frozen !== true || generation.status !== "PREPARED" || generation.submissionState !== "PREPARED" || !/^[a-f0-9]{64}$/.test(generation.frozenHash) || JSON.stringify(generation.referenceBindings) !== JSON.stringify(referenceBindings)) throw new Error("HN 冻结 Generation 返回状态或绑定无效");
     return generation;
+}
+
+// R6 production preparation requires a Shot; legacy R4-style callers remain optional.
+export async function prepareLocalShotGeneration(input: HNGenerationPrepareInput & { shotId: string }, dependencies: Dependencies): Promise<HNPreparedGeneration & { shotId: string }> {
+    if (typeof input.shotId !== "string" || !isHNProjectId(input.shotId)) throw new Error("R6 准备需要 Shot ID");
+    const shotId = input.shotId;
+    const generation = await prepareLocalGeneration({ ...input, shotId }, dependencies);
+    return { ...generation, shotId };
 }

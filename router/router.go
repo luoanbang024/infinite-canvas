@@ -17,6 +17,10 @@ func New() *gin.Engine {
 		handler.HNFreezeReference(c.Writer, c.Request, c.Param("projectId"))
 	})
 	api.OPTIONS("/hn/projects/:projectId/references", gin.WrapF(handler.HNReferenceOptions))
+	api.POST("/hn/projects/:projectId/shots/ensure", func(c *gin.Context) {
+		handler.HNEnsureShot(c.Writer, c.Request, c.Param("projectId"))
+	})
+	api.OPTIONS("/hn/projects/:projectId/shots/ensure", gin.WrapF(handler.HNReferenceOptions))
 	api.POST("/hn/projects/:projectId/generations/prepare", func(c *gin.Context) {
 		handler.HNPrepareGeneration(c.Writer, c.Request, c.Param("projectId"))
 	})
