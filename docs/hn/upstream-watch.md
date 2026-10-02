@@ -31,3 +31,10 @@ Fetched origin/tiger-upstream again; local/origin our-main match the supplied st
 R5_BASE = 879d531a03cbdbb815474261cc87afb68b72e610; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
 
 Fetched origin/tiger-upstream and verified stable our-main. Checked hn/, handler/storage.go, service/storage.go and web/src/services/file-storage.ts from v0.8.0 to fetched tip: no delta in those archive/local-media paths. Existing remote media downloading is deliberately outside R5; the new adapter only invokes getMediaBlob. No equivalent local Generation-owned Result + ArchiveJob reliability wiring in the checked scope, no upstream adoption or Provider backport. Exact tip/scope recorded in R5 Completion.
+
+
+## R6 narrow Shot / pre-freeze ownership watch
+
+R6_BASE = ff32dc249811130a3db69be456e295be100b6e9f; FETCHED_TIP = 6571143e4f51da7494d38572c76202b752cc5e0c; NO_BLOCKING_OVERLAP.
+
+Fetched origin/tiger-upstream; exact stable local/origin our-main matched. Narrow v0.8.0->tip diff of hn/, service/hn_generation.go, handler/hn_generation.go, web/src/services/hn and router/router.go is empty. Exact ShotID/CreateShot/FreezeGeneration search in upstream hn/service/handler/web services found no equivalent. Upstream storyboard prompts/director UI use other correlation concepts and do not establish immutable HN Shot-owned Generation; they are not adopted. No upstream main adoption or Provider backport. Conclusion limited to exact tip/scope; evidence in R6 Completion.

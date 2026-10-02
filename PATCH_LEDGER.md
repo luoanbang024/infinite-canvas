@@ -167,3 +167,24 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - EXTERNAL_WRITE_BOUNDARY = user authorizes only normal non-force pushes of this audited feature and governance-closed our-main to checked current origin; no other branch/tag/PR/Release/settings action.
 - REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit ownership/data compatibility review; never auto-delete stores/media.
 - ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R5 commits before integration; preserve all Result/Archive history and files.
+
+
+## HN stable Shot / Generation binding — P0-B R6
+
+- PATCH_ID = HN-AI-IC-P0-B-R6-SHOT-BINDING-001; TYPE = OUR_INTEGRATION_PATCH; SOURCE_COMMIT=None (locally authored, not upstream backport).
+- EXECUTION_ID = HN_AI_IC_P0_B_R6_SHOT_GENERATION_BINDING_WIRING; BASE_OUR_COMMIT = ff32dc249811130a3db69be456e295be100b6e9f.
+- INTRODUCED_IN_COMMIT = 0a06a6451d072b2b2ae76c4e96d3e233268370df; TEST_COMMIT = eefc641e0bd0ff76eb0a02ceef86fd79bf7eb0cb.
+- PURPOSE = stable project + exact sourceNodeId Shot identity before Generation freeze; no retroactive frozen ownership mapping.
+- LOCATION = new handler/service hn_shot.go, HN local-shot.ts and internal hn-shot-generation-prepare.ts; router Shot ensure POST/OPTIONS; existing HN generation service/client limited to ShotID/current SourceBaseline; focused tests.
+- FOUNDATION_REUSE = Open/List/Read/CreateShot/CreateGeneration/FreezeGeneration with unchanged shared HN writer lock; no foundation semantics/schema changes, uniqueness migration or Canvas node field.
+- IDENTITY = repeated ensure returns same Shot/initial label/timestamps; title changes do not rename; duplicate pre-existing source identity -> SHOT_IDENTITY_CONFLICT (409), no arbitrary selection. In-process serialization only; controlled single-writer cross-process policy retained.
+- GENERATION_WIRING = SHOT_AWARE_PREPARE_FREEZE_ONLY; explicit valid same-project ShotID fixed before freeze; new attempt -> new Generation ID/same Shot. Legacy HN prepare accepts omitted ShotID; new R6 helper requires one.
+- SOURCE_BASELINE = ff32dc249811130a3db69be456e295be100b6e9f for all new successful updated preparations; historical R4/R5 records retain their original baseline. SOURCE_BASELINE_REVIEW_REQUIRED_ON_NEXT_STABLE_BASELINE_CHANGE.
+- HISTORICAL_GENERATION_REWRITE = NONE; FOUNDATION/R3_REFERENCE/R5_ARCHIVE_SEMANTIC_CHANGE = NONE; DATA_SCHEMA_IMPACT = existing independent Shot/Generation tables only, no migration.
+- PROVIDER_SELECTION = DEFERRED; TASKBINDING/RESULT/ARCHIVEJOB/CANDIDATE/SEQUENCEITEM_CREATED_BY_R6 = NONE; PROVIDER_CALLS/PAID_CALLS = NONE; PROVIDER/AUTH/UPSTREAM_DB_SCHEMA_CHANGE = NONE.
+- UPSTREAM_FIRST = fetched tip 6571143e4f51da7494d38572c76202b752cc5e0c; no equivalent ShotID/CreateShot/FreezeGeneration in checked service/handler/HN service scope and empty narrow v0.8.0->tip diff; upstream main not adopted.
+- VERIFICATION = go mod verify, root Go, Bridge, 45 frontend tests (38 existing + 7 R6), independent tsc, production build, production local router + Canvas helper ensure/freeze/restart/second-attempt/reopen count/hash smoke, protected source/lockfile and secret scans PASS; evidence in R6 Completion.
+- ADOPTION_STATE = LOCAL_FEATURE_PENDING_GPT_REVIEW; not audited/integrated; external push/merge NONE. our-main remains ff32dc249811130a3db69be456e295be100b6e9f.
+- LIMITATIONS = separate Ensure/Reference/Create/Freeze durable steps can retain a Shot/reference/DRAFT on later failure; no automatic Generation retry; no arbitrary unlabeled secret guarantee; no live UI/submit/editor or cross-process uniqueness claim.
+- REMOVAL_CONDITION = retire after formal adoption of an equivalent upstream implementation and explicit identity/data compatibility review; no automatic HN data deletion.
+- ROLLBACK = omit HN_PROJECTS_ROOT or revert isolated R6 commits before integration; preserve all Shot/Generation/history/reference data.
