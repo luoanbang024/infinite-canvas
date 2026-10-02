@@ -1,7 +1,6 @@
 package foundation
 
 import (
-	"encoding/json"
 	"errors"
 	"regexp"
 )
@@ -121,20 +120,10 @@ func (w *Workspace) RecordSubmissionAccepted(generationID, bindingID, localTaskI
 // A reopened in-flight attempt may have reached the external system. Retain its
 // binding and sacrifice the attempt rather than permit a duplicate invocation.
 func (w *Workspace) reconcileSubmissions() error {
-	rows, err := w.List("generations")
-	if err != nil {
-		return err
-	}
-	for _, raw := range rows {
-		var g Generation
-		if err = json.Unmarshal(raw, &g); err != nil {
-			return err
-		}
-		if g.SubmissionState == "SUBMITTING" {
-			if err = w.MarkSubmissionUnknown(g.ID); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
+	// Guard the current durable state in the write itself: an acceptance committed
+	// by another handle since Open's integrity checks must never be downgraded.
+	_, err := w.db.Exec(`UPDATE generations SET data=json_set(data,
+		'$.submissionState','SUBMISSION_UNKNOWN','$.status','SUBMISSION_UNKNOWN','$.updatedAt',?)
+		WHERE project_id=? AND json_extract(data,'$.submissionState')='SUBMITTING'`, timestamp(), w.ProjectID)
+	return err
 }

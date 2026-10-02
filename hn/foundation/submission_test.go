@@ -219,3 +219,23 @@ func TestSubmissionReopenKeepsOwnerAndRequest(t *testing.T) {
 	}
 	t.Log("STALE_SUBMITTING_REOPEN=SUBMISSION_UNKNOWN BINDING_PRESERVED=PASS SECOND_REOPEN_UNCHANGED=PASS SCHEMA=1")
 }
+
+func TestSubmissionReconciliationKeepsAcceptedState(t *testing.T) {
+	w := newWorkspace(t)
+	g := submissionFixture(t, w)
+	other, e := Open(filepath.Dir(w.Root), w.ProjectID)
+	okay(t, e)
+	defer other.Close()
+	_, b, e := w.BeginSubmission(g.ID)
+	okay(t, e)
+	_, e = w.RecordSubmissionAccepted(g.ID, b.ID, "", "fake-accepted-before-reconcile")
+	okay(t, e)
+	before := get[Generation](t, w, "generations", g.ID)
+	bound := get[TaskBinding](t, w, "task_bindings", b.ID)
+	// Represents another Open whose integrity phase preceded the accepted commit.
+	okay(t, other.reconcileSubmissions())
+	if !reflect.DeepEqual(before, get[Generation](t, w, "generations", g.ID)) || !reflect.DeepEqual(bound, get[TaskBinding](t, w, "task_bindings", b.ID)) {
+		t.Fatal("reconciliation downgraded accepted facts")
+	}
+	t.Log("ACCEPTANCE_BEFORE_RECONCILE=SUBMITTED/BOUND CURRENT_STATE_GUARD=PASS")
+}
