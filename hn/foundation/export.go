@@ -60,7 +60,7 @@ func (w *Workspace) Export(sequenceID string) (ExportManifest, error) {
 		if err = read(w.db, "results", i.ResultID, &r); err != nil {
 			return ExportManifest{}, err
 		}
-		if s.SelectedCandidateID != c.ID || c.ShotID != s.ID || c.ResultID != r.ID || c.GenerationID != r.GenerationID || r.Status != "ARCHIVED" {
+		if c.ShotID != s.ID || c.ResultID != r.ID || c.GenerationID != r.GenerationID || r.Status != "ARCHIVED" {
 			return ExportManifest{}, errors.New("sequence media not selected/archived")
 		}
 		if err = read(w.db, "archive_jobs", r.ArchiveJobID, &j); err != nil {
