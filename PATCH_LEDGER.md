@@ -448,3 +448,24 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - NEW_GENERATION_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32; GENERATION_SOURCE_BASELINE_CHANGE = NONE; HISTORICAL_GENERATION_REWRITE = NONE.
 - EXTERNAL_WRITE_SCOPE = normal non-force exact R16 feature and our-main only; MERGE = FAST_FORWARD_ONLY; CLOSEOUT_COMMITS = ONE_GOVERNANCE_ONLY; final stable SHA belongs only in Completion.
 - NEXT_CANDIDATE = NO_CREDENTIAL_LOCAL_PRODUCT_WORKFLOW_EXECUTION after closeout GPT Review and separate scope; not started here. Await this closeout Completion GPT Review.
+
+
+### HN-AI-IC-P0-B-R18-CANVAS-LOCAL-PREPARE-001
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R18_NO_CREDENTIAL_CANVAS_LOCAL_PREPARE; TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = PENDING_GPT_AUDIT; UPSTREAM_BACKPORT = false; not OUR_VERIFICATION_FIX.
+- BASE_OUR_COMMIT = c47cc05960bea70a2f69d12aca28160e37a14ccd; BRANCH = feature/p0-b-r18-no-credential-canvas-local-prepare.
+- INTRODUCED_IN_COMMIT = 5ba2dc86c23705f07035abc0f7e1dd3ac19c56f2; TEST_COMMIT = f5a697b0fbd42d6046bbd74b7f896f527c3e92c0; governance commit identity recorded in Completion to avoid self-reference.
+- SCOPE = five allowed Canvas production files, three new validation tests, six governance files. Existing Generate, audited HN helpers/services/Foundation and dependencies unchanged.
+- BEHAVIOR = clean empty Video -> 本地准备 Dialog -> all local Blob preflight/cache -> stable Shot -> optional exact ReferenceVersion bindings -> new frozen Generation PREPARED -> whitelisted hnLocalPrepared receipt only.
+- PROJECT_ID_MAPPING = canvas- + lowercase SHA-256 of exact allowed UTF-8 Canvas ID; no normalization/raw fallback/migration. Fixed Shot label Shot; same exact project/node preserves Shot.
+- UNBOUND_FACTS = Protocol empty / ProviderIdentity empty / ConnectionID absent; SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32; historical Generation rewrite NONE.
+- ATTEMPT = page-owned exact project/node lock before first await; one prepare POST per action; additional attempt requires click and confirmation; no automatic retry/failover. Ambiguous POST response = OUTCOME_UNKNOWN.
+- STATE = fresh validated response + same fingerprint CURRENT; edited business/reference facts STALE; same-fingerprint reload RELOADED_UNVERIFIED; no backend query. Visible Dialog rechecks local Blobs every 2 seconds, no HTTP or background worker.
+- API_KEY_SETUP / ACCOUNT_CREDENTIAL_CHECK / ACCOUNT_BALANCE_CHECK / ACCOUNT_ENTITLEMENT_CHECK / CHANNEL_SECRET_SETUP / LIVE_PROVIDER_VALIDATION = DEFERRED; API_KEY_INPUT / API_KEY_DETECTION / API_KEY_VALIDATION = SKIPPED; LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED; LIVE_VALIDATION_PREAUTH_STATUS = PAUSED_BY_USER_DECISION.
+- PROVIDER_BOUND_CALLS / REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0; REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE. New path does not call normal Generate, workflow submit, R10/R12 submit, R13 poll or R14 provider archive.
+- VERIFICATION = all execution-file regressions PASS; 79 frontend tests; production local handler composition and separate process reopen; normal Canvas store persistence with isolated synthetic adapter; exact final ZIP member scan in Completion.
+- LIMITATIONS = existing React/ReactDOM rendering plus direct controller/action calls; no installed DOM click harness, no new dependency. Normal Canvas persistence remains debounced 400ms and is not atomic with HN DB; history survives partial failure; no automatic reconcile/query. Cross-process uniqueness/live behavior not claimed.
+- R7/R8 = independent OUR_VERIFICATION_FIX provenance unchanged; R9/R15 validation records and R10/R12/R13/R14 source/tests unchanged.
+- REMOVAL_CONDITION = retire only after separately reviewed equivalent upstream product workflow adoption; never infer upstream backport.
+- ROLLBACK = revert this R18 UI/helper/metadata/test/governance patch after review; retain historical HN records, no automatic data cleanup.
+- MERGE = NONE; EXTERNAL_PUSH = NONE; await GPT Review / Audit.

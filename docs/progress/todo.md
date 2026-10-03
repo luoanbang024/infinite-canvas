@@ -18,3 +18,10 @@ description: 当前项目后续值得处理的事项
 - R10 provider-neutral at-most-once guard 已 GPT Audit PASS / fast-forward 集成，保留 pending-test 的真实业务与多进程 availability 限制。等待其 closeout Completion Review。Provider/account/credential/live 工作按当前政策统一延期；现有 fake/local guard 保留，不阻塞单独评审的无凭据本地产品工作。
 
 - R11 discovery 已 GPT Review PASS_WITH_REQUIRED_SCOPE_CORRECTION；R12 official H3 T2V adapter 和 identity freeze 修正已 GPT Audit PASS / fast-forward 集成，实现和测试字节保持，等待 audit closeout Completion GPT Review，详见 pending-test。R12 closeout 已 GPT Review PASS；R13/R14 已 AUDITED_INTEGRATED，R14 closeout 已 GPT Review PASS，实现和测试字节保持；R15 provider Result → 现有 R7/R8 editorial/export 已 GPT Audit PASS / AUDITED_VALIDATED，VALIDATION_ONLY / CROSS_BOUNDARY，无 implementation commit，R15 governance closeout 已 GPT Review PASS；既有 MiniMax readiness/one-task pre-auth 保留历史，现按用户决定 PAUSED_BY_USER_DECISION，不执行、不判失败。credential/channel secret、账户检查与 live Provider validation 统一延期；下一候选为无凭据本地 workflow，生产 route/UI 或其他实现仍需独立范围授权。
+
+
+## R18 后续审核门
+
+- R17 GPT Audit PASS 的唯一无凭据本地 UI 方案已实施为 R18，状态 PENDING_GPT_AUDIT；此项移入 pending-test.md，等待 Completion 的 GPT Review / Audit，再决定独立 integration closeout。
+- 后续用户浏览器 UI 验收和持久化中断限制见 pending-test.md；不扩展为 Provider submit、poll、Result/archive、Candidate/export UI。
+- R16 active deferral 继续：API Key setup、credential/account/balance/entitlement/channel secret/live 统一延期；input/detection/validation SKIPPED；pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。

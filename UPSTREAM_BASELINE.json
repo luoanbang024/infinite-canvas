@@ -35,7 +35,39 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [],
+  "pendingReview": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R18_NO_CREDENTIAL_CANVAS_LOCAL_PREPARE",
+      "patchId": "HN-AI-IC-P0-B-R18-CANVAS-LOCAL-PREPARE-001",
+      "type": "OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY",
+      "state": "PENDING_GPT_AUDIT",
+      "baseOurCommit": "c47cc05960bea70a2f69d12aca28160e37a14ccd",
+      "branch": "feature/p0-b-r18-no-credential-canvas-local-prepare",
+      "introducedInCommit": "5ba2dc86c23705f07035abc0f7e1dd3ac19c56f2",
+      "testCommit": "f5a697b0fbd42d6046bbd74b7f896f527c3e92c0",
+      "upstreamBackport": false,
+      "externalPush": false,
+      "mergeToOurMain": false,
+      "protocol": "",
+      "providerIdentity": "",
+      "connectionId": "ABSENT",
+      "sourceBaseline": "16047f46e2186373ea824e12e84ae8dfa2ccde32",
+      "generationSourceBaselineChange": "NONE",
+      "historicalGenerationRewrite": "NONE",
+      "providerBoundCalls": 0,
+      "realProviderCalls": 0,
+      "paidCalls": 0,
+      "realCredentialRead": "NONE",
+      "apiKeySetup": "DEFERRED",
+      "apiKeyInput": "SKIPPED",
+      "apiKeyDetection": "SKIPPED",
+      "apiKeyValidation": "SKIPPED",
+      "liveProviderValidation": "DEFERRED",
+      "liveValidationAuthorization": "NOT_GRANTED",
+      "liveValidationPreauthStatus": "PAUSED_BY_USER_DECISION",
+      "verification": "root Go / Bridge / 79 frontend tests / independent tsc / isolated production build / focused preservation / Canvas persistence reload / process reopen PASS"
+    }
+  ],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
