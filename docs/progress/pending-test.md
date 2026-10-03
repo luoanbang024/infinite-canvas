@@ -5,11 +5,11 @@ description: 当前版本已实现但仍需人工验证的变更项
 
 # 待测试
 
-## HN P0-B R16（治理范围更新，等待 GPT Review）
+## HN P0-B R16（GPT Audit PASS / ACTIVE_GOVERNANCE_POLICY，等待 audit-closeout Completion GPT Review）
 
 - API_KEY_SETUP = DEFERRED；API_KEY_INPUT / API_KEY_DETECTION / API_KEY_VALIDATION = SKIPPED。ACCOUNT_CREDENTIAL_CHECK / ACCOUNT_BALANCE_CHECK / ACCOUNT_ENTITLEMENT_CHECK / CHANNEL_SECRET_SETUP / LIVE_PROVIDER_VALIDATION = DEFERRED；LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED。
 - 既有 MiniMax readiness/one-task pre-auth = PAUSED_BY_USER_DECISION，不执行、不判失败、不删除历史。详见 [凭据延期与统一阶段策略](../hn/api_key_deferral_and_credential_strategy.md)；R10/R12/R13/R14/R15 fake/local 能力保留，无产品/test/Foundation/dependency/lockfile/Auth/schema/config 改动。
-- REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0；REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE。不是新的 implementation patch 或 audited validation；只等待本次治理 Completion GPT Review。
+- REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0；REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE。不是新的 implementation patch 或 audited validation；原 R16 GPT Audit PASS，已 fast-forward 集成。R16_AUDITED_COMPLETION_SHA256 = 07592d9e4f473812bbab8502921cfe76c0d19aa607f51595b5ea5ef3b856f5c7（40 ZIP members / 39 payloads）；本次仅治理 audit closeout，等待本次 closeout Completion GPT Review。
 - 无凭据的 local Canvas、Candidate/Sequence、export/handoff、非 secret UI、离线 error/recovery 工作不以缺失 Key 为阻塞，具体下一实现仍需独立执行与评审；本轮未启动。未来 credential workstream 统一延期，SourceBaseline 与历史 Generation 保持。
 
 ## HN P0-B R15（GPT Audit PASS / AUDITED_VALIDATED，保留后续业务限制）

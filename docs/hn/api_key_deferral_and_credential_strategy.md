@@ -5,6 +5,13 @@ EXECUTION_TYPE = GOVERNANCE_ONLY / SCOPE_POLICY_UPDATE
 BASE_OUR_COMMIT = 730602992a748cc332d7b61c0cbefeb0f68ecb06
 DECISION_SOURCE = 用户最新明确决定
 
+R16_GPT_AUDIT = PASS
+R16_POLICY_STATE = ACTIVE_GOVERNANCE_POLICY
+CLASSIFICATION = USER_SCOPE_POLICY_DECISION
+R16_AUDITED_COMPLETION_SHA256 = 07592d9e4f473812bbab8502921cfe76c0d19aa607f51595b5ea5ef3b856f5c7
+R16_AUDITED_COMPLETION_ZIP_MEMBERS = 40
+R16_AUDITED_COMPLETION_MANIFEST_PAYLOADS = 39
+
 API Key 相关工作现在统一延期，后面集中处理。本次仅记录调度与范围政策，不改变产品行为，不撤销已完成的 fake/local 能力。此前 MiniMax readiness / one-task live validation / pre-auth 保留历史，当前暂停，不执行、不判失败；Readiness PASS 从来不等于 live 付费调用授权。
 
 ```text
@@ -58,4 +65,4 @@ account model → credential type → credential storage/runtime boundary → Co
 
 ## 本次交付范围
 
-只创建策略文档并更新 CHANGELOG、PATCH_LEDGER、todo、pending-test。service/handler/hn/foundation/web/src、test/dependency/lockfile/Auth/upstream DB schema/config/settings 均保持。只在 feature/p0-b-r16-api-key-deferral 上创建一个 governance-only commit；不 merge，不 push，等待 GPT Review。
+只创建策略文档并更新 CHANGELOG、PATCH_LEDGER、todo、pending-test。service/handler/hn/foundation/web/src、test/dependency/lockfile/Auth/upstream DB schema/config/settings 均保持。R16 原执行在 feature/p0-b-r16-api-key-deferral 上创建一个 governance-only commit，无 merge/push；现 R16 GPT Audit PASS，原 commit 保持并 fast-forward 集成至 our-main，延期政策为 ACTIVE_GOVERNANCE_POLICY。本次只做治理 audit closeout，按授权正常非 force 推送 exact feature/our-main，结果见 Completion；等待本次 closeout Completion GPT Review，不启动任何凭据/live 或下一产品实现。

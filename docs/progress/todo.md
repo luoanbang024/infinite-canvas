@@ -9,7 +9,7 @@ description: 当前项目后续值得处理的事项
 
 ## HN 审核后窄范围后续
 
-- 当前有效范围政策：API Key setup/input/detection/validation、账户凭据/余额/权限与 channel secret setup、live Provider validation 统一延期到后续独立凭据阶段；LIVE_VALIDATION_PREAUTH_STATUS = PAUSED_BY_USER_DECISION，LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED。详见 [凭据延期策略](../hn/api_key_deferral_and_credential_strategy.md)。缺少 Key 不阻塞无关 local/fake 工作；下一实现候选为不依赖真实凭据的本地产品/UI workflow，仍需单独执行文件与评审，本轮不启动。
+- R16_GPT_AUDIT = PASS；R16_POLICY_STATE = ACTIVE_GOVERNANCE_POLICY；已 fast-forward 集成原审计 commit，等待 audit-closeout Completion GPT Review。当前有效范围政策：API Key setup/input/detection/validation、账户凭据/余额/权限与 channel secret setup、live Provider validation 统一延期到后续独立凭据阶段；LIVE_VALIDATION_PREAUTH_STATUS = PAUSED_BY_USER_DECISION，LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED。详见 [凭据延期策略](../hn/api_key_deferral_and_credential_strategy.md)。缺少 Key 不阻塞无关 local/fake 工作；下一实现候选为不依赖真实凭据的本地产品/UI workflow，仍需单独执行文件与评审，本轮不启动。
 
 - R7 stable closeout 为 R8 基线；R8 stable SequenceItem -> offline export API/adapter/bundle 已 GPT Audit PASS 并完成 fast-forward 集成与治理收口，该 R8 closeout 已 GPT Review PASS。仅移除 Export 当前 selection 依赖另记 OUR_VERIFICATION_FIX；R7 Reorder 修正保持。R9 三条 H.264/MP4 fixture 的剪映人工 handoff 已 AUDITED_VALIDATED；真实 Provider/TaskBinding adapter 继续延后独立决定；R10 fake TaskBinding lifecycle 已 GPT Audit PASS / fast-forward 集成，真实 adapter 仍未接线。
 - 下次 stable baseline 变化必须复核当前 HN SourceBaseline 常量/adapter/service/tests；R12 provider identity freeze review 将新准备绑定更新为 16047f46e2186373ea824e12e84ae8dfa2ccde32，历史记录不改写，当前绑定不自动覆盖后续升级。真实 Provider submit/idempotency、跨进程 writer、兼容 ID 映射和 unsupported bundles 仍需独立评审。

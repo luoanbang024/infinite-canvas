@@ -399,7 +399,7 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 ## R16 API Key deferral — user scope policy
 
 - EXECUTION_ID = HN_AI_IC_P0_B_R16_API_KEY_DEFERRAL_GOVERNANCE; TYPE = GOVERNANCE_ONLY / SCOPE_POLICY_UPDATE; DECISION_SOURCE = USER_EXPLICIT_DECISION; BASE_OUR_COMMIT = 730602992a748cc332d7b61c0cbefeb0f68ecb06.
-- CLASSIFICATION = USER_SCOPE_POLICY_DECISION; no implementation patch / verification fix / upstream backport / new audited integration or validation category. Await GPT Review.
+- CLASSIFICATION = USER_SCOPE_POLICY_DECISION; no implementation patch / verification fix / upstream backport / new audited integration or validation category. R16_GPT_AUDIT = PASS; R16_POLICY_STATE = ACTIVE_GOVERNANCE_POLICY; audited original commit preserved and fast-forward integrated; await audit-closeout Completion GPT Review.
 - API_KEY_SETUP = DEFERRED.
 - API_KEY_INPUT = SKIPPED.
 - API_KEY_DETECTION = SKIPPED.
@@ -422,3 +422,29 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - NEXT_CANDIDATE = NO_CREDENTIAL_LOCAL_PRODUCT_WORKFLOW_EXECUTION; implementation requires separate scope/review, not started here. Missing real credentials do not block unrelated local/fake work.
 - FUTURE_CREDENTIAL_PHASE = account model -> credential type -> storage/runtime boundary -> ConnectionID ownership -> input/setup UX -> detection -> validation -> entitlement/balance policy -> live authorization. Entire phase deferred.
 - BRANCH = feature/p0-b-r16-api-key-deferral; EXACTLY_ONE_GOVERNANCE_ONLY_COMMIT; MERGE = NONE; EXTERNAL_PUSH = NONE.
+
+## R16 policy audit closeout — corrected V2 binding
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R16_AUDIT_CLOSEOUT_INTEGRATION; TYPE = GOVERNANCE_ONLY / AUDIT_CLOSEOUT; R16_TYPE = GOVERNANCE_ONLY / SCOPE_POLICY_UPDATE; CLASSIFICATION = USER_SCOPE_POLICY_DECISION.
+- R16_GPT_AUDIT = PASS; R16_POLICY_STATE = ACTIVE_GOVERNANCE_POLICY; original R16 commit 2dcfaaae9c1fbd985863fd8926e4c72de1591823 preserved, no amend/rebase/squash/rewrite.
+- R16_AUDITED_COMPLETION_SHA256 = 07592d9e4f473812bbab8502921cfe76c0d19aa607f51595b5ea5ef3b856f5c7; R16_AUDITED_COMPLETION_ZIP_MEMBERS = 40; R16_AUDITED_COMPLETION_MANIFEST_PAYLOADS = 39; CRC / exact manifest bytes+hashes PASS before any push/fast-forward. V2 corrected binding governs this closeout.
+- API_KEY_SETUP = DEFERRED.
+- API_KEY_INPUT = SKIPPED.
+- API_KEY_DETECTION = SKIPPED.
+- API_KEY_VALIDATION = SKIPPED.
+- ACCOUNT_CREDENTIAL_CHECK = DEFERRED.
+- ACCOUNT_BALANCE_CHECK = DEFERRED.
+- ACCOUNT_ENTITLEMENT_CHECK = DEFERRED.
+- CHANNEL_SECRET_SETUP = DEFERRED.
+- LIVE_PROVIDER_VALIDATION = DEFERRED.
+- LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED.
+- REAL_PROVIDER_CALLS = 0.
+- PAID_CALLS = 0.
+- REAL_TASK_CREATED = 0.
+- REAL_CREDENTIAL_READ = NONE.
+- REAL_REMOTE_MEDIA_DOWNLOAD = NONE.
+- LIVE_VALIDATION_PREAUTH_STATUS = PAUSED_BY_USER_DECISION.
+- UPSTREAM_BASELINE_JSON_CHANGE = NONE; R16 not added to auditedIntegrations / auditedValidations / auditedVerificationFixes. Production/test/Foundation/dependency/lockfile/Auth/schema/config/settings bytes unchanged; R10/R12/R13/R14/R15, R7/R8 independent OUR_VERIFICATION_FIX and R9/R15 audited validation preserved.
+- NEW_GENERATION_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32; GENERATION_SOURCE_BASELINE_CHANGE = NONE; HISTORICAL_GENERATION_REWRITE = NONE.
+- EXTERNAL_WRITE_SCOPE = normal non-force exact R16 feature and our-main only; MERGE = FAST_FORWARD_ONLY; CLOSEOUT_COMMITS = ONE_GOVERNANCE_ONLY; final stable SHA belongs only in Completion.
+- NEXT_CANDIDATE = NO_CREDENTIAL_LOCAL_PRODUCT_WORKFLOW_EXECUTION after closeout GPT Review and separate scope; not started here. Await this closeout Completion GPT Review.
