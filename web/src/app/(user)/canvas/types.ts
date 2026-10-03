@@ -32,7 +32,15 @@ export type CameraControlOptions = {
     aperture: number;
 };
 
+export type HNLocalPreparedReceipt = {
+    version: 1; canvasProjectId: string; hnProjectId: string; sourceNodeId: string;
+    shotId: string; generationId: string; frozenHash: string; preparedAt: string;
+    sourceBaseline: string; requestFingerprint: string;
+    snapshot: { model: string; seconds: string; vquality: string; size: string; referenceCount: number };
+};
+
 export type CanvasNodeMetadata = {
+    hnLocalPrepared?: HNLocalPreparedReceipt;
     content?: string;
     groupId?: string;
     composerContent?: string;

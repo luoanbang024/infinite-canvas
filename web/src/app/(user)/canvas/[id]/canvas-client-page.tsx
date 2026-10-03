@@ -54,6 +54,8 @@ import { CanvasNodeSplitDialog, type CanvasImageSplitParams } from "../component
 import { CanvasNodeUpscaleDialog, type CanvasImageUpscaleParams } from "../components/canvas-node-upscale-dialog";
 import { buildNodeChatMessages, buildNodeGenerationContext, buildNodeGenerationInputs, hydrateNodeGenerationContext, type NodeGenerationContext, type NodeGenerationInput } from "../components/canvas-node-generation";
 import { CanvasNodeHoverToolbar, CanvasNodeInfoModal } from "../components/canvas-node-hover-toolbar";
+import { CanvasHNLocalPrepareDialog } from "../components/canvas-hn-local-prepare-dialog";
+import { captureHNLocalIntent, HNLocalPrepareController, mergeHNLocalReceipt } from "../components/hn-local-canvas-prepare";
 import { InfiniteCanvas } from "../components/infinite-canvas";
 import { Minimap } from "../components/canvas-mini-map";
 import { CanvasNode } from "../components/canvas-node";
@@ -81,6 +83,7 @@ import {
     type CanvasImageGenerationType,
     type CanvasNodeData,
     type CanvasNodeMetadata,
+    type HNLocalPreparedReceipt,
     type CanvasPendingAgentRequest,
     type ConnectionHandle,
     type ContextMenuState,
@@ -395,6 +398,34 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
     const [dialogNodeId, setDialogNodeId] = useState<string | null>(null);
     const [openDirectorNodeId, setOpenDirectorNodeId] = useState<string | null>(null);
     const [infoNodeId, setInfoNodeId] = useState<string | null>(null);
+    const [localPrepareNodeId, setLocalPrepareNodeId] = useState<string | null>(null);
+    const [, refreshLocalPrepare] = useState(0);
+    const localPrepareController = useRef<HNLocalPrepareController | null>(null);
+    if (!localPrepareController.current) localPrepareController.current = new HNLocalPrepareController(() => refreshLocalPrepare((n) => n + 1));
+    const localPrepareDependencies = useMemo(() => ({ readBlob: getImageBlob }), []);
+    useEffect(() => {
+        const controller = localPrepareController.current!; controller.activate();
+        return () => controller.dispose();
+    }, []);
+    useEffect(() => { localPrepareController.current!.syncTargets(projectId, nodes); }, [projectId, nodes]);
+    const localPrepareBusiness = useMemo(() => ({
+        model: effectiveConfig.videoModel, size: effectiveConfig.videoSize || defaultConfig.videoSize,
+        videoSeconds: effectiveConfig.videoSeconds, vquality: effectiveConfig.vquality, videoMode: effectiveConfig.videoMode,
+        videoNegativePrompt: effectiveConfig.videoNegativePrompt, videoMultiShot: effectiveConfig.videoMultiShot,
+        videoShotType: effectiveConfig.videoShotType, videoMultiPrompt: effectiveConfig.videoMultiPrompt.map(({ prompt, duration }) => ({ prompt, duration })),
+        videoGenerateAudio: effectiveConfig.videoGenerateAudio, videoWatermark: effectiveConfig.videoWatermark,
+        videoCharacterOrientation: effectiveConfig.videoCharacterOrientation,
+    }), [effectiveConfig]);
+    const localPrepareSnapshot = useMemo(() => ({ projectId, nodes, connections, business: localPrepareBusiness }), [projectId, nodes, connections, localPrepareBusiness]);
+    const localPrepareSnapshotRef = useRef(localPrepareSnapshot);
+    localPrepareSnapshotRef.current = localPrepareSnapshot;
+    const readLocalPrepareIntent = useCallback((nodeId: string) => {
+        const current = localPrepareSnapshotRef.current;
+        return captureHNLocalIntent(current.projectId, nodeId, current.nodes, current.connections, current.business);
+    }, []);
+    const receiveLocalPrepareReceipt = useCallback((receipt: HNLocalPreparedReceipt) => {
+        setNodes((current) => mergeHNLocalReceipt(current, receipt, localPrepareSnapshotRef.current.projectId));
+    }, []);
     const [cropNodeId, setCropNodeId] = useState<string | null>(null);
     const [audioTrimNodeId, setAudioTrimNodeId] = useState<string | null>(null);
     const [audioTrimStart, setAudioTrimStart] = useState(0);
@@ -4328,6 +4359,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
                     onUploadMediaToCloud={(node) => void uploadNodeMediaToCloud(node)}
                     onUploadImageToCloud={(node) => void uploadNodeImageToCloud(node)}
                     onFreezeReference={(node) => void freezeNodeReference(node)}
+                    onLocalPrepare={(node) => setLocalPrepareNodeId(node.id)}
                     onMaskEdit={(node) => {
                         const nodeConfig = buildGenerationConfig(effectiveConfig, node, "image");
                         setMaskEditModel(nodeConfig.model);
@@ -4440,6 +4472,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
                 <input ref={imageInputRef} type="file" accept="image/*,video/*,audio/mpeg,audio/wav,audio/x-wav,.mp3,.wav" className="hidden" onChange={handleImageInputChange} />
 
                 <CanvasNodeInfoModal node={infoNode} open={Boolean(infoNode)} onClose={() => setInfoNodeId(null)} />
+                <CanvasHNLocalPrepareDialog open={Boolean(localPrepareNodeId)} canvasProjectId={projectId} nodeId={localPrepareNodeId} controller={localPrepareController.current!} intentRevision={localPrepareSnapshot} readIntent={readLocalPrepareIntent} dependencies={localPrepareDependencies} onReceipt={receiveLocalPrepareReceipt} onClose={() => setLocalPrepareNodeId(null)} />
 
                 <Modal
                     title="截取音频"
