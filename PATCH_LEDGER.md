@@ -452,7 +452,7 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 
 ### HN-AI-IC-P0-B-R18-CANVAS-LOCAL-PREPARE-001
 
-- EXECUTION_ID = HN_AI_IC_P0_B_R18_NO_CREDENTIAL_CANVAS_LOCAL_PREPARE; TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = PENDING_GPT_AUDIT; UPSTREAM_BACKPORT = false; not OUR_VERIFICATION_FIX.
+- EXECUTION_ID = HN_AI_IC_P0_B_R18_NO_CREDENTIAL_CANVAS_LOCAL_PREPARE; TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = AUDITED_INTEGRATED; GPT_AUDIT = PASS; UPSTREAM_BACKPORT = false; not OUR_VERIFICATION_FIX.
 - BASE_OUR_COMMIT = c47cc05960bea70a2f69d12aca28160e37a14ccd; BRANCH = feature/p0-b-r18-no-credential-canvas-local-prepare.
 - INTRODUCED_IN_COMMIT = 5ba2dc86c23705f07035abc0f7e1dd3ac19c56f2; TEST_COMMIT = f5a697b0fbd42d6046bbd74b7f896f527c3e92c0; governance commit identity recorded in Completion to avoid self-reference.
 - SCOPE = five allowed Canvas production files, three new validation tests, six governance files. Existing Generate, audited HN helpers/services/Foundation and dependencies unchanged.
@@ -468,4 +468,8 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - R7/R8 = independent OUR_VERIFICATION_FIX provenance unchanged; R9/R15 validation records and R10/R12/R13/R14 source/tests unchanged.
 - REMOVAL_CONDITION = retire only after separately reviewed equivalent upstream product workflow adoption; never infer upstream backport.
 - ROLLBACK = revert this R18 UI/helper/metadata/test/governance patch after review; retain historical HN records, no automatic data cleanup.
-- MERGE = NONE; EXTERNAL_PUSH = NONE; await GPT Review / Audit.
+- INTEGRATION = FAST_FORWARD_ONLY; REVIEWED_FEATURE_PUSH = NORMAL_NON_FORCE; our-main closeout push only after focused verification; await closeout Completion GPT Review.
+
+- AUDIT_BINDING = FEATURE_HEAD 7073b6e7b6ffb9672671f9f787916db7c745b2de; AUDITED_COMPLETION_SHA256 a9291465c035c71cccff29f2f6fab22856894abe66c83d85f565c87c5b777c42; ZIP members 80 / manifest payloads 79 / CRC / exact final scan inventory verified before any push. Three reviewed commits preserved; no rewrite.
+- CLOSEOUT = GOVERNANCE_ONLY / AUDIT_CLOSEOUT; exactly one governance-only commit; R18 record moved pendingReview -> auditedIntegrations. R18 production/tests and all protected audited source bytes unchanged; focused evidence and resulting stable SHA belong only in Completion.
+- CANVAS_RECEIPT_BACKEND_AUTHORITATIVE_AFTER_RELOAD = NO; RELOAD_STATE = RELOADED_UNVERIFIED; CANVAS_HN_CROSS_STORE_ATOMICITY = NOT_CLAIMED; BACKEND_READ_STATUS_ENDPOINT = NONE; PROVIDER_BOUND_GENERATION = NONE; FUTURE_DIRECT_SUBMIT_OF_R18_GENERATION = NOT_ALLOWED; ACTUAL_BROWSER_INDEXEDDB_ACCEPTANCE = NOT_CLAIMED; RESULT_CANDIDATE_SEQUENCE_EXPORT_UI = NOT_IN_R18; LIVE_PROVIDER_VALIDATION = DEFERRED.

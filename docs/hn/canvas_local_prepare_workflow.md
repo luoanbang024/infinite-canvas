@@ -2,7 +2,8 @@
 
 EXECUTION_ID = HN_AI_IC_P0_B_R18_NO_CREDENTIAL_CANVAS_LOCAL_PREPARE
 TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 UPSTREAM_BACKPORT = false
 
 只在 clean empty Video intent 的 Hover Toolbar 显示“本地准备”。已有内容、工作流、任务或非 idle 状态不可用。原生成、重试、快捷键和 Agent 路径保持。
@@ -27,4 +28,12 @@ fingerprint 为 schemaVersion/project/node/applied prompt/model/empty binding/ca
 
 API_KEY_SETUP、ACCOUNT_CREDENTIAL_CHECK、ACCOUNT_BALANCE_CHECK、ACCOUNT_ENTITLEMENT_CHECK、CHANNEL_SECRET_SETUP、LIVE_PROVIDER_VALIDATION = DEFERRED；API_KEY_INPUT / API_KEY_DETECTION / API_KEY_VALIDATION = SKIPPED；LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED；LIVE_VALIDATION_PREAUTH_STATUS = PAUSED_BY_USER_DECISION。PROVIDER_BOUND_CALLS / REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0；REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE。
 
-Root Go、Bridge、79 frontend tests、独立 tsc、隔离 production build 和 focused preservation PASS。当前已有 ReactDOM rendering + direct event/controller tests；没有新增 DOM 测试依赖。真实用户浏览器布局、IndexedDB、跨进程唯一性、live/provider/codec/editor 能力均不在本次验收声明中。R7/R8 independent verification fix、R9/R15 validations、Foundation 和 R10/R12/R13/R14 原实现字节保持。无 merge/push，等待 GPT Review / Audit。
+Root Go、Bridge、79 frontend tests、独立 tsc、隔离 production build 和 focused preservation PASS。当前已有 ReactDOM rendering + direct event/controller tests；没有新增 DOM 测试依赖。真实用户浏览器布局、IndexedDB、跨进程唯一性、live/provider/codec/editor 能力均不在本次验收声明中。R7/R8 independent verification fix、R9/R15 validations、Foundation 和 R10/R12/R13/R14 原实现字节保持。已审计 feature 正常非 force 推送并 fast-forward 集成；本次只做 governance-only closeout，focused verification 与最终 our-main push/stable SHA 见收口 Completion，等待其 GPT Review。
+
+
+## R18 审计收口
+
+- FEATURE_HEAD = 7073b6e7b6ffb9672671f9f787916db7c745b2de；AUDITED_COMPLETION_SHA256 = a9291465c035c71cccff29f2f6fab22856894abe66c83d85f565c87c5b777c42；80 ZIP members、79 payload bytes/hash、CRC 和 exact final scan inventory 在 push 前重新核验通过。原三个 commits 不重写；R18 实现/测试保持字节不变。
+- CANVAS_RECEIPT_BACKEND_AUTHORITATIVE_AFTER_RELOAD = NO；RELOAD_STATE = RELOADED_UNVERIFIED；CANVAS_HN_CROSS_STORE_ATOMICITY = NOT_CLAIMED；BACKEND_READ_STATUS_ENDPOINT = NONE。
+- PROVIDER_BOUND_GENERATION = NONE；FUTURE_DIRECT_SUBMIT_OF_R18_GENERATION = NOT_ALLOWED；ACTUAL_BROWSER_INDEXEDDB_ACCEPTANCE = NOT_CLAIMED；RESULT_CANDIDATE_SEQUENCE_EXPORT_UI = NOT_IN_R18；LIVE_PROVIDER_VALIDATION = DEFERRED。
+- 本次恰好一个 governance-only closeout commit；仅 normal non-force 已审计 feature 与 our-main push。focused checks、remote-ref 验证和 stable SHA 只记录 Completion。R7/R8 两项 verification fix、R9/R15 validations、R16 deferral、当前 SourceBaseline 与所有既有审计源码保持。没有 PR/Release/tag/settings 或后续阶段开发。

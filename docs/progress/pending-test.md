@@ -105,12 +105,12 @@ description: 当前版本已实现但仍需人工验证的变更项
 - R10 TYPE 保持 OUR_EXTENSION / RELIABILITY_WIRING；多进程 availability 不承诺，task recovery / 真实 Provider ID compatibility 延后，真实 transport 必须先评审禁止 hidden retry。等待 closeout Completion Review，不开始真实 Provider 选择/Key/submit/polling/download。
 
 
-## HN P0-B R18（PENDING_GPT_AUDIT / 无凭据本地准备）
+## HN P0-B R18（GPT Audit PASS / AUDITED_INTEGRATED / 无凭据本地准备）
 
 - TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY；空 Video intent 的“本地准备”工具栏入口与本地视频准备 Dialog 已实现。明确说明“仅冻结本地业务请求，不调用模型、不生成视频。渠道未绑定。”，打开/重开只有本地检查，HTTP write = 0。
 - 精确项目 ID 哈希映射、固定 label 的稳定 Shot、预先缓存本地图片 Blob、ReferenceVersion 绑定、新 frozen Generation PREPARED 和最小回执；Protocol / ProviderIdentity 为空，ConnectionID absent，SourceBaseline 保持 16047f46e2186373ea824e12e84ae8dfa2ccde32，历史不改写。
 - page-scoped exact project/node guard，首次 action 一次 POST，第二次显式 action + confirmation；编辑后 STALE，同 fingerprint reload 仅 RELOADED_UNVERIFIED；不确定 POST 为 OUTCOME_UNKNOWN，无自动 resend。当前 Dialog 每两秒仅重查本地 Blob/fingerprint，关闭即停止，不进行 HN query 或 Provider polling。
 - root Go、Bridge、79 frontend tests、独立 tsc、隔离 production build、原审计 focused regressions、正常 Canvas store 隔离持久化/重载与 HN 独立进程重开 PASS。现有 ReactDOM SSR + event/controller harness，不声称真实 DOM 点击/用户浏览器验收；不新增测试依赖。
-- 待 GPT Audit 与后续用户 UI 验收：真实浏览器 toolbar/Modal、主题/边缘布局、用户项目/缓存丢失行为；不读取真实凭据。Canvas debounce 400ms 与 HN durable steps 非跨库原子；进程中断可能没有 Canvas receipt；不会后台查询/重试/删除历史。
+- GPT Audit PASS 后仍保留后续用户 UI 验收：真实浏览器 toolbar/Modal、主题/边缘布局、用户项目/缓存丢失行为；不读取真实凭据。Canvas debounce 400ms 与 HN durable steps 非跨库原子；进程中断可能没有 Canvas receipt；不会后台查询/重试/删除历史。
 - Provider-bound / real / paid calls = 0；TaskBinding/Result/ArchiveJob/Candidate/SequenceItem = 0（R18 组合 fixture）；API Key、账户、余额/权限、channel secret/live 工作仍延期。R7/R8 修正与 R9/R15 验证记录、R10–R15 原实现/测试保持。
-- 分支本地完成，不 merge、不 push；详见 docs/hn/canvas_local_prepare_workflow.md 与 Completion。
+- 已审计 feature 正常非 force 推送并 fast-forward 集成；本次 governance-only closeout 保持实现/测试字节，focused verification 与最终 our-main push 见收口 Completion，等待其 GPT Review；详见 docs/hn/canvas_local_prepare_workflow.md 与 Completion。
