@@ -114,3 +114,13 @@ description: 当前版本已实现但仍需人工验证的变更项
 - GPT Audit PASS 后仍保留后续用户 UI 验收：真实浏览器 toolbar/Modal、主题/边缘布局、用户项目/缓存丢失行为；不读取真实凭据。Canvas debounce 400ms 与 HN durable steps 非跨库原子；进程中断可能没有 Canvas receipt；不会后台查询/重试/删除历史。
 - Provider-bound / real / paid calls = 0；TaskBinding/Result/ArchiveJob/Candidate/SequenceItem = 0（R18 组合 fixture）；API Key、账户、余额/权限、channel secret/live 工作仍延期。R7/R8 修正与 R9/R15 验证记录、R10–R15 原实现/测试保持。
 - 已审计 feature 正常非 force 推送并 fast-forward 集成；本次 governance-only closeout 保持实现/测试字节，focused verification 与最终 our-main push 见收口 Completion，等待其 GPT Review；详见 docs/hn/canvas_local_prepare_workflow.md 与 Completion。
+
+
+## HN P0-B R20（PENDING_GPT_AUDIT / 本地视频归档 UI）
+
+- 同一个 R18 prepared Video + 本地 video:/file: Blob -> 归档 Dialog -> R5 Result/ArchiveJob -> safe receipt；不声明 AI/Provider 成功，不改正常 status/上传/Generate。详情见 docs/hn/canvas_local_archive_workflow.md。
+- root Go、Bridge、101 frontend tests、独立 tsc、隔离 production build、R5/R6/R7/R8/R10/R12/R13/R14/R18/full Foundation preservation PASS；真实 localhost fixture server observed POST=1，同 bytes 重复 fresh=0；production Go fresh A/B 不同 IDs，同 job retry，独立进程 reopen、hash/bytes/sidecar/local provenance PASS。
+- journal write/read-back/strict attemptId 是前置 POST 安全屏障；失败=0 POST；首次 response loss UNKNOWN 禁止 fresh 重发；已知 422 只同 job retry；成功后改 bytes 必须再次确认新归档。reload 已知 receipt 仅 RELOADED_UNVERIFIED，pending 转 UNKNOWN；undo 不清 journal。
+- 待 GPT Audit 及真实用户浏览器 toolbar/Modal/IndexedDB/主题/边缘布局/缓存丢失验收；自动证据为 ReactDOM SSR、injected journal/controller 与 production localhost/handler/process reopen，不声称真实 IndexedDB acceptance。合成 MP4 只证明签名/hash/bytes，不证明 codec playback。
+- page lock 无跨 tab/global exactly-once；Canvas/HN/journal 无跨库原子事务；未知首次可能产生孤立 HN facts，保守停止，无 backend query/recovery/自动删除；用户删除全部 journal/receipt、跨进程 writer 和浏览器存储故障 availability 保留限制。
+- API Key/account/balance/entitlement/channel secret/live 延期；Provider/paid calls=0；Candidate/Selection/Sequence/Reorder/Export 未实现。R5/Foundation/R18 helper、R7/R8 fix、R9/R15 records 与 R10–R14 原实现保持；不 merge、不 push，等待 Review。

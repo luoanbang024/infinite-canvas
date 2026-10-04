@@ -2,6 +2,8 @@
 
 ## Unreleased
 
++ [新增] 同一 R18 prepared 视频节点的“归档本地视频”入口（R20 待 GPT Audit；先持久化 attempt journal、同字节防重复、未知结果停止、显式同 Job 重试；仅本地附件，不声明 AI/Provider 成功）。
+
 + [新增] 空视频节点的“本地准备”入口与冻结回执（R18 GPT Audit PASS / 已 fast-forward 集成；稳定 Shot、本地图片参考、PREPARED、新 attempt 显式确认；无凭据、无 Provider 调用）。
 
 + [治理] R16 API Key 延期政策已 GPT Audit PASS / ACTIVE_GOVERNANCE_POLICY 并 fast-forward 集成；API Key 输入/检测/验证、账户凭据/余额/权限与 live Provider 验证统一延期；既有 MiniMax one-task pre-auth 按用户决定暂停，保留 R10–R15 fake/local 审计能力，无产品代码或真实调用。

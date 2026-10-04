@@ -473,3 +473,23 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - AUDIT_BINDING = FEATURE_HEAD 7073b6e7b6ffb9672671f9f787916db7c745b2de; AUDITED_COMPLETION_SHA256 a9291465c035c71cccff29f2f6fab22856894abe66c83d85f565c87c5b777c42; ZIP members 80 / manifest payloads 79 / CRC / exact final scan inventory verified before any push. Three reviewed commits preserved; no rewrite.
 - CLOSEOUT = GOVERNANCE_ONLY / AUDIT_CLOSEOUT; exactly one governance-only commit; R18 record moved pendingReview -> auditedIntegrations. R18 production/tests and all protected audited source bytes unchanged; focused evidence and resulting stable SHA belong only in Completion.
 - CANVAS_RECEIPT_BACKEND_AUTHORITATIVE_AFTER_RELOAD = NO; RELOAD_STATE = RELOADED_UNVERIFIED; CANVAS_HN_CROSS_STORE_ATOMICITY = NOT_CLAIMED; BACKEND_READ_STATUS_ENDPOINT = NONE; PROVIDER_BOUND_GENERATION = NONE; FUTURE_DIRECT_SUBMIT_OF_R18_GENERATION = NOT_ALLOWED; ACTUAL_BROWSER_INDEXEDDB_ACCEPTANCE = NOT_CLAIMED; RESULT_CANDIDATE_SEQUENCE_EXPORT_UI = NOT_IN_R18; LIVE_PROVIDER_VALIDATION = DEFERRED.
+
+
+### HN-AI-IC-P0-B-R20-CANVAS-LOCAL-ARCHIVE-001
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R20_NO_CREDENTIAL_CANVAS_LOCAL_RESULT_ARCHIVE; TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = PENDING_GPT_AUDIT; UPSTREAM_BACKPORT = false; not OUR_VERIFICATION_FIX.
+- BASE_OUR_COMMIT = 015b17a4e27579293d1a918d7b0dc4ec3b99ebf8; BRANCH = feature/p0-b-r20-no-credential-canvas-local-result-archive; R19_GPT_AUDIT = PASS.
+- INTRODUCED_IN_COMMIT = 5bf08c3300f780a466198463bbae424ce259f174; TEST_COMMIT = ffb78faf6f8cbf80ebe87369cc8b84ab2664fff2; governance commit identity belongs in Completion.
+- SCOPE = five exact Canvas production files / four new tests / six governance files; R5 production / Foundation / audited helpers / normal Generate / upload / Cloud / dependency / lockfile unchanged.
+- LOCAL_RESULT_ARCHIVE_DOES_NOT_ASSERT_PROVIDER_SUCCESS; MANDATORY_WORDING = 仅把当前本地视频附加到此节点的历史冻结请求并归档；不证明 AI/Provider 生成成功，不调用模型。
+- REQUEST = video:/file: exact Blob -> R5 local fresh/retry only; page exact project/node lock before first await; await ARCHIVING journal write/read-back and strict attemptId/owner/bytes validation before any POST; journal failure POST=0.
+- R5_FRESH_REPEAT = NEW_RESULT_NEW_JOB; UI_SAME_BYTES_AFTER_SUCCESS_FRESH_POST = 0; KNOWN_SUCCESS_CHANGED_BYTES = EXPLICIT_NEW_ARCHIVE_CONFIRMATION_ONLY.
+- KNOWN_FAILED_RETRY = EXACT_ORIGINAL_RESULT_JOB_GENERATION_SOURCE_BYTES; allowed 422 pairs ARCHIVE_FAILED+FAILED or RECEIVED+PENDING/COPYING/FINALIZING. Invalid facts/response loss -> UNKNOWN; fresh unknown resend/override = NONE.
+- RELOAD_ARCHIVING = ARCHIVE_OUTCOME_UNKNOWN; RELOAD_KNOWN_RECEIPT = RELOADED_UNVERIFIED; CANVAS_UNDO_DOES_NOT_CLEAR_JOURNAL; BACKEND_READ_ENDPOINT = NONE; raw URL/path/storageKey/name/prompt/Key/provider response in receipt = NONE.
+- SOURCE_BASELINE_CHANGE = NONE; HISTORICAL_GENERATION_REWRITE = NONE; R18_SOURCE_BASELINE = 16047f46e2186373ea824e12e84ae8dfa2ccde32.
+- CANDIDATE_SELECTION_SEQUENCE_REORDER_EXPORT = NONE; TASKBINDING_CREATED = 0; PROVIDER_PROVENANCE = NONE; API_KEY_SETUP / ACCOUNT_CREDENTIAL_CHECK / ACCOUNT_BALANCE_CHECK / ACCOUNT_ENTITLEMENT_CHECK / CHANNEL_SECRET_SETUP / LIVE_PROVIDER_VALIDATION = DEFERRED；API_KEY_INPUT / API_KEY_DETECTION / API_KEY_VALIDATION = SKIPPED；LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED；LIVE_VALIDATION_PREAUTH_STATUS = PAUSED_BY_USER_DECISION；PROVIDER_BOUND_CALLS / REAL_PROVIDER_CALLS / PAID_CALLS / REAL_TASK_CREATED = 0；REAL_CREDENTIAL_READ / REAL_REMOTE_MEDIA_DOWNLOAD = NONE。
+- VERIFICATION = root Go / Bridge / 101 frontend / independent tsc / isolated production build / focused preservation / full Foundation / production handler and child process reopen PASS; exact final ZIP scan evidence belongs in Completion.
+- LIMITATIONS = SSR/controller/fake journal, not real browser IndexedDB acceptance; no cross-tab/global lock, cross-store atomicity or unknown fresh recovery; no codec playback claim. Journal loss/availability constraints remain documented.
+- R7 afc8c28867028f95ea33028ad24757566b567711 and R8 307dba5594e78e095f37e1a6b4bb64900db93bcf independent OUR_VERIFICATION_FIX unchanged; R9/R15 audited validation unchanged.
+- REMOVAL_CONDITION = separately reviewed equivalent upstream workflow only; do not infer upstream backport. ROLLBACK = scoped revert after review, retain historical HN facts.
+- MERGE = NONE; EXTERNAL_PUSH = NONE; await GPT Review / Audit.

@@ -25,3 +25,10 @@ description: 当前项目后续值得处理的事项
 - R17 GPT Audit PASS 的唯一无凭据本地 UI 方案 R18 已 GPT Audit PASS / AUDITED_INTEGRATED，原审计 commits 正常 push / fast-forward 集成；本次仅治理收口，等待 closeout Completion GPT Review。后续 UI 人工验收仍见 pending-test.md；任何新阶段都需单独范围授权，本次不启动。
 - 后续用户浏览器 UI 验收和持久化中断限制见 pending-test.md；不扩展为 Provider submit、poll、Result/archive、Candidate/export UI。
 - R16 active deferral 继续：API Key setup、credential/account/balance/entitlement/channel secret/live 统一延期；input/detection/validation SKIPPED；pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。
+
+
+## R20 后续审核门
+
+- R18 closeout GPT Review PASS / R19 GPT Audit PASS 后，本次独立授权的同节点本地 archive-only UI 已完成，PENDING_GPT_AUDIT；等待 R20 Completion Review，再决定单独 integration closeout。历史 R18 本轮范围限制保持原记录。
+- Candidate/Selection/Sequence/Reorder/Export UI 不在 R20；未知首次 archive 的恢复与真实浏览器 IndexedDB/主题/布局验收见 pending-test.md，未自动开发。
+- API Key、account/balance/entitlement/channel secret/live 继续延期，input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。
