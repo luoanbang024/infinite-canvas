@@ -14,6 +14,7 @@ import { ImageToolSettingsModal, type ImageToolbarSettingsTool } from "./canvas-
 import { IMAGE_QUICK_TOOLS_STORAGE_KEY, PANORAMA_QUICK_TOOLS_STORAGE_KEY, buildImageToolbarTools, defaultImageQuickToolIds, defaultPanoramaQuickToolIds, readImageQuickToolsConfig, type ImageQuickToolId } from "./canvas-image-toolbar-tools";
 
 import { canHNLocalPrepare } from "./hn-local-canvas-prepare";
+import { canShowHNLocalArchive } from "./hn-local-canvas-archive";
 
 type CanvasNodeHoverToolbarProps = {
     node: CanvasNodeData | null;
@@ -34,6 +35,8 @@ type CanvasNodeHoverToolbarProps = {
     onUploadImageToCloud: (node: CanvasNodeData) => void;
     onFreezeReference: (node: CanvasNodeData) => void;
     onLocalPrepare: (node: CanvasNodeData) => void;
+    onLocalArchive?: (node: CanvasNodeData) => void;
+    localArchiveHistory?: boolean;
     onMaskEdit: (node: CanvasNodeData) => void;
     onCrop: (node: CanvasNodeData) => void;
     onSplit: (node: CanvasNodeData) => void;
@@ -76,6 +79,8 @@ export function CanvasNodeHoverToolbar({
     onUploadImageToCloud,
     onFreezeReference,
     onLocalPrepare,
+    onLocalArchive,
+    localArchiveHistory = false,
     onMaskEdit,
     onCrop,
     onSplit,
@@ -166,6 +171,7 @@ export function CanvasNodeHoverToolbar({
     ];
     const nodeToolbarTools: ToolbarTool[] = [
         ...(canHNLocalPrepare(node) ? [{ id: "localPrepare", title: "本地准备", label: "本地准备", icon: <FolderPlus className="size-4" />, onClick: () => onLocalPrepare(node) }] : []),
+        ...(onLocalArchive && canShowHNLocalArchive(node, localArchiveHistory) ? [{ id: "localArchive", title: "归档本地视频", label: "归档本地视频", icon: <FolderPlus className="size-4" />, onClick: () => onLocalArchive(node) }] : []),
         ...(hasImage && node.metadata?.storageKey?.startsWith("image:") ? [{ id: "freezeReference", title: "冻结为生成参考", label: "冻结为生成参考", icon: <FolderPlus className="size-4" />, onClick: () => onFreezeReference(node) }] : []),
         ...(canRetry ? [{ id: "retry", title: "重新生成", label: "重试", icon: <RefreshCw className="size-4" />, onClick: () => onRetry(node) }] : []),
         ...(hasImage || hasVideo || isText ? [{ id: "saveAsset", title: "加入我的素材", label: "存素材", icon: <FolderPlus className="size-4" />, onClick: () => onSaveAsset(node) }] : []),

@@ -41,6 +41,7 @@ export type HNLocalPreparedReceipt = {
 
 export type CanvasNodeMetadata = {
     hnLocalPrepared?: HNLocalPreparedReceipt;
+    hnLocalArchive?: HNLocalArchiveReceipt;
     content?: string;
     groupId?: string;
     composerContent?: string;
@@ -116,6 +117,19 @@ export type CanvasNodeMetadata = {
     panoramaProjection?: "equirectangular";
     directorProject?: unknown;
 };
+
+export type HNLocalArchiveOwner = {
+    version: 1; canvasProjectId: string; hnProjectId: string; sourceNodeId: string;
+    shotId: string; generationId: string; preparedFrozenHash: string; attemptId: string; observedAt: string;
+    sourceSHA256: string; sourceByteLength: number; sourceMimeType: "video/mp4" | "video/webm"; sourceMediaFingerprint: string;
+};
+export type HNLocalKnownJob = { resultId: string; archiveJobId: string };
+export type HNLocalArchiveReceipt = HNLocalArchiveOwner & (
+    | { outcome: "NOT_ARCHIVED" }
+    | { outcome: "ARCHIVING" | "ARCHIVE_OUTCOME_UNKNOWN"; knownJob: HNLocalKnownJob | null }
+    | { outcome: "ARCHIVE_FAILED_RETRYABLE"; resultId: string; archiveJobId: string; resultStatus: "ARCHIVE_FAILED" | "RECEIVED"; archiveStatus: "FAILED" | "PENDING" | "COPYING" | "FINALIZING" }
+    | { outcome: "ARCHIVED"; resultId: string; archiveJobId: string; resultStatus: "ARCHIVED"; archiveStatus: "ARCHIVED"; sha256: string; byteLength: number; mimeType: "video/mp4" | "video/webm" }
+);
 
 export type CanvasDirectorPanorama = {
     edgeId: string;
