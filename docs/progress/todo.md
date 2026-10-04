@@ -29,6 +29,6 @@ description: 当前项目后续值得处理的事项
 
 ## R20 后续审核门
 
-- R18 closeout GPT Review PASS / R19 GPT Audit PASS 后，本次独立授权的同节点本地 archive-only UI 已完成，PENDING_GPT_AUDIT；等待 R20 Completion Review，再决定单独 integration closeout。历史 R18 本轮范围限制保持原记录。
+- R18 closeout GPT Review PASS / R19 GPT Audit PASS 后，本次独立授权的同节点本地 archive-only UI 已 GPT Audit PASS / AUDITED_INTEGRATED，原三 commits 正常推送并 fast-forward 集成；本轮仅治理收口，等待 R20 closeout Completion GPT Review。历史 R18 本轮范围限制保持原记录。
 - Candidate/Selection/Sequence/Reorder/Export UI 不在 R20；未知首次 archive 的恢复与真实浏览器 IndexedDB/主题/布局验收见 pending-test.md，未自动开发。
 - API Key、account/balance/entitlement/channel secret/live 继续延期，input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。

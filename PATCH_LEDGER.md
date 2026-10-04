@@ -477,7 +477,7 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 
 ### HN-AI-IC-P0-B-R20-CANVAS-LOCAL-ARCHIVE-001
 
-- EXECUTION_ID = HN_AI_IC_P0_B_R20_NO_CREDENTIAL_CANVAS_LOCAL_RESULT_ARCHIVE; TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = PENDING_GPT_AUDIT; UPSTREAM_BACKPORT = false; not OUR_VERIFICATION_FIX.
+- EXECUTION_ID = HN_AI_IC_P0_B_R20_NO_CREDENTIAL_CANVAS_LOCAL_RESULT_ARCHIVE; TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = AUDITED_INTEGRATED; GPT_AUDIT = PASS; UPSTREAM_BACKPORT = false; not OUR_VERIFICATION_FIX.
 - BASE_OUR_COMMIT = 015b17a4e27579293d1a918d7b0dc4ec3b99ebf8; BRANCH = feature/p0-b-r20-no-credential-canvas-local-result-archive; R19_GPT_AUDIT = PASS.
 - INTRODUCED_IN_COMMIT = 5bf08c3300f780a466198463bbae424ce259f174; TEST_COMMIT = ffb78faf6f8cbf80ebe87369cc8b84ab2664fff2; governance commit identity belongs in Completion.
 - SCOPE = five exact Canvas production files / four new tests / six governance files; R5 production / Foundation / audited helpers / normal Generate / upload / Cloud / dependency / lockfile unchanged.
@@ -492,4 +492,20 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - LIMITATIONS = SSR/controller/fake journal, not real browser IndexedDB acceptance; no cross-tab/global lock, cross-store atomicity or unknown fresh recovery; no codec playback claim. Journal loss/availability constraints remain documented.
 - R7 afc8c28867028f95ea33028ad24757566b567711 and R8 307dba5594e78e095f37e1a6b4bb64900db93bcf independent OUR_VERIFICATION_FIX unchanged; R9/R15 audited validation unchanged.
 - REMOVAL_CONDITION = separately reviewed equivalent upstream workflow only; do not infer upstream backport. ROLLBACK = scoped revert after review, retain historical HN facts.
-- MERGE = NONE; EXTERNAL_PUSH = NONE; await GPT Review / Audit.
+- INTEGRATION = FAST_FORWARD_ONLY; REVIEWED_FEATURE_PUSH = NORMAL_NON_FORCE; our-main closeout push only after focused verification; await closeout Completion GPT Review.
+
+- AUDIT_BINDING = FEATURE_HEAD fb893ef348ada8d484b027fcdae656b7b4bbf5ea; AUDITED_COMPLETION_SHA256 c768a8c705982f7119b93d6163570dffc00d1c117e774c26f2da7236e6a11b4d; 83 members / 82 payload bytes+hash / CRC / exact final scan inventory reverified before any push. Original three reviewed commits preserved without rewrite.
+- CLOSEOUT = GOVERNANCE_ONLY / AUDIT_CLOSEOUT; exactly one governance-only commit; pendingReview -> auditedIntegrations; resulting stable SHA and focused checks belong in Completion, no self-referencing commit SHA.
+- ARCHIVE_SERVER_IDEMPOTENCY = NOT_CLAIMED
+- FIRST_FRESH_UNKNOWN_RECOVERY = NOT_AVAILABLE_IN_R20
+- FIRST_FRESH_UNKNOWN_MAY_LEAVE_ORPHAN_RESULT_OR_JOB = YES
+- BACKEND_ARCHIVE_READ_LIST_ENDPOINT = NONE
+- RELOADED_ARCHIVE_STATE = RELOADED_UNVERIFIED
+- BROWSER_ATTEMPT_JOURNAL_SERVER_AUTHORITATIVE = NO
+- MULTI_TAB_GLOBAL_EXACTLY_ONCE = NOT_CLAIMED
+- ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED
+- CANVAS_JOURNAL_HN_CROSS_STORE_ATOMICITY = NOT_CLAIMED
+- SUPPORTED_LOCAL_STORAGE_KEYS = video:,file:
+- SERVER_REMOTE_MEDIA_ARCHIVE = NOT_SUPPORTED
+- CANDIDATE_SELECTION_SEQUENCE_EXPORT_UI = NONE
+- PROVIDER_PROVENANCE_ASSERTED = NO

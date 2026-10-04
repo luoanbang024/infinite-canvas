@@ -2,7 +2,8 @@
 
 EXECUTION_ID = HN_AI_IC_P0_B_R20_NO_CREDENTIAL_CANVAS_LOCAL_RESULT_ARCHIVE
 TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 UPSTREAM_BACKPORT = false
 
 R19 GPT Audit PASS 后，仅接线同一个 R18 prepared Video 节点的当前本地视频。Hover Toolbar “归档本地视频”只打开 Dialog，HTTP GET/POST 和 journal write = 0；本地检查只读 Blob/journal。既有本地视频上传的 metadata spread 原样保留 hnLocalPrepared，归档只更新 hnLocalArchive，不改正常 metadata.status/内容/准备回执。
@@ -33,4 +34,27 @@ API_KEY_SETUP / ACCOUNT_CREDENTIAL_CHECK / ACCOUNT_BALANCE_CHECK / ACCOUNT_ENTIT
 
 仅五个允许 production files、四个新增 tests、六个 governance files。R5/Foundation/R10–R14/R18 helper 和正常 Generate/Upload/Cloud source 不改；R7/R8 独立 OUR_VERIFICATION_FIX 与 R9/R15 records 保持。撤销条件：单独评审后 revert 该 UI/helper/metadata/test/governance patch，保留历史 HN facts；将来等效 upstream 工作必须重新评审，不能称 upstream backport。
 
-三类本地 commits；不 merge、不 push，等待 GPT Review / Audit。
+原三类已审计 commits 已正常非 force 推送并 fast-forward 集成；本次仅一个 governance-only closeout commit。focused checks、our-main 正常推送与实际 stable SHA 见收口 Completion，等待其 GPT Review。
+
+
+## R20 审计收口
+
+- AUDITED_FEATURE_HEAD = fb893ef348ada8d484b027fcdae656b7b4bbf5ea；AUDITED_COMPLETION_SHA256 = c768a8c705982f7119b93d6163570dffc00d1c117e774c26f2da7236e6a11b4d；83 个实际 ZIP members / 82 payload bytes+hash / CRC / exact final scan inventory 在任何 push 前重新核验 PASS。
+- 原实现/test raw bytes 保持；R5 fresh archive = NOT IDEMPOTENT；same-byte UI fresh repeat = 0；known failure retry = same Result / same ArchiveJob / exact original bytes；first fresh UNKNOWN = no resend / no new Result override；reload archived/failed = RELOADED_UNVERIFIED；Candidate/Selection/Sequence/Reorder/Export = NONE；PROVIDER_BOUND_CALLS = 0。
+- R7/R8 verification fixes、R9/R15 validations、R16 deferral、R18 prepare、R10/R12/R13/R14、Foundation/依赖/lockfile/Auth/schema/SourceBaseline 保持；不开始 R21/editorial/credential/live 阶段。
+
+```text
+ARCHIVE_SERVER_IDEMPOTENCY = NOT_CLAIMED
+FIRST_FRESH_UNKNOWN_RECOVERY = NOT_AVAILABLE_IN_R20
+FIRST_FRESH_UNKNOWN_MAY_LEAVE_ORPHAN_RESULT_OR_JOB = YES
+BACKEND_ARCHIVE_READ_LIST_ENDPOINT = NONE
+RELOADED_ARCHIVE_STATE = RELOADED_UNVERIFIED
+BROWSER_ATTEMPT_JOURNAL_SERVER_AUTHORITATIVE = NO
+MULTI_TAB_GLOBAL_EXACTLY_ONCE = NOT_CLAIMED
+ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED
+CANVAS_JOURNAL_HN_CROSS_STORE_ATOMICITY = NOT_CLAIMED
+SUPPORTED_LOCAL_STORAGE_KEYS = video:,file:
+SERVER_REMOTE_MEDIA_ARCHIVE = NOT_SUPPORTED
+CANDIDATE_SELECTION_SEQUENCE_EXPORT_UI = NONE
+PROVIDER_PROVENANCE_ASSERTED = NO
+```
