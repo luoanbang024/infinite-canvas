@@ -2,6 +2,8 @@
 
 ## Unreleased
 
++ [新增] 已归档本地视频版本的候选登记入口（R22 PENDING_GPT_AUDIT；复用归档 Dialog，显式确认、历史完整性校验、同候选恢复和双向互锁；无自动选择/序列，不声明 AI/Provider 成功）。
+
 + [新增] 同一 R18 prepared 视频节点的“归档本地视频”入口（R20 GPT Audit PASS / 已 fast-forward 集成；先持久化 attempt journal、同字节防重复、未知结果停止、显式同 Job 重试；仅本地附件，不声明 AI/Provider 成功）。
 
 + [新增] 空视频节点的“本地准备”入口与冻结回执（R18 GPT Audit PASS / 已 fast-forward 集成；稳定 Shot、本地图片参考、PREPARED、新 attempt 显式确认；无凭据、无 Provider 调用）。

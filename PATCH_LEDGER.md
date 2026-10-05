@@ -509,3 +509,23 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - SERVER_REMOTE_MEDIA_ARCHIVE = NOT_SUPPORTED
 - CANDIDATE_SELECTION_SEQUENCE_EXPORT_UI = NONE
 - PROVIDER_PROVENANCE_ASSERTED = NO
+
+## HN P0-B R22 — Canvas local Candidate
+
+- PATCH_ID = HN-AI-IC-P0-B-R22-CANVAS-LOCAL-CANDIDATE-001
+- EXECUTION_ID = HN_AI_IC_P0_B_R22_NO_CREDENTIAL_CANVAS_LOCAL_CANDIDATE
+- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; SOURCE_COMMIT = NONE; upstreamBackport = false.
+- STATE = PENDING_GPT_AUDIT; BASE_OUR_COMMIT = 53fdd43a7c2f849145c35cb053164afcab9dfdfb.
+- IMPLEMENTATION_COMMIT = eeb9120f93ee6e8f84b34afc7833e5f1c0bb71e5; TEST_COMMIT = 683ec054c02e1b2046655e245e4439ad8a9c3dab; final feature/governance SHA is recorded in Completion to avoid self-reference.
+- OUR_CHANGE = existing R20 archive Dialog -> validated historical ARCHIVED owner -> explicit existing R7 ensureCandidate -> safe hnLocalCandidate; page-scoped sync lock and mutual archive lock, ambiguous response explicit-only recovery, reload UNVERIFIED.
+- PRODUCTION_SCOPE = exactly six execution-allowlisted Canvas files; R20 controller add-only historical reader reuses private arbitration; all old controller bytes unchanged.
+- TEST_SCOPE = three new Canvas test files and handler/hn_candidate_ui_contract_test.go; no old tests rewritten. Actual localhost production handler POST counts/DB Candidate count/reopen plus isolated Canvas store round-trip.
+- GUARANTEE = same Shot + Result -> same CandidateID within current single-process service writer; first POST=1, automatic retry=0, explicit recovery additional POST=1, Candidate count=1. No multi-process guarantee.
+- LOCAL_RESULT_ARCHIVE_DOES_NOT_ASSERT_PROVIDER_SUCCESS; Candidate means archived local editorial option. No Selection/Sequence/Reorder/compound/Export, no Blob/archive/upload/download in Candidate operation.
+- PRESERVATION = R5/R7 production, R20 write methods, R18 prepare, R10/R12/R13/R14/Foundation/schema/Auth/dependencies/locks unchanged; R7/R8 independent OUR_VERIFICATION_FIX and R9/R15 validation records preserved. SourceBaseline unchanged; no historical Generation rewrite.
+- UPSTREAM_FIRST = narrow watch check at 6571143e4f51da7494d38572c76202b752cc5e0c; no conflicting reviewed equivalent Candidate-only local HN UI; no upstream adoption.
+- VERIFICATION = all execution-required full/focused checks PASS; exact logs, protected byte/hash map and final member-exact disclosure scan in Completion. True browser/IndexedDB/theme layout manual acceptance remains pending.
+- API_KEY/ACCOUNT/LIVE = DEFERRED; input/detection/validation SKIPPED; pre-auth PAUSED_BY_USER_DECISION; authorization NOT_GRANTED; Provider/paid calls=0; real credential read/remote media download NONE.
+- DATA_SCHEMA_IMPACT = NONE; additive closed Canvas metadata projection through existing persistence only; no Foundation/schema/query endpoint.
+- REMOVAL_CONDITION = review a formally adopted upstream equivalent and historical receipt/identity mapping before removing this wiring; no automatic data deletion.
+- ROLLBACK = revert only local R22 commits before integration, preserve user archives/Candidates/Canvas projects; no deletion or rewrite of audited data.

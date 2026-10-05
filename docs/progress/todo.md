@@ -32,3 +32,9 @@ description: 当前项目后续值得处理的事项
 - R18 closeout GPT Review PASS / R19 GPT Audit PASS 后，本次独立授权的同节点本地 archive-only UI 已 GPT Audit PASS / AUDITED_INTEGRATED，原三 commits 正常推送并 fast-forward 集成；本轮仅治理收口，等待 R20 closeout Completion GPT Review。历史 R18 本轮范围限制保持原记录。
 - Candidate/Selection/Sequence/Reorder/Export UI 不在 R20；未知首次 archive 的恢复与真实浏览器 IndexedDB/主题/布局验收见 pending-test.md，未自动开发。
 - API Key、account/balance/entitlement/channel secret/live 继续延期，input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。
+
+## HN P0-B R22 后续审核门
+
+- R20 Closeout GPT Review PASS / R21 GPT Audit PASS。R22 唯一 Candidate-only UI 实现及完整自动验证已完成，STATE=PENDING_GPT_AUDIT；本地 feature 未 merge/push。已实现事项与待人工验收见 pending-test.md 和 docs/hn/canvas_local_candidate_workflow.md。
+- 仅已归档历史本地版本可显式登记/重新确认候选；Selection、Sequence placement、Reorder、compound helper、Export UI 继续后移，未启动。多进程 writer、真实浏览器持久化中断与主题/布局仍需独立验证。
+- API Key/account/channel secret/live 全部继续延期；input/detection/validation SKIPPED；pre-auth PAUSED_BY_USER_DECISION；live authorization NOT_GRANTED；Provider calls=0。

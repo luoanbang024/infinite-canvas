@@ -124,3 +124,12 @@ description: 当前版本已实现但仍需人工验证的变更项
 - GPT Audit PASS；仍待真实用户浏览器 toolbar/Modal/IndexedDB/主题/边缘布局/缓存丢失验收；自动证据为 ReactDOM SSR、injected journal/controller 与 production localhost/handler/process reopen，不声称真实 IndexedDB acceptance。合成 MP4 只证明签名/hash/bytes，不证明 codec playback。
 - page lock 无跨 tab/global exactly-once；Canvas/HN/journal 无跨库原子事务；未知首次可能产生孤立 HN facts，保守停止，无 backend query/recovery/自动删除；用户删除全部 journal/receipt、跨进程 writer 和浏览器存储故障 availability 保留限制。
 - API Key/account/balance/entitlement/channel secret/live 延期；Provider/paid calls=0；Candidate/Selection/Sequence/Reorder/Export 未实现。R5/Foundation/R18 helper、R7/R8 fix、R9/R15 records 与 R10–R14 原实现保持；原已审计 feature 正常非 force 推送并 fast-forward 集成；本次仅治理收口，focused verification、最终 our-main push 与 stable SHA 见 Completion，等待其 GPT Review。
+
+## HN P0-B R22（PENDING_GPT_AUDIT，等待 GPT Review / Audit）
+
+- 复用“归档本地视频”Dialog，仅严格有效的历史 R20 ARCHIVED Result 可点击“将已归档版本加入候选”。Candidate 只是“已归档的本地版本可作为剪辑候选”，不证明 AI/Provider 成功；不自动选中、不加入序列。明确显示完整候选说明和历史版本说明；无新 toolbar action。
+- RELOADED_UNVERIFIED 底层 ARCHIVED 和 SOURCE_CHANGED 历史版本允许显式后端完整性复核；FAILED/ARCHIVING/UNKNOWN 禁止 ensure。操作不读取当前 Blob、不 archive、不上传/下载。safe hnLocalCandidate 回执重载为 CANDIDATE_RELOADED_UNVERIFIED；Candidate 成功不提升 R20 reload 状态。
+- page-scoped exact project/node 同步锁及 R20/R22 双向互锁；response loss=UNKNOWN，无自动重试，用户明确重新确认同 target 后恢复同 ID。真实 localhost production handler first POST=1、explicit additional POST=1、Candidate count=1、no rename、protected records unchanged；single-process writer 范围，非跨进程保证。
+- root Go、Bridge、全部 frontend、独立 tsc、隔离副本 production build、全部要求的 focused preservation 自动验证 PASS；最终 scope/secret/manifest 证据见 Completion。572 个受保护 tracked files raw bytes/hash 未变；R20 controller strip 新 reader 后 raw bytes 不变。
+- 待人工：真实浏览器打开/关闭/重开 Dialog、并发点击/确认取消、项目/节点切换、Canvas localforage 持久化/reload、深浅主题布局及可访问性。已完成 SSR/事件 harness、合成 adapter 的真实 Canvas store persist/rehydrate 与 production handler bridge；不宣称真实 DOM/IndexedDB 验收完成。未知首次 R20 archive 仍保持停止策略。
+- API Key/account/balance/entitlement/channel secret/live 统一延期；input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。Provider/paid calls=0，真实 Key/用户 DB/媒体/账号不读取。没有 Selection/Sequence/Reorder/Export UI、Foundation/R5 backend/R7 production/SourceBaseline 改动，R7/R8 fixes 与 R9/R15 records 保持。
