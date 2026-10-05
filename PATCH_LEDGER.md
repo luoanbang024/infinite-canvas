@@ -552,7 +552,7 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 
 - PATCH_ID = HN-AI-IC-P0-B-R24-CANVAS-LOCAL-SELECTION-001
 - EXECUTION_ID = HN_AI_IC_P0_B_R24_NO_CREDENTIAL_CANVAS_LOCAL_SELECTION
-- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; upstreamBackport = false; SOURCE_COMMIT = NONE; STATE = PENDING_GPT_AUDIT.
+- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; upstreamBackport = false; SOURCE_COMMIT = NONE; STATE = AUDITED_INTEGRATED; GPT_AUDIT = PASS.
 - BASE_OUR_COMMIT = 0f35cda5cd7e30be1afcb1bbccce49391ca2b614; IMPLEMENTATION_COMMIT = 2599da45adc0209703a6a78786c6d1e29f0f533d; TEST_COMMIT = b14778a9788e67a195c7779e1a20950d6838ddac; final governance/feature SHA in Completion (no self-reference).
 - OUR_CHANGE = strict existing R22 Candidate + R20 archived history → explicit existing R7 Select → advisory hnLocalSelection; exactly five production files and four new tests, no old tests rewritten.
 - SEMANTICS = identity repeat CONVERGENT, byte idempotent NO (UpdatedAt sample/write); A→B→late A can select A; no CAS/current-selection query. Explicit reselect is a NEW_MUTATION with overwrite warning and new browser-only UUID.
@@ -565,4 +565,32 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - LOCAL_RESULT_ARCHIVE_DOES_NOT_ASSERT_PROVIDER_SUCCESS; no Selection side-effect Candidate/Result/Job/Generation/TaskBinding/Sequence/Export, no current media read/upload/download.
 - API_KEY/ACCOUNT/LIVE = DEFERRED; input/detection/validation SKIPPED; pre-auth PAUSED_BY_USER_DECISION; authorization NOT_GRANTED; Provider/paid calls 0, real credential/media download NONE.
 - REMOVAL_CONDITION = formally adopt an equivalent upstream implementation only after reviewing historical projection/mutation semantics and owner compatibility; do not delete user records.
-- ROLLBACK = revert only R24 UI/tests/governance before integration; preserve local archives/Candidates/selections/Canvas projects. No merge/push in this phase.
+- ROLLBACK = revert only R24 UI/tests/governance before integration; preserve local archives/Candidates/selections/Canvas projects. 原 R24 execution 未 merge/push；本次独立授权的审计收口按正常非 force 推送、fast-forward 与治理-only commit 集成，不改写已审计 commits。
+
+- AUDIT_BINDING = FEATURE_HEAD 0444b4407f770f27055305f23a1392e6cda4c79b; AUDITED_COMPLETION_SHA256 aa1c53e1f87dd897d8183e19780cd33b61b592524f11ff5189a6880879a57b9b; 102 members / 101 payload bytes+hash / CRC / exact final secret-scan inventory / empty allowlist reverified before any push.
+- CLOSEOUT = GOVERNANCE_ONLY / AUDIT_CLOSEOUT; original three commits preserved without rewrite, normal non-force feature push and FAST_FORWARD_ONLY integration; exactly one governance-only closeout commit. Focused verification, final our-main push and actual stable SHA are recorded in Completion; await closeout GPT Review.
+- R24 build-final-source.json head denotes isolated build-root baseline, not feature identity; build-byte-preservation.json exact production/test hashes remain the audited build binding.
+- CURRENT_SELECTION_READ = NOT_AVAILABLE
+- SELECTION_READ_STATUS_ENDPOINT = NONE
+- SELECTION_RECEIPT_SERVER_AUTHORITATIVE = NO
+- SELECTION_RELOAD_STATE = SELECTION_RELOADED_UNVERIFIED
+- SAME_CANDIDATE_IDENTITY = CONVERGENT
+- SELECTION_BYTE_IDEMPOTENCY = NO
+- STALE_OLD_SELECTION_CAN_OVERWRITE = YES
+- SERVER_SELECTION_CAS_OR_REVISION = NONE
+- RESPONSE_LOSS_AUTO_RETRY = 0
+- EXPLICIT_SAME_TARGET_RESELECT = ONE_NEW_MUTATION
+- PRIMARY_LOCK = HN_PROJECT_PLUS_SHOT
+- SECONDARY_STALE_PROJECTION = CANVAS_PROJECT_PLUS_NODE
+- ALL_SIX_INTERLOCKS = PASS
+- UNKNOWN_BARRIER_SCOPE = PAGE_LOCAL_HN_PROJECT_PLUS_SHOT
+- UNKNOWN_BARRIER_DURABLE = NO
+- GLOBAL_CROSS_TAB_PROCESS_STALE_INTENT_PROTECTION = NOT_CLAIMED
+- CURRENT_VIDEO_BLOB_USED_FOR_SELECTION = NO
+- CANDIDATE_SIDE_EFFECT = NONE
+- SEQUENCE_UI = NONE
+- REORDER_UI = NONE
+- COMPOUND_COMMIT_TO_SEQUENCE = NONE
+- EXPORT_UI = NONE
+- ACTUAL_BROWSER_DOM_LAYOUT_ACCEPTANCE = NOT_CLAIMED
+- ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED

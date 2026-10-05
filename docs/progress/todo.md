@@ -41,6 +41,6 @@ description: 当前项目后续值得处理的事项
 
 ## HN P0-B R24 后续审核门
 
-- R23 GPT Audit PASS；本轮显式 Selection-only UI 与完整自动验证完成，PENDING_GPT_AUDIT，等待 GPT Review；本地 feature 不 merge/push。实际可测项见 pending-test.md。
+- R23 GPT Audit PASS；R24 Selection-only UI 已 GPT Audit PASS / AUDITED_INTEGRATED，原三个 commits 正常非 force 推送并 fast-forward 集成；本次仅治理收口，等待 closeout Completion GPT Review。实际可测项见 pending-test.md。
 - Sequence placement、Reorder、compound、Export、authoritative read/CAS、跨 tab/process 保护独立后移；不把“重新选择”描述为只读复核。
 - API Key/account/channel secret/live 全部延期；input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED，Provider calls=0。

@@ -2,7 +2,8 @@
 
 EXECUTION_ID = HN_AI_IC_P0_B_R24_NO_CREDENTIAL_CANVAS_LOCAL_SELECTION
 TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 
 ## 唯一入口与语义
 
@@ -34,4 +35,38 @@ root Go、go mod verify、Bridge、全部 frontend、独立 tsc、隔离 product
 
 SSR/render/受控事件与 controller harness、合成 journal 及 receipt JSON roundtrip 为自动证据；不宣称真实 DOM/IndexedDB、布局主题、人工端到端验收通过。真实浏览器需按 pending-test 验收。build 使用源码隔离副本与已安装依赖，无 env/key/user DB/media 读取，无 install/update。
 
-API Key setup/account/secret/live 全部 DEFERRED；input/detection/validation SKIPPED；pre-auth PAUSED_BY_USER_DECISION；授权 NOT_GRANTED；Provider/real/paid calls=0，REAL_CREDENTIAL_READ/REAL_REMOTE_MEDIA_DOWNLOAD=NONE。R7/R8 独立 verification fix、R9/R15 validation、R16 policy、Foundation/schema/Auth/dependency/lockfile、R5/R7/R10/R12/R13/R14 实现与 R20/R22 controller 字节保留。HN_GENERATION_SOURCE_BASELINE 仍为 16047f46e2186373ea824e12e84ae8dfa2ccde32，没有 Generation 新建或历史改写（仅隔离测试 fixture 构造前置实体）。本地 feature 不 merge/push，等待 GPT Review / Audit。
+API Key setup/account/secret/live 全部 DEFERRED；input/detection/validation SKIPPED；pre-auth PAUSED_BY_USER_DECISION；授权 NOT_GRANTED；Provider/real/paid calls=0，REAL_CREDENTIAL_READ/REAL_REMOTE_MEDIA_DOWNLOAD=NONE。R7/R8 独立 verification fix、R9/R15 validation、R16 policy、Foundation/schema/Auth/dependency/lockfile、R5/R7/R10/R12/R13/R14 实现与 R20/R22 controller 字节保留。HN_GENERATION_SOURCE_BASELINE 仍为 16047f46e2186373ea824e12e84ae8dfa2ccde32，没有 Generation 新建或历史改写（仅隔离测试 fixture 构造前置实体）。原 R24 feature 已正常非 force 推送并 fast-forward 集成；本次只有一个 governance-only closeout commit，focused verification、our-main push 与实际 stable SHA 见收口 Completion，等待其 GPT Review。
+
+
+## R24 审计收口
+
+AUDITED_FEATURE_HEAD = 0444b4407f770f27055305f23a1392e6cda4c79b
+AUDITED_COMPLETION_SHA256 = aa1c53e1f87dd897d8183e19780cd33b61b592524f11ff5189a6880879a57b9b
+原包 102 actual ZIP members、101 payload bytes/hash、CRC 和 exact final secret-scan inventory 在任何 push 前重新核验 PASS，allowlist 为空。实现和测试 raw bytes、R7/R20/R22/Foundation、SourceBaseline 与 R16 deferral 保持，不开始下一 milestone。build-final-source.json 的 head 仅为 isolated build-root baseline，不重新解释为 feature SHA。
+
+```text
+CURRENT_SELECTION_READ = NOT_AVAILABLE
+SELECTION_READ_STATUS_ENDPOINT = NONE
+SELECTION_RECEIPT_SERVER_AUTHORITATIVE = NO
+SELECTION_RELOAD_STATE = SELECTION_RELOADED_UNVERIFIED
+SAME_CANDIDATE_IDENTITY = CONVERGENT
+SELECTION_BYTE_IDEMPOTENCY = NO
+STALE_OLD_SELECTION_CAN_OVERWRITE = YES
+SERVER_SELECTION_CAS_OR_REVISION = NONE
+RESPONSE_LOSS_AUTO_RETRY = 0
+EXPLICIT_SAME_TARGET_RESELECT = ONE_NEW_MUTATION
+PRIMARY_LOCK = HN_PROJECT_PLUS_SHOT
+SECONDARY_STALE_PROJECTION = CANVAS_PROJECT_PLUS_NODE
+ALL_SIX_INTERLOCKS = PASS
+UNKNOWN_BARRIER_SCOPE = PAGE_LOCAL_HN_PROJECT_PLUS_SHOT
+UNKNOWN_BARRIER_DURABLE = NO
+GLOBAL_CROSS_TAB_PROCESS_STALE_INTENT_PROTECTION = NOT_CLAIMED
+CURRENT_VIDEO_BLOB_USED_FOR_SELECTION = NO
+CANDIDATE_SIDE_EFFECT = NONE
+SEQUENCE_UI = NONE
+REORDER_UI = NONE
+COMPOUND_COMMIT_TO_SEQUENCE = NONE
+EXPORT_UI = NONE
+ACTUAL_BROWSER_DOM_LAYOUT_ACCEPTANCE = NOT_CLAIMED
+ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED
+```
