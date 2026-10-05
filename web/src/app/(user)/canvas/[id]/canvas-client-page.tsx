@@ -57,6 +57,7 @@ import { CanvasNodeHoverToolbar, CanvasNodeInfoModal } from "../components/canva
 import { CanvasHNLocalPrepareDialog } from "../components/canvas-hn-local-prepare-dialog";
 import { CanvasHNLocalArchiveDialog } from "../components/canvas-hn-local-archive-dialog";
 import { HNLocalArchiveController, mergeHNLocalArchiveReceipt } from "../components/hn-local-canvas-archive";
+import { HNLocalCandidateController, mergeHNLocalCandidateReceipt } from "../components/hn-local-canvas-candidate";
 import { getMediaBlob } from "@/services/file-storage";
 import { captureHNLocalIntent, HNLocalPrepareController, mergeHNLocalReceipt } from "../components/hn-local-canvas-prepare";
 import { InfiniteCanvas } from "../components/infinite-canvas";
@@ -88,6 +89,7 @@ import {
     type CanvasNodeMetadata,
     type HNLocalPreparedReceipt,
     type HNLocalArchiveReceipt,
+    type HNLocalCandidateReceipt,
     type CanvasPendingAgentRequest,
     type ConnectionHandle,
     type ContextMenuState,
@@ -422,6 +424,17 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
     }, []);
     const receiveLocalArchiveReceipt = useCallback((receipt: HNLocalArchiveReceipt) => {
         setNodes((current) => mergeHNLocalArchiveReceipt(current, receipt, localArchiveSnapshotRef.current.projectId));
+    }, []);
+    const [, refreshLocalCandidate] = useState(0);
+    const localCandidateController = useRef<HNLocalCandidateController | null>(null);
+    if (!localCandidateController.current) localCandidateController.current = new HNLocalCandidateController(() => refreshLocalCandidate((n) => n + 1));
+    const localCandidateDependencies = useMemo(() => ({}), []);
+    useEffect(() => {
+        const controller = localCandidateController.current!; controller.activate();
+        return () => controller.dispose();
+    }, [projectId]);
+    const receiveLocalCandidateReceipt = useCallback((receipt: HNLocalCandidateReceipt, archive: Extract<HNLocalArchiveReceipt, { outcome: "ARCHIVED" }>) => {
+        setNodes((current) => mergeHNLocalCandidateReceipt(current, receipt, localArchiveSnapshotRef.current.projectId, archive));
     }, []);
     const [, refreshLocalPrepare] = useState(0);
     const localPrepareController = useRef<HNLocalPrepareController | null>(null);
@@ -4385,7 +4398,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
                     onFreezeReference={(node) => void freezeNodeReference(node)}
                     onLocalPrepare={(node) => setLocalPrepareNodeId(node.id)}
                     onLocalArchive={(node) => setLocalArchiveNodeId(node.id)}
-                    localArchiveHistory={Boolean(toolbarNode && localArchiveController.current!.entry(projectId, toolbarNode.id).receipt)}
+                    localArchiveHistory={Boolean(toolbarNode && (toolbarNode.metadata?.hnLocalArchive || toolbarNode.metadata?.hnLocalCandidate || localArchiveController.current!.entry(projectId, toolbarNode.id).receipt))}
                     onMaskEdit={(node) => {
                         const nodeConfig = buildGenerationConfig(effectiveConfig, node, "image");
                         setMaskEditModel(nodeConfig.model);
@@ -4499,7 +4512,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
 
                 <CanvasNodeInfoModal node={infoNode} open={Boolean(infoNode)} onClose={() => setInfoNodeId(null)} />
                 <CanvasHNLocalPrepareDialog open={Boolean(localPrepareNodeId)} canvasProjectId={projectId} nodeId={localPrepareNodeId} controller={localPrepareController.current!} intentRevision={localPrepareSnapshot} readIntent={readLocalPrepareIntent} dependencies={localPrepareDependencies} onReceipt={receiveLocalPrepareReceipt} onClose={() => setLocalPrepareNodeId(null)} />
-                <CanvasHNLocalArchiveDialog open={Boolean(localArchiveNodeId)} canvasProjectId={projectId} nodeId={localArchiveNodeId} controller={localArchiveController.current!} targetRevision={localArchiveSnapshot} readTarget={readLocalArchiveTarget} dependencies={localArchiveDependencies} onReceipt={receiveLocalArchiveReceipt} onClose={() => setLocalArchiveNodeId(null)} />
+                <CanvasHNLocalArchiveDialog open={Boolean(localArchiveNodeId)} canvasProjectId={projectId} nodeId={localArchiveNodeId} controller={localArchiveController.current!} targetRevision={localArchiveSnapshot} readTarget={readLocalArchiveTarget} dependencies={localArchiveDependencies} onReceipt={receiveLocalArchiveReceipt} onClose={() => setLocalArchiveNodeId(null)} candidate={{ controller: localCandidateController.current!, dependencies: localCandidateDependencies, onReceipt: receiveLocalCandidateReceipt }} />
 
                 <Modal
                     title="截取音频"

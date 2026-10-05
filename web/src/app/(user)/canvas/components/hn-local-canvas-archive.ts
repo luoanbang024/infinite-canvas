@@ -156,6 +156,24 @@ export class HNLocalArchiveController {
         const r = saved || projection || memory;
         return r?.outcome === "ARCHIVING" ? { ...r, outcome: "ARCHIVE_OUTCOME_UNKNOWN" } : r;
     }
+    async readHistoricalArchiveReceipt(readCurrent: () => HNArchiveTarget, d: Pick<HNArchiveDependencies, "journal"> = {}) {
+        const capture = () => {
+            const t = readCurrent();
+            return { canvasProjectId: t.canvasProjectId, node: { ...t.node, metadata: { ...t.node.metadata, hnLocalPrepared: structuredClone(t.node.metadata?.hnLocalPrepared), hnLocalArchive: structuredClone(t.node.metadata?.hnLocalArchive) } } };
+        };
+        const target = capture(), epoch = this.epoch, e = this.entry(target.canvasProjectId, target.node.id);
+        if (!this.alive || e.running) fail("HN_ARCHIVE_LOCAL_STATE_UNAVAILABLE");
+        const mapped = await mapHNCanvasProjectId(target.canvasProjectId), prepared = target.node.metadata.hnLocalPrepared;
+        if (target.node.type !== CanvasNodeType.Video || typeof target.node.id !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(target.node.id) || !validHNLocalReceipt(prepared, target.canvasProjectId, target.node.id, mapped)) fail("HN_ARCHIVE_OWNER_MISMATCH");
+        const journal = d.journal || await localJournal();
+        // Missing durable history cannot be replaced by a stale Canvas/cache receipt.
+        const r = await this.history(target, { ...journal, getItem: async (key) => { const value = await journal.getItem(key); if (value == null) fail("HN_ARCHIVE_LOCAL_STATE_UNAVAILABLE"); return value; } });
+        if (!r) fail("HN_ARCHIVE_LOCAL_STATE_UNAVAILABLE");
+        if (!await validHNLocalArchiveReceipt(r, target.canvasProjectId, target.node.id, prepared)) fail("HN_ARCHIVE_OWNER_MISMATCH");
+        const current = capture();
+        if (!this.alive || epoch !== this.epoch || e.running || current.canvasProjectId !== target.canvasProjectId || current.node.id !== target.node.id || current.node.type !== CanvasNodeType.Video || !validHNLocalReceipt(current.node.metadata.hnLocalPrepared, target.canvasProjectId, target.node.id, mapped) || JSON.stringify(current.node.metadata.hnLocalPrepared) !== JSON.stringify(prepared) || JSON.stringify(current.node.metadata.hnLocalArchive) !== JSON.stringify(target.node.metadata.hnLocalArchive)) fail("HN_ARCHIVE_OWNER_MISMATCH");
+        return structuredClone(r);
+    }
     async inspect(target: HNArchiveTarget, d: HNArchiveDependencies) {
         const e = this.entry(target.canvasProjectId, target.node.id); if (e.running) return;
         const revision = ++e.inspection, epoch = this.epoch;
