@@ -43,6 +43,7 @@ export type CanvasNodeMetadata = {
     hnLocalPrepared?: HNLocalPreparedReceipt;
     hnLocalArchive?: HNLocalArchiveReceipt;
     hnLocalCandidate?: HNLocalCandidateReceipt;
+    hnLocalSelection?: HNLocalSelectionReceipt;
     content?: string;
     groupId?: string;
     composerContent?: string;
@@ -129,6 +130,13 @@ export type HNLocalCandidateReceipt = {
     shotId: string; generationId: string; preparedFrozenHash: string;
     resultId: string; archiveJobId: string; sourceMediaFingerprint: string;
     candidateId: string; availabilityStatus: "ARCHIVED"; observedAt: string;
+};
+
+export type HNLocalSelectionReceipt = {
+    version: 1; canvasProjectId: string; hnProjectId: string; sourceNodeId: string;
+    shotId: string; generationId: string; preparedFrozenHash: string;
+    resultId: string; archiveJobId: string; sourceMediaFingerprint: string;
+    candidateId: string; intentId: string; observedAt: string;
 };
 export type HNLocalKnownJob = { resultId: string; archiveJobId: string };
 export type HNLocalArchiveReceipt = HNLocalArchiveOwner & (
