@@ -38,3 +38,7 @@
 
 - 未登录时画布项目和“我的素材”保存在浏览器本地；登录且账号同步可用时，会同步保存到账号/云端。
 - 本地直连模式下，AI API Key 保存在浏览器本地，并由前端直接请求 OpenAI 兼容接口。
+
+## HN P0-B R24
+
+- [Canvas 本地候选显式选择（pending audit）](hn/canvas_local_selection_workflow.md)：strict historical Candidate → mutable Selection → advisory receipt；同 Shot 六方向互锁及 UNKNOWN 停止边界。

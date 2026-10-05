@@ -547,3 +547,22 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - EXPORT_UI = NONE
 - ACTUAL_BROWSER_DOM_LAYOUT_ACCEPTANCE = NOT_CLAIMED
 - ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED
+
+## HN P0-B R24 — Canvas local Candidate selection
+
+- PATCH_ID = HN-AI-IC-P0-B-R24-CANVAS-LOCAL-SELECTION-001
+- EXECUTION_ID = HN_AI_IC_P0_B_R24_NO_CREDENTIAL_CANVAS_LOCAL_SELECTION
+- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; upstreamBackport = false; SOURCE_COMMIT = NONE; STATE = PENDING_GPT_AUDIT.
+- BASE_OUR_COMMIT = 0f35cda5cd7e30be1afcb1bbccce49391ca2b614; IMPLEMENTATION_COMMIT = 2599da45adc0209703a6a78786c6d1e29f0f533d; TEST_COMMIT = b14778a9788e67a195c7779e1a20950d6838ddac; final governance/feature SHA in Completion (no self-reference).
+- OUR_CHANGE = strict existing R22 Candidate + R20 archived history → explicit existing R7 Select → advisory hnLocalSelection; exactly five production files and four new tests, no old tests rewritten.
+- SEMANTICS = identity repeat CONVERGENT, byte idempotent NO (UpdatedAt sample/write); A→B→late A can select A; no CAS/current-selection query. Explicit reselect is a NEW_MUTATION with overwrite warning and new browser-only UUID.
+- RECOVERY = response loss UNKNOWN / auto retry 0; page-local same-Shot barrier; archive/ensure/different target blocked, only same-target explicit reselect; successful acknowledgement clears barrier. No durable unknown journal/global guarantee.
+- LOCK = HN project+Shot primary, Canvas project+node secondary, synchronous before first await; all six interlocks, lifecycle epoch/token protection.
+- RECEIPT = closed 13 safe fields, reload SELECTION_RELOADED_UNVERIFIED; no backend current-selection timestamp/version/Provider/Sequence/path/URL/rawbody. No R20/R22 reload promotion; existing persistence reused.
+- PRESERVATION = R7 service/helper/handler/router, R20/R22 controllers, Foundation/R5/R10/R12/R13/R14/dependency/lockfile/Auth/schema byte unchanged; existing Generate/Upload initializers unchanged. SourceBaseline unchanged, no historical rewrite. R7/R8 independent OUR_VERIFICATION_FIX and R9/R15 validation records untouched.
+- UPSTREAM_FIRST = watched 6571143e4f51da7494d38572c76202b752cc5e0c narrow HN overlap absent; reuse existing UI primitives/R7 boundary, adoption NONE, no core rewrite.
+- VERIFICATION = full/focused checks PASS, actual production-handler and localhost server counters, source hash scope; final package exact manifest/CRC/secret inventory. Browser DOM/IndexedDB/theme acceptance PENDING.
+- LOCAL_RESULT_ARCHIVE_DOES_NOT_ASSERT_PROVIDER_SUCCESS; no Selection side-effect Candidate/Result/Job/Generation/TaskBinding/Sequence/Export, no current media read/upload/download.
+- API_KEY/ACCOUNT/LIVE = DEFERRED; input/detection/validation SKIPPED; pre-auth PAUSED_BY_USER_DECISION; authorization NOT_GRANTED; Provider/paid calls 0, real credential/media download NONE.
+- REMOVAL_CONDITION = formally adopt an equivalent upstream implementation only after reviewing historical projection/mutation semantics and owner compatibility; do not delete user records.
+- ROLLBACK = revert only R24 UI/tests/governance before integration; preserve local archives/Candidates/selections/Canvas projects. No merge/push in this phase.

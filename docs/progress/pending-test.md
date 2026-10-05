@@ -135,3 +135,11 @@ description: 当前版本已实现但仍需人工验证的变更项
 - API Key/account/balance/entitlement/channel secret/live 统一延期；input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。Provider/paid calls=0，真实 Key/用户 DB/媒体/账号不读取。没有 Selection/Sequence/Reorder/Export UI、Foundation/R5 backend/R7 production/SourceBaseline 改动，R7/R8 fixes 与 R9/R15 records 保持。
 
 - 本次 closeout 仅六个允许的 governance/progress paths、一个 governance-only commit；原实现/测试 bytes 不变。规定 focused verification 与 normal non-force our-main push、stable SHA 见 Completion；真实浏览器验收仍为 NOT_CLAIMED，不把 Candidate success/reload 解释为 Provider 成功。
+
+## HN P0-B R24（PENDING_GPT_AUDIT）
+
+- 现有 archive Dialog/Candidate 区新增明确 Selection 命令，one confirm→one local Select POST，历史 owner 严格验证，不读当前 Blob，不隐式 ensure/archive/Sequence/Export，不证明 AI/Provider 成功。
+- 主锁 hnProject+Shot、辅以 Canvas project+node，六方向互斥；UNKNOWN same-Shot barrier 阻止 archive/ensure/different-target，只允许同 target 用户明确重新选择。repeat 是新 mutation，可能覆盖后来选择；reload receipt=SELECTION_RELOADED_UNVERIFIED，没有 current-selection GET。
+- 所有执行要求的 full/focused checks PASS；139 frontend PASS / 1 prerequisite skip（Go handler bridge 已实际验证），独立 tsc/build PASS；578 protected non-env raw files unchanged，核心 Generate/Upload 等 10 个 AST initializer unchanged。Completion 含实际 handler/localhost计数、scope/hash、最终 member-exact 扫描证据。
+- 待人工：真实浏览器 Dialog 打开/关闭/重开、六方向快速点击/取消、UNKNOWN 同 target 重新选择、替换视频但仍选择历史版本、项目/节点切换、localforage reload、深浅主题布局/无障碍。已有 SSR/controller/JSON-roundtrip 自动证据，不宣称真实 DOM/IndexedDB 验收。
+- R16 deferral、R7/R8 fixes、R9/R15 validations、R20/R22 controller、R5/R7/Foundation/R10/R12/R13/R14 和 SourceBaseline 均保留；不启动 Provider、Key/account、Sequence/Export。
