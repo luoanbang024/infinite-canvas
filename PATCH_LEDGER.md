@@ -515,7 +515,7 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - PATCH_ID = HN-AI-IC-P0-B-R22-CANVAS-LOCAL-CANDIDATE-001
 - EXECUTION_ID = HN_AI_IC_P0_B_R22_NO_CREDENTIAL_CANVAS_LOCAL_CANDIDATE
 - TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; SOURCE_COMMIT = NONE; upstreamBackport = false.
-- STATE = PENDING_GPT_AUDIT; BASE_OUR_COMMIT = 53fdd43a7c2f849145c35cb053164afcab9dfdfb.
+- STATE = AUDITED_INTEGRATED; GPT_AUDIT = PASS; BASE_OUR_COMMIT = 53fdd43a7c2f849145c35cb053164afcab9dfdfb.
 - IMPLEMENTATION_COMMIT = eeb9120f93ee6e8f84b34afc7833e5f1c0bb71e5; TEST_COMMIT = 683ec054c02e1b2046655e245e4439ad8a9c3dab; final feature/governance SHA is recorded in Completion to avoid self-reference.
 - OUR_CHANGE = existing R20 archive Dialog -> validated historical ARCHIVED owner -> explicit existing R7 ensureCandidate -> safe hnLocalCandidate; page-scoped sync lock and mutual archive lock, ambiguous response explicit-only recovery, reload UNVERIFIED.
 - PRODUCTION_SCOPE = exactly six execution-allowlisted Canvas files; R20 controller add-only historical reader reuses private arbitration; all old controller bytes unchanged.
@@ -529,3 +529,21 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - DATA_SCHEMA_IMPACT = NONE; additive closed Canvas metadata projection through existing persistence only; no Foundation/schema/query endpoint.
 - REMOVAL_CONDITION = review a formally adopted upstream equivalent and historical receipt/identity mapping before removing this wiring; no automatic data deletion.
 - ROLLBACK = revert only local R22 commits before integration, preserve user archives/Candidates/Canvas projects; no deletion or rewrite of audited data.
+
+- AUDIT_BINDING = FEATURE_HEAD ee5edecfde7b6ffe6c4fc63ccfee46c0ef749467; AUDITED_COMPLETION_SHA256 af6795f292627947ea4353a38c1b03453cfbbce1ab230ccfd746729d1a8cf36b; 110 members / 109 payload bytes+hash / CRC / exact 110-member scan inventory reverified before any push.
+- CLOSEOUT = GOVERNANCE_ONLY / AUDIT_CLOSEOUT; original three commits retained, normal non-force feature push / FAST_FORWARD_ONLY integration; exactly one governance-only closeout commit. focused verification, normal our-main push and stable SHA are recorded in Completion; await closeout GPT Review.
+- CANDIDATE_ONLY = true; RESPONSE_LOSS_AUTO_RETRY = 0; EXPLICIT_RECOVERY = SAME_TARGET_ENSURE; CANDIDATE_COUNT_AFTER_RECOVERY = 1; RECOVERED_CANDIDATE_ID = SAME; R20_ARCHIVE_STATE_PROMOTION = NONE; PROVIDER_BOUND_CALLS = 0.
+- CANDIDATE_IDEMPOTENCY_SCOPE = CURRENT_SINGLE_PROCESS_APPLICATION_WRITER_ONLY
+- GLOBAL_SHOT_RESULT_UNIQUE_CONSTRAINT = NONE
+- GLOBAL_CROSS_PROCESS_CANDIDATE_UNIQUENESS = NOT_CLAIMED
+- CANDIDATE_READ_LIST_STATUS_ENDPOINT = NONE
+- CANDIDATE_RELOAD_STATE = CANDIDATE_RELOADED_UNVERIFIED
+- R20_RELOAD_STATE_PROMOTION_BY_CANDIDATE = NONE
+- CURRENT_VIDEO_BLOB_USED_FOR_CANDIDATE = NO
+- SELECTION_UI = NONE
+- SEQUENCE_UI = NONE
+- REORDER_UI = NONE
+- COMPOUND_COMMIT_TO_SEQUENCE = NONE
+- EXPORT_UI = NONE
+- ACTUAL_BROWSER_DOM_LAYOUT_ACCEPTANCE = NOT_CLAIMED
+- ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED

@@ -2,7 +2,8 @@
 
 EXECUTION_ID = HN_AI_IC_P0_B_R22_NO_CREDENTIAL_CANVAS_LOCAL_CANDIDATE
 TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 BASE_OUR_COMMIT = 53fdd43a7c2f849145c35cb053164afcab9dfdfb
 
 ## 操作与事实边界
@@ -41,4 +42,28 @@ SSR/UI handler harness、合成 journal、实际 Canvas store + 合成 localfora
 
 API Key setup/input/detection/validation、account/balance/entitlement、channel secret、live Provider validation 继续延期；input/detection/validation SKIPPED，pre-auth PAUSED_BY_USER_DECISION，授权 NOT_GRANTED。PROVIDER_BOUND_CALLS/REAL_PROVIDER_CALLS/PAID_CALLS=0；真实凭据读取、远程媒体下载 NONE。原 SourceBaseline 16047f46e2186373ea824e12e84ae8dfa2ccde32 不变；没有 Generation 重写或 Provider/Auth/schema/Foundation/dependency/lockfile 修改。R7/R8 独立 OUR_VERIFICATION_FIX 与 R9/R15 validation 记录保持。
 
-仅本地 feature commits，未 merge/push，等待 GPT Review / Audit。未来 Selection/Sequence/Export 或多进程写入能力需独立执行范围与评审。
+原三个已审计 commits 已正常非 force 推送并 fast-forward 集成；本次只有一个 governance-only closeout commit。focused verification、our-main 正常推送与实际 stable SHA 见收口 Completion，等待其 GPT Review。未来 Selection/Sequence/Export 或多进程写入能力需独立执行范围与评审。
+
+
+## R22 审计收口
+
+- AUDITED_FEATURE_HEAD = ee5edecfde7b6ffe6c4fc63ccfee46c0ef749467；AUDITED_COMPLETION_SHA256 = af6795f292627947ea4353a38c1b03453cfbbce1ab230ccfd746729d1a8cf36b；110 actual ZIP members / 109 payload bytes/hash / CRC / exact 110-member secret-scan inventory 在任何 push 前重新核验 PASS。
+- R22 production/test raw bytes 与 R20 archive/write 方法保持；Candidate only=true；同 Shot + Result 返回同 CandidateID，仅限 current single-process writer；response-loss auto retry=0；explicit recovery=same-target ensure；Candidate count after recovery=1；reload=CANDIDATE_RELOADED_UNVERIFIED；R20 archive state promotion=NONE；Selection/Sequence/Reorder/compound/Export=NONE；PROVIDER_BOUND_CALLS=0。
+- R5/R7/R8/R10/R12/R13/R14/R18/R20/Foundation/schema/依赖/lockfile/Auth/SourceBaseline 保持；R7/R8 独立 OUR_VERIFICATION_FIX 与 R9/R15 validation records 保持；R16 API Key/account/channel/live 继续延期，不开始下一 milestone。
+
+```text
+CANDIDATE_IDEMPOTENCY_SCOPE = CURRENT_SINGLE_PROCESS_APPLICATION_WRITER_ONLY
+GLOBAL_SHOT_RESULT_UNIQUE_CONSTRAINT = NONE
+GLOBAL_CROSS_PROCESS_CANDIDATE_UNIQUENESS = NOT_CLAIMED
+CANDIDATE_READ_LIST_STATUS_ENDPOINT = NONE
+CANDIDATE_RELOAD_STATE = CANDIDATE_RELOADED_UNVERIFIED
+R20_RELOAD_STATE_PROMOTION_BY_CANDIDATE = NONE
+CURRENT_VIDEO_BLOB_USED_FOR_CANDIDATE = NO
+SELECTION_UI = NONE
+SEQUENCE_UI = NONE
+REORDER_UI = NONE
+COMPOUND_COMMIT_TO_SEQUENCE = NONE
+EXPORT_UI = NONE
+ACTUAL_BROWSER_DOM_LAYOUT_ACCEPTANCE = NOT_CLAIMED
+ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED
+```
