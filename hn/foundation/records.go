@@ -435,26 +435,27 @@ func (w *Workspace) SelectCandidate(shotID, candidateID string) error {
 func (w *Workspace) AddSequenceItem(sequenceID, candidateID string) (SequenceItem, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
-	if !validName(sequenceID) {
-		return SequenceItem{}, errors.New("unsafe sequence ID")
-	}
-	var c Candidate
-	var s Shot
-	if err := read(w.db, "candidates", candidateID, &c); err != nil {
-		return SequenceItem{}, err
-	}
-	if err := read(w.db, "shots", c.ShotID, &s); err != nil {
-		return SequenceItem{}, err
-	}
-	if s.SelectedCandidateID != c.ID {
-		return SequenceItem{}, errors.New("candidate not explicitly selected")
-	}
-	var index int
-	if err := w.db.QueryRow("SELECT coalesce(max(order_index)+1,0) FROM sequence_items WHERE sequence_id=?", sequenceID).Scan(&index); err != nil {
-		return SequenceItem{}, err
-	}
-	i := SequenceItem{Identity: w.identity(), SequenceID: sequenceID, OrderIndex: index, ShotID: c.ShotID, CandidateID: c.ID, ResultID: c.ResultID}
-	return i, insert(w.db, "sequence_items", i.Identity, i, "sequence_id,order_index,shot_id,candidate_id,result_id", sequenceID, index, c.ShotID, c.ID, c.ResultID)
+	var item SequenceItem
+	err := w.placementWrite(func(q placementConnection) error {
+		var c Candidate
+		var s Shot
+		if !validName(sequenceID) || !validName(candidateID) {
+			return ErrPlacementInput
+		}
+		if err := read(q, "candidates", candidateID, &c); err != nil {
+			return err
+		}
+		if err := read(q, "shots", c.ShotID, &s); err != nil {
+			return err
+		}
+		if s.SelectedCandidateID != c.ID {
+			return errors.New("candidate not explicitly selected")
+		}
+		var err error
+		item, err = w.appendPlacement(q, sequenceID, c)
+		return err
+	})
+	return item, err
 }
 func (w *Workspace) Reorder(sequenceID string, ids []string) error {
 	w.mu.Lock()

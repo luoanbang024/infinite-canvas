@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -93,6 +94,58 @@ func Open(projectsRoot, projectID string) (*Workspace, error) {
 	if err != nil {
 		w.db.Close()
 		return nil, err
+	}
+	return w, nil
+}
+
+// OpenExisting never creates, initializes or reconciles a workspace. Read-only
+// callers also get SQLite mode=ro, and never open media or receipt files.
+func OpenExisting(projectsRoot, projectID string, readOnly bool) (*Workspace, error) {
+	if !validName(projectID) {
+		return nil, ErrPlacementInput
+	}
+	parent, err := filepath.Abs(projectsRoot)
+	if err != nil {
+		return nil, ErrPlacementUnavailable
+	}
+	parent, err = filepath.EvalSymlinks(parent)
+	if err != nil {
+		return nil, ErrPlacementUnavailable
+	}
+	w := &Workspace{Root: filepath.Join(parent, projectID), ProjectID: projectID}
+	info, err := os.Lstat(w.Root)
+	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return nil, ErrPlacementUnavailable
+	}
+	path, err := w.Resolve("metadata/hn-extension.sqlite")
+	if err != nil {
+		return nil, ErrPlacementUnavailable
+	}
+	info, err = os.Lstat(path)
+	if err != nil || !info.Mode().IsRegular() {
+		return nil, ErrPlacementUnavailable
+	}
+	mode := "rw"
+	if readOnly {
+		mode = "ro"
+	}
+	u := url.URL{Scheme: "file", Path: "/" + strings.TrimPrefix(filepath.ToSlash(path), "/")}
+	q := url.Values{"mode": {mode}, "_pragma": {"busy_timeout(5000)", "foreign_keys(1)"}}
+	if readOnly {
+		q.Add("_pragma", "query_only(1)")
+	}
+	u.RawQuery = q.Encode()
+	w.db, err = sql.Open("sqlite", u.String())
+	if err != nil {
+		return nil, ErrPlacementUnavailable
+	}
+	w.db.SetMaxOpenConns(1)
+	var id string
+	var count int
+	v, e := w.Version()
+	if e != nil || v != SchemaVersion || w.db.QueryRow("SELECT count(*),min(id) FROM project").Scan(&count, &id) != nil || count != 1 || id != projectID {
+		w.db.Close()
+		return nil, ErrPlacementIntegrity
 	}
 	return w, nil
 }

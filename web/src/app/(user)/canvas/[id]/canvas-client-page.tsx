@@ -60,7 +60,7 @@ import { HNLocalArchiveController, mergeHNLocalArchiveReceipt } from "../compone
 import { HNLocalCandidateController, mergeHNLocalCandidateReceipt } from "../components/hn-local-canvas-candidate";
 import { HNLocalSelectionController, mergeHNLocalSelectionReceipt } from "../components/hn-local-canvas-selection";
 import type { HNLocalSelectionReceipt } from "../types";
-import { HNLocalSequencePlacementController, mergeHNLocalSequencePlacementReceipt } from "../components/hn-local-canvas-sequence-placement";
+import { HNLocalSequencePlacementController, mergeHNLocalSequencePlacementReceipt, type PlacementProjection } from "../components/hn-local-canvas-sequence-placement";
 import type { HNLocalSequencePlacementReceipt } from "../types";
 import type { HNArchiveTarget } from "../components/hn-local-canvas-archive";
 import { getMediaBlob } from "@/services/file-storage";
@@ -454,7 +454,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
     const [, refreshLocalPrepare] = useState(0);
     const [, refreshLocalPlacement] = useState(0);
     const localPlacementController = useRef<HNLocalSequencePlacementController | null>(null);
-    if (!localPlacementController.current) localPlacementController.current = new HNLocalSequencePlacementController(localSelectionController.current!, () => refreshLocalPlacement((n) => n + 1));
+    if (!localPlacementController.current) localPlacementController.current = new HNLocalSequencePlacementController(localSelectionController.current!, () => refreshLocalPlacement((n) => n + 1), true);
     useEffect(() => {
         const controller = localPlacementController.current!; controller.activate();
         return () => controller.dispose();
@@ -463,7 +463,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
         const projects = new Set(nodes.flatMap((node) => node.metadata?.hnLocalPrepared ? [node.metadata.hnLocalPrepared.hnProjectId] : []));
         for (const project of projects) void localPlacementController.current!.hydrate(project);
     }, [projectId, nodes]);
-    const receiveLocalPlacementReceipt = useCallback((receipt: HNLocalSequencePlacementReceipt, target: HNArchiveTarget) => {
+    const receiveLocalPlacementReceipt = useCallback((receipt: PlacementProjection, target: HNArchiveTarget) => {
         setNodes((current) => mergeHNLocalSequencePlacementReceipt(current, receipt, localArchiveSnapshotRef.current.projectId, target));
     }, []);
     const localPrepareController = useRef<HNLocalPrepareController | null>(null);

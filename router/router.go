@@ -2,6 +2,7 @@ package router
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tigerowo/infinite-canvas/handler"
@@ -9,7 +10,22 @@ import (
 )
 
 func New() *gin.Engine {
-	router := gin.Default()
+	// New local recovery requests never log arbitrary query/header/error text.
+	// All existing routes retain Gin's default logger and recovery behavior.
+	recoveryRequest := func(r *http.Request) bool {
+		return strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/placement-commands") || r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/items"))
+	}
+	router := gin.New()
+	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Skip: func(c *gin.Context) bool { return recoveryRequest(c.Request) }}), gin.Recovery(), func(c *gin.Context) {
+		if recoveryRequest(c.Request) {
+			defer func() {
+				if recover() != nil {
+					c.AbortWithStatusJSON(500, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_STORE_UNAVAILABLE"})
+				}
+			}()
+		}
+		c.Next()
+	})
 	router.RedirectTrailingSlash = false
 	_ = router.SetTrustedProxies(nil)
 	api := router.Group("/api")
@@ -42,11 +58,40 @@ func New() *gin.Engine {
 	api.POST("/hn/projects/:projectId/sequences/:sequenceId/items", func(c *gin.Context) {
 		handler.HNAddSequenceItem(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
 	})
+	api.GET("/hn/projects/:projectId/sequences/:sequenceId/items", func(c *gin.Context) {
+		if c.Param("sequenceId") != "main" {
+			c.JSON(400, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_INPUT_INVALID"})
+			return
+		}
+		handler.HNReadMainSequence(c.Writer, c.Request, c.Param("projectId"))
+	})
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/placement-commands", func(c *gin.Context) {
+		if c.Param("sequenceId") != "main" {
+			c.JSON(400, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_INPUT_INVALID"})
+			return
+		}
+		handler.HNPlacementCommand(c.Writer, c.Request, c.Param("projectId"))
+	})
+	api.GET("/hn/projects/:projectId/sequences/:sequenceId/placement-commands/:placementIntentId", func(c *gin.Context) {
+		if c.Param("sequenceId") != "main" {
+			c.JSON(400, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_INPUT_INVALID"})
+			return
+		}
+		handler.HNLookupPlacement(c.Writer, c.Request, c.Param("projectId"), c.Param("placementIntentId"))
+	})
+	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/placement-commands", gin.WrapF(handler.HNReferenceOptions))
+	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/placement-commands/:placementIntentId", gin.WrapF(handler.HNPlacementReadOptions))
 	api.POST("/hn/projects/:projectId/sequences/:sequenceId/reorder", func(c *gin.Context) {
 		handler.HNReorderSequence(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
 	})
 	for _, path := range []string{"/hn/projects/:projectId/shots/:shotId/candidates/ensure", "/hn/projects/:projectId/shots/:shotId/candidates/:candidateId/select", "/hn/projects/:projectId/sequences/:sequenceId/items", "/hn/projects/:projectId/sequences/:sequenceId/reorder"} {
-		api.OPTIONS(path, gin.WrapF(handler.HNReferenceOptions))
+		api.OPTIONS(path, func(c *gin.Context) {
+			if c.Request.Header.Get("Access-Control-Request-Method") == http.MethodGet && strings.HasSuffix(c.Request.URL.Path, "/sequences/main/items") {
+				handler.HNPlacementReadOptions(c.Writer, c.Request)
+				return
+			}
+			handler.HNReferenceOptions(c.Writer, c.Request)
+		})
 	}
 	api.POST("/hn/projects/:projectId/sequences/:sequenceId/export", func(c *gin.Context) {
 		handler.HNExportSequence(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))

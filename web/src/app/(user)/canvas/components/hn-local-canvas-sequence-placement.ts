@@ -6,6 +6,8 @@ import { HNLocalCandidateController, validHNLocalCandidateReceipt, type HNCandid
 import { HNLocalSelectionController, validHNLocalSelectionReceipt, type HNSelectionOwner } from "./hn-local-canvas-selection";
 import { browserPlacementJournal, closedObject, emptyPlacementLedger, placementJournalKey, placementOwnerKeys, samePlacementOwner, validPlacementLedger, validHNLocalSequencePlacementReceipt, uuid4, type PlacementAttempt, type PlacementJournal, type PlacementLedger, type PlacementRejection } from "./hn-local-sequence-placement-journal";
 import { CanvasNodeType, type CanvasNodeData, type HNLocalCandidateReceipt, type HNLocalSequencePlacementReceipt } from "../types";
+import { executePlacement, lookupPlacement, readMainSequence, placementCanonical, type MainSequenceSnapshot, type PlacementReceipt } from "@/services/hn/local-sequence-placement";
+import { browserPlacementV2Journal, commandForOwner, placementV2Key, validV2Ledger, validV2Projection, type PlacementV2Attempt, type PlacementV2Journal, type PlacementV2Ledger, type PlacementV2Projection } from "./hn-local-sequence-placement-journal";
 
 export const HN_PLACEMENT_EXPLANATION = "此操作会在主序列末尾新增一个剪辑项；不会生成视频，也不会导出，不代表 AI/Provider 生成成功。";
 export const HN_PLACEMENT_NO_READ = "本页没有可靠的主序列查询；回执只记录一次已确认的加入操作。";
@@ -20,8 +22,9 @@ const rejectionText = "本地后端拒绝了新增；候选当前选择或归档
 class PlacementError extends Error { constructor(public rejection?: PlacementRejection) { super(rejection ? rejectionText : errorText); } }
 function fail(): never { throw new PlacementError(); }
 export type PlacementPhase = "SELECTION_NOT_ELIGIBLE" | "NOT_CONFIRMED_PLACED" | "PLACING" | "PLACED_CURRENT_SESSION" | "PLACEMENT_OUTCOME_UNKNOWN" | "PLACEMENT_RELOADED_UNVERIFIED" | "ERROR";
-export type PlacementEntry = { phase: PlacementPhase; running: boolean; receipt?: HNLocalSequencePlacementReceipt; error?: string; sessionIntent?: string; inspection: number };
-export type PlacementDependencies = HNCandidateDependencies & { placementJournal?: PlacementJournal };
+export type PlacementEntry = { phase: PlacementPhase; running: boolean; receipt?: HNLocalSequencePlacementReceipt; receiptV2?: PlacementV2Projection; recoverable?: boolean; legacyUnknown?: boolean; protocolV2?: boolean; snapshot?: MainSequenceSnapshot; error?: string; sessionIntent?: string; inspection: number };
+export type PlacementDependencies = HNCandidateDependencies & { placementJournal?: PlacementJournal; placementV2Journal?: PlacementV2Journal };
+export type PlacementProjection = HNLocalSequencePlacementReceipt | PlacementV2Projection;
 const canonical = (v: unknown): string => JSON.stringify(v, (_key, value) => value && typeof value === "object" && !Array.isArray(value) ? Object.fromEntries(Object.keys(value).sort().map((k) => [k, value[k]])) : value);
 function historical(t: HNArchiveTarget): HNArchiveTarget {
     const n = t.node, p = n.metadata?.hnLocalPrepared;
@@ -66,7 +69,13 @@ export function hnPlacementRequest(owner: HNSelectionOwner, request: typeof fetc
         return response;
     }) as typeof fetch;
 }
-export function mergeHNLocalSequencePlacementReceipt(nodes: CanvasNodeData[], receipt: HNLocalSequencePlacementReceipt, activeProject: string, captured: HNArchiveTarget) {
+export function mergeHNLocalSequencePlacementReceipt(nodes: CanvasNodeData[], receipt: PlacementProjection, activeProject: string, captured: HNArchiveTarget) {
+    if (receipt.version === 2) {
+        if (!validV2Projection(receipt) || activeProject !== receipt.owner.canvasProjectId) return nodes;
+        return nodes.map((node) => {
+            try { const c = node.metadata?.hnLocalCandidate; return node.id === receipt.owner.sourceNodeId && c && samePlacementOwner(c, receipt.owner) && revision({ canvasProjectId: activeProject, node }) === revision(captured) ? { ...node, metadata: { ...node.metadata, hnLocalSequencePlacementV2: receipt } } : node; } catch { return node; }
+        });
+    }
     const owner = Object.fromEntries(placementOwnerKeys.map((k) => [k, receipt[k]])) as HNSelectionOwner;
     if (activeProject !== receipt.canvasProjectId || !validHNLocalSequencePlacementReceipt(receipt, owner)) return nodes;
     return nodes.map((node) => {
@@ -79,23 +88,26 @@ export function mergeHNLocalSequencePlacementReceipt(nodes: CanvasNodeData[], re
 
 type Cache = { phase: "loading" | "valid" | "error"; ledger?: PlacementLedger; task?: Promise<void> };
 export class HNLocalSequencePlacementController {
+    private recovery?: HNPlacementRecovery;
     private cache = new Map<string, Cache>();
     private sequences = new Map<string, symbol>();
     private entries = new Map<string, PlacementEntry>();
     private alive = true;
     private epoch = 0;
-    constructor(private selection: HNLocalSelectionController, private notify: () => void = () => {}) {
+    constructor(private selection: HNLocalSelectionController, private notify: () => void = () => {}, recoveryProtocol = false) {
+        if (recoveryProtocol) this.recovery = new HNPlacementRecovery(this, selection, notify);
         selection.coordinator.setAdmissionGate((t, operation) => {
             const p = t.node.metadata?.hnLocalPrepared; if (!p) return false;
             const c = this.cache.get(p.hnProjectId); if (c?.phase !== "valid" || !c.ledger) return false;
             const pending = c.ledger.entries.filter((e) => e.state === "PLACING" || e.state === "UNKNOWN");
-            return operation === "placement" ? pending.length === 0 : !pending.some((e) => e.owner.shotId === p.shotId);
+            return (operation === "placement" ? pending.length === 0 : !pending.some((e) => e.owner.shotId === p.shotId)) && (!this.recovery || this.recovery.admit(t, operation));
         });
     }
-    activate() { this.alive = true; }
-    dispose() { this.alive = false; this.epoch++; }
-    entry(project: string, node: string): PlacementEntry { const k = JSON.stringify([project, node]); if (!this.entries.has(k)) this.entries.set(k, { phase: "SELECTION_NOT_ELIGIBLE", running: false, inspection: 0 }); return this.entries.get(k)!; }
-    async hydrate(project: string, journal: PlacementJournal = browserPlacementJournal) {
+    activate() { this.alive = true; this.recovery?.activate(); }
+    dispose() { this.alive = false; this.epoch++; this.recovery?.dispose(); }
+    entry(project: string, node: string): PlacementEntry { if (this.recovery) return this.recovery.entry(project, node); const k = JSON.stringify([project, node]); if (!this.entries.has(k)) this.entries.set(k, { phase: "SELECTION_NOT_ELIGIBLE", running: false, inspection: 0 }); return this.entries.get(k)!; }
+    async hydrate(project: string, journal: PlacementJournal = browserPlacementJournal) { await this.hydrateV1(project, journal); await this.recovery?.hydrate(project); }
+    async hydrateV1(project: string, journal: PlacementJournal = browserPlacementJournal) {
         const prior = this.cache.get(project); if (prior?.task) return prior.task;
         if (prior?.phase === "valid" || prior?.phase === "error" || this.sequences.has(project)) return;
         const c: Cache = { phase: "loading" }; this.cache.set(project, c); this.notify();
@@ -106,7 +118,8 @@ export class HNLocalSequencePlacementController {
         })();
         return c.task;
     }
-    private async capture(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies) {
+    legacyLedger(project: string) { return this.cache.get(project); }
+    async capture(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies) {
         const t = historical(read()), c = t.node.metadata?.hnLocalCandidate, se = this.selection.entry(t.canvasProjectId, t.node.id), ce = candidate.entry(t.canvasProjectId, t.node.id), s = t.node.metadata?.hnLocalSelection;
         if (archive.entry(t.canvasProjectId, t.node.id).running || ce.running || se.running || !["CANDIDATE_READY", "CANDIDATE_RELOADED_UNVERIFIED"].includes(ce.phase) || !["SELECTED_CURRENT_SESSION", "SELECTION_RELOADED_UNVERIFIED"].includes(se.phase) || !c || !ce.receipt || canonical(c) !== canonical(ce.receipt)) fail();
         const owner = Object.fromEntries(placementOwnerKeys.map((k) => [k, c[k]])) as HNSelectionOwner;
@@ -116,6 +129,7 @@ export class HNLocalSequencePlacementController {
         return { target: t, owner, selectionIntentId: s.intentId, candidate: c as HNLocalCandidateReceipt };
     }
     async inspect(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies = {}) {
+        if (this.recovery) return this.recovery.inspect(read, archive, candidate, d);
         let t: HNArchiveTarget; try { t = historical(read()); } catch { return; }
         const e = this.entry(t.canvasProjectId, t.node.id), serial = ++e.inspection, epoch = this.epoch;
         if (!this.alive || e.running || e.phase === "PLACEMENT_OUTCOME_UNKNOWN") return;
@@ -137,7 +151,8 @@ export class HNLocalSequencePlacementController {
         } catch { if (active()) { e.phase = "ERROR"; e.error = errorText; } }
         finally { if (active()) this.notify(); }
     }
-    async place(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies, confirm: (owner: HNSelectionOwner) => Promise<boolean>, receive: (receipt: HNLocalSequencePlacementReceipt, target: HNArchiveTarget) => void) {
+    async place(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies, confirm: (owner: HNSelectionOwner) => Promise<boolean>, receive: (receipt: PlacementProjection, target: HNArchiveTarget) => void) {
+        if (this.recovery) return this.recovery.place(read, archive, candidate, d, confirm, receive);
         let initial: HNArchiveTarget; try { initial = historical(read()); } catch { return false; }
         const project = initial.node.metadata!.hnLocalPrepared!.hnProjectId, e = this.entry(initial.canvasProjectId, initial.node.id), epoch = this.epoch, identity = Symbol("main");
         if (!this.alive || e.running || this.sequences.has(project) || e.phase === "PLACEMENT_OUTCOME_UNKNOWN") return false;
@@ -197,5 +212,171 @@ export class HNLocalSequencePlacementController {
             } else { e.phase = "ERROR"; e.error = errorText; }
             return false;
         } finally { e.running = false; this.selection.coordinator.release(token); if (this.sequences.get(project) === identity) this.sequences.delete(project); if (this.alive && epoch === this.epoch) this.notify(); }
+    }
+    async recover(read: () => HNArchiveTarget, d: PlacementDependencies, receive: (receipt: PlacementProjection, target: HNArchiveTarget) => void, confirm?: (owner: HNSelectionOwner) => Promise<boolean>) { return this.recovery?.recover(read, d, receive, confirm) ?? false; }
+    async readSnapshot(read: () => HNArchiveTarget, d: PlacementDependencies) { return this.recovery?.readSnapshot(read, d); }
+}
+
+type RecoveryCache = { phase: "loading" | "valid" | "error"; ledger?: PlacementV2Ledger; task?: Promise<void> };
+// v1 and v2 share the page coordinator. Only v2 commands carry server identity.
+class HNPlacementRecovery {
+    private cache = new Map<string, RecoveryCache>();
+    private entries = new Map<string, PlacementEntry>();
+    private sequences = new Set<string>();
+    private permit?: string;
+    private readShots = new Set<string>();
+    private alive = true;
+    private epoch = 0;
+    constructor(private legacy: HNLocalSequencePlacementController, private selection: HNLocalSelectionController, private notify: () => void) {}
+    activate() { this.alive = true; }
+    dispose() { this.alive = false; this.epoch++; }
+    entry(project: string, node: string): PlacementEntry { const k = JSON.stringify([project, node]); if (!this.entries.has(k)) this.entries.set(k, { phase: "SELECTION_NOT_ELIGIBLE", running: false, inspection: 0, protocolV2: true }); return this.entries.get(k)!; }
+    admit(t: HNArchiveTarget, operation: string) {
+        const p = t.node.metadata?.hnLocalPrepared, c = p && this.cache.get(p.hnProjectId);
+        if (!p || c?.phase !== "valid" || !c.ledger) return false;
+        if (this.readShots.has(JSON.stringify([p.hnProjectId, p.shotId]))) return false;
+        const pending = c.ledger.entries.filter((a) => a.state === "UNKNOWN" || a.state === "PLACING");
+        if (operation === "placement") return this.permit ? pending.some((a) => a.command.placementIntentId === this.permit && a.owner.canvasProjectId === t.canvasProjectId && a.owner.sourceNodeId === t.node.id) : pending.length === 0;
+        return !pending.some((a) => a.owner.shotId === p.shotId);
+    }
+    async hydrate(project: string, journal: PlacementV2Journal = browserPlacementV2Journal) {
+        const old = this.cache.get(project); if (old?.task) return old.task; if (old) return;
+        const cache: RecoveryCache = { phase: "loading" }; this.cache.set(project, cache); this.notify();
+        cache.task = (async () => { try { const value = await journal.getItem(placementV2Key(project)); const ledger = value ?? { version: 2, protocolVersion: 1, hnProjectId: project, sequenceId: "main", revisionId: crypto.randomUUID(), entries: [] }; if (!await validV2Ledger(ledger, project)) fail(); cache.ledger = structuredClone(ledger as PlacementV2Ledger); cache.phase = "valid"; } catch { cache.phase = "error"; } finally { cache.task = undefined; this.notify(); } })();
+        return cache.task;
+    }
+    private pending(t: HNArchiveTarget) { return this.cache.get(t.node.metadata!.hnLocalPrepared!.hnProjectId)?.ledger?.entries.find((a) => a.owner.canvasProjectId === t.canvasProjectId && a.owner.sourceNodeId === t.node.id && (a.state === "PLACING" || a.state === "UNKNOWN")); }
+    private async seal(a: PlacementV2Attempt, journal: PlacementV2Journal) {
+        const c = this.cache.get(a.owner.hnProjectId); if (c?.phase !== "valid" || !c.ledger) fail();
+        const value: PlacementV2Ledger = { ...c.ledger, revisionId: crypto.randomUUID(), entries: [...c.ledger.entries.filter((e) => e.command.placementIntentId !== a.command.placementIntentId), a] };
+        if (!await validV2Ledger(value, a.owner.hnProjectId)) fail();
+        if (a.state === "PLACING" || a.state === "UNKNOWN") c.ledger = structuredClone(value);
+        await journal.setItem(placementV2Key(a.owner.hnProjectId), structuredClone(value));
+        const stored = await journal.getItem(placementV2Key(a.owner.hnProjectId));
+        if (!await validV2Ledger(stored, a.owner.hnProjectId) || placementCanonical(value) !== placementCanonical(stored)) fail();
+        c.ledger = structuredClone(value);
+    }
+    private async assertStored(project: string, journal: PlacementV2Journal) {
+        const cache = this.cache.get(project); if (cache?.phase !== "valid" || !cache.ledger) fail();
+        const stored = await journal.getItem(placementV2Key(project));
+        if (stored == null && cache.ledger.entries.length === 0) return;
+        if (!await validV2Ledger(stored, project) || placementCanonical(stored) !== placementCanonical(cache.ledger)) { cache.phase = "error"; fail(); }
+    }
+    private async prepareRecovery(a: PlacementV2Attempt, journal: PlacementV2Journal) {
+        const stored = await journal.getItem(placementV2Key(a.owner.hnProjectId));
+        if (!await validV2Ledger(stored, a.owner.hnProjectId)) fail();
+        const ledger = stored as PlacementV2Ledger;
+        const same = ledger.entries.find((v) => v.command.placementIntentId === a.command.placementIntentId);
+        if (!same || !samePlacementOwner(same.owner, a.owner) || same.selectionIntentId !== a.selectionIntentId || same.observedAt !== a.observedAt || placementCanonical(same.command) !== placementCanonical(a.command)) fail();
+        // A failed terminal/UNKNOWN seal may have left the exact durable command
+        // at an older state/revision. Preserve every other durable entry, and
+        // keep this target UNKNOWN until a strict server terminal is resealed.
+        const cache = this.cache.get(a.owner.hnProjectId); if (!cache) fail();
+        // Recovery of A cannot discard B's local unknown barrier or confirmed
+        // duplicate protection when another tab deletes/overwrites the ledger.
+        for (const prior of cache.ledger?.entries || []) {
+            if (prior.command.placementIntentId === a.command.placementIntentId) continue;
+            const durable = ledger.entries.find((v) => v.command.placementIntentId === prior.command.placementIntentId);
+            if (!durable || placementCanonical(durable) !== placementCanonical(prior)) fail();
+        }
+        cache.phase = "valid";
+        const { receipt: _receipt, ...pending } = a;
+        cache.ledger = { ...structuredClone(ledger), entries: ledger.entries.map((v) => v.command.placementIntentId === a.command.placementIntentId ? { ...pending, state: "UNKNOWN" } : v) };
+        await this.seal({ ...pending, state: "UNKNOWN" }, journal);
+    }
+    async inspect(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies) {
+        let t: HNArchiveTarget; try { t = historical(read()); } catch { return; }
+        const e = this.entry(t.canvasProjectId, t.node.id), project = t.node.metadata!.hnLocalPrepared!.hnProjectId, epoch = this.epoch, serial = ++e.inspection;
+        if (!this.alive || e.running) return;
+        try {
+            await this.legacy.hydrateV1(project, d.placementJournal); await this.hydrate(project, d.placementV2Journal);
+            if (!this.alive || epoch !== this.epoch || serial !== e.inspection || e.running) return;
+            const v1 = this.legacy.legacyLedger(project), v2 = this.cache.get(project);
+            if (v1?.phase !== "valid" || !v1.ledger || v2?.phase !== "valid" || !v2.ledger) fail();
+            e.legacyUnknown = v1.ledger.entries.some((a) => a.state === "UNKNOWN" || a.state === "PLACING");
+            if (e.legacyUnknown) { e.phase = "PLACEMENT_OUTCOME_UNKNOWN"; e.recoverable = !!this.pending(t); return; }
+            const projection = read().node.metadata?.hnLocalSequencePlacementV2;
+            if (projection && (!validV2Projection(projection) || projection.owner.canvasProjectId !== t.canvasProjectId || projection.owner.sourceNodeId !== t.node.id || projection.owner.hnProjectId !== project)) fail();
+            const projectedAttempt = projection && v2.ledger.entries.find((a) => a.command.placementIntentId === projection.command.placementIntentId);
+            if (projectedAttempt && projection && (!samePlacementOwner(projectedAttempt.owner, projection.owner) || placementCanonical(projectedAttempt.command) !== placementCanonical(projection.command))) fail();
+            if (projection && !v2.ledger.entries.some((a) => a.command.placementIntentId === projection.command.placementIntentId)) {
+                // A surviving projection carries a key, not proof of current server state.
+                await this.seal({ owner: projection.owner, selectionIntentId: projection.selectionIntentId, observedAt: projection.observedAt, command: projection.command, state: "UNKNOWN" }, d.placementV2Journal || browserPlacementV2Journal);
+            }
+            if (!this.alive || epoch !== this.epoch || serial !== e.inspection || e.running) return;
+            if (v2.ledger.entries.some((a) => a.state === "UNKNOWN" || a.state === "PLACING")) { e.phase = "PLACEMENT_OUTCOME_UNKNOWN"; e.recoverable = !!this.pending(t); return; }
+            const captured = await this.legacy.capture(read, archive, candidate, d);
+            if (!this.alive || epoch !== this.epoch || serial !== e.inspection || e.running) return;
+            if (!validProjection(read().node.metadata?.hnLocalSequencePlacement, v1.ledger, t)) fail();
+            const legacy = v1.ledger.entries.find((a) => a.owner.candidateId === captured.owner.candidateId && a.state === "PLACED");
+            e.receipt = undefined; e.receiptV2 = undefined;
+            if (legacy && !samePlacementOwner(legacy.owner, captured.owner)) fail();
+            if (legacy?.state === "PLACED") { e.receipt = legacy.receipt; e.phase = "PLACEMENT_RELOADED_UNVERIFIED"; e.recoverable = false; return; }
+            const known = v2.ledger.entries.find((a) => a.owner.candidateId === captured.owner.candidateId && a.state === "COMMITTED");
+            if (known && !samePlacementOwner(known.owner, captured.owner)) fail();
+            e.phase = known ? e.sessionIntent === known.command.placementIntentId ? "PLACED_CURRENT_SESSION" : "PLACEMENT_RELOADED_UNVERIFIED" : "NOT_CONFIRMED_PLACED";
+            if (known?.receipt) e.receiptV2 = { version: 2, owner: known.owner, selectionIntentId: known.selectionIntentId, observedAt: known.observedAt, command: known.command, receipt: known.receipt };
+            e.recoverable = false; e.error = undefined;
+        } catch { if (this.alive && epoch === this.epoch && !e.running) { e.phase = e.phase === "PLACEMENT_OUTCOME_UNKNOWN" ? e.phase : "ERROR"; e.error = errorText; } }
+        finally { this.notify(); }
+    }
+    private async terminal(a: PlacementV2Attempt, r: PlacementReceipt, journal: PlacementV2Journal, e: PlacementEntry, target: HNArchiveTarget, receive: (p: PlacementProjection, t: HNArchiveTarget) => void) {
+        await this.seal({ ...a, state: r.outcome, receipt: r }, journal);
+        e.recoverable = false; e.error = r.outcome === "REJECTED" ? rejectionText : undefined;
+        e.phase = r.outcome === "COMMITTED" ? "PLACED_CURRENT_SESSION" : "ERROR";
+        if (r.outcome === "COMMITTED") { const p: PlacementV2Projection = { version: 2, owner: a.owner, command: a.command, receipt: r, selectionIntentId: a.selectionIntentId, observedAt: a.observedAt }; e.receiptV2 = p; e.sessionIntent = a.command.placementIntentId; if (this.alive) receive(p, target); }
+    }
+    private async unknown(a: PlacementV2Attempt | undefined, journal: PlacementV2Journal, e: PlacementEntry) {
+        e.phase = "PLACEMENT_OUTCOME_UNKNOWN"; e.error = HN_PLACEMENT_UNKNOWN; e.recoverable = !!a;
+        if (a) { const { receipt: _receipt, ...withoutReceipt } = a; try { await this.seal({ ...withoutReceipt, state: "UNKNOWN" }, journal); } catch { const c = this.cache.get(a.owner.hnProjectId); if (c?.ledger) c.ledger.entries = [...c.ledger.entries.filter((v) => v.command.placementIntentId !== a.command.placementIntentId), { ...withoutReceipt, state: "UNKNOWN" }]; } }
+    }
+    async place(read: () => HNArchiveTarget, archive: HNLocalArchiveController, candidate: HNLocalCandidateController, d: PlacementDependencies, confirm: (o: HNSelectionOwner) => Promise<boolean>, receive: (p: PlacementProjection, t: HNArchiveTarget) => void) {
+        let t: HNArchiveTarget; try { t = historical(read()); } catch { return false; }
+        const project = t.node.metadata!.hnLocalPrepared!.hnProjectId, e = this.entry(t.canvasProjectId, t.node.id), epoch = this.epoch;
+        if (!this.alive || e.running || this.sequences.has(project) || e.phase === "PLACEMENT_OUTCOME_UNKNOWN") return false;
+        this.sequences.add(project); const token = this.selection.coordinator.acquire(t, "placement"); if (!token) { this.sequences.delete(project); return false; }
+        e.running = true; this.notify(); const journal = d.placementV2Journal || browserPlacementV2Journal; let attempt: PlacementV2Attempt | undefined;
+        const current = () => { if (!this.alive || epoch !== this.epoch || revision(read()) !== revision(t)) fail(); };
+        try {
+            await this.assertStored(project, journal); current();
+            const captured = await this.legacy.capture(read, archive, candidate, d); current();
+            const legacy = this.legacy.legacyLedger(project)?.ledger;
+            if (!legacy || !validProjection(read().node.metadata?.hnLocalSequencePlacement, legacy, t)) fail();
+            if (legacy.entries.some((a) => a.owner.candidateId === captured.owner.candidateId && a.state === "PLACED") || this.cache.get(project)?.ledger?.entries.some((a) => a.owner.candidateId === captured.owner.candidateId && a.state === "COMMITTED")) return false;
+            if (!await confirm(structuredClone(captured.owner))) return false; current();
+            attempt = { owner: captured.owner, selectionIntentId: captured.selectionIntentId, command: commandForOwner(captured.owner, crypto.randomUUID()), observedAt: new Date().toISOString(), state: "PLACING" };
+            await this.seal(attempt, journal); current();
+            const r = await executePlacement(project, attempt.command, (async (u, options) => { current(); if (options?.method === "POST") { await this.assertStored(project, journal); current(); const now = await this.legacy.capture(read, archive, candidate, d); if (!samePlacementOwner(now.owner, captured.owner) || now.selectionIntentId !== captured.selectionIntentId) fail(); current(); } return (d.request || fetch)(u, options); }) as typeof fetch);
+            await this.terminal(attempt, r, journal, e, t, (p, capturedTarget) => { try { current(); receive(p, capturedTarget); } catch { /* Seal historical result without merging a stale owner. */ } });
+            return r.outcome === "COMMITTED";
+        } catch { if (attempt) await this.unknown(attempt, journal, e); else { e.phase = "ERROR"; e.error = errorText; } return false; }
+        finally { e.running = false; this.selection.coordinator.release(token); this.sequences.delete(project); this.notify(); }
+    }
+    async recover(read: () => HNArchiveTarget, d: PlacementDependencies, receive: (p: PlacementProjection, t: HNArchiveTarget) => void, confirm?: (o: HNSelectionOwner) => Promise<boolean>) {
+        let t: HNArchiveTarget; try { t = historical(read()); } catch { return false; }
+        const a = this.pending(t), e = this.entry(t.canvasProjectId, t.node.id), project = t.node.metadata!.hnLocalPrepared!.hnProjectId, epoch = this.epoch;
+        if (!this.alive || e.running || this.sequences.has(project) || !a || a.owner.shotId !== t.node.metadata!.hnLocalPrepared!.shotId) return false;
+        this.sequences.add(project); this.permit = a.command.placementIntentId;
+        const token = confirm ? this.selection.coordinator.acquire(t, "placement") : undefined; this.permit = undefined;
+        if (confirm && !token) { this.sequences.delete(project); return false; }
+        const shotKey = JSON.stringify([project, a.owner.shotId]); if (!confirm) this.readShots.add(shotKey);
+        e.running = true; this.notify(); const journal = d.placementV2Journal || browserPlacementV2Journal;
+        const current = () => { if (!this.alive || epoch !== this.epoch || revision(t) !== revision(read())) fail(); };
+        try {
+            await this.prepareRecovery(a, journal); current();
+            if (confirm && !await confirm(structuredClone(a.owner))) return false; current();
+            const request = (async (u, options) => { current(); if (options?.method === "POST") { await this.assertStored(project, journal); current(); } return (d.request || fetch)(u, options); }) as typeof fetch;
+            const r = confirm ? await executePlacement(project, a.command, request) : await lookupPlacement(project, a.command, request);
+            if (r.outcome === "NOT_OBSERVED") { e.error = "当前快照未观察到此命令；不能判定失败，继续保持未确认。"; return false; }
+            await this.terminal(a, r, journal, e, t, (p, target) => { try { current(); receive(p, target); } catch { /* Durable history survives owner drift. */ } });
+            return true;
+        } catch { await this.unknown(a, journal, e); return false; }
+        finally { e.running = false; if (token) this.selection.coordinator.release(token); this.readShots.delete(shotKey); this.sequences.delete(project); this.notify(); }
+    }
+    async readSnapshot(read: () => HNArchiveTarget, d: PlacementDependencies) {
+        let t: HNArchiveTarget; try { t = historical(read()); } catch { return; }
+        const e = this.entry(t.canvasProjectId, t.node.id), epoch = this.epoch; if (!this.alive || e.running) return;
+        try { const snapshot = await readMainSequence(t.node.metadata!.hnLocalPrepared!.hnProjectId, d.request); if (this.alive && epoch === this.epoch && revision(t) === revision(read())) e.snapshot = snapshot; } catch { e.error = "主序列快照无法确认；不会推断加入结果。"; }
+        this.notify();
     }
 }

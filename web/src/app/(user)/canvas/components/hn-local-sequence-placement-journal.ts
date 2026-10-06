@@ -1,6 +1,7 @@
 import { validHNLocalSelectionReceipt, type HNSelectionOwner } from "./hn-local-canvas-selection";
 import { mapHNCanvasProjectId } from "./hn-local-canvas-prepare";
 import type { HNLocalSequencePlacementReceipt } from "../types";
+import { placementCanonical, validCommand, validCommandReceipt, type PlacementCommand, type PlacementReceipt } from "@/services/hn/local-sequence-placement";
 
 export const placementOwnerKeys = ["canvasProjectId", "hnProjectId", "sourceNodeId", "shotId", "generationId", "preparedFrozenHash", "resultId", "archiveJobId", "sourceMediaFingerprint", "candidateId"] as const;
 export const closedObject = (v: unknown, names: readonly string[]): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v) && Object.keys(v).sort().join(",") === [...names].sort().join(",");
@@ -42,4 +43,36 @@ let store: Promise<PlacementJournal> | undefined;
 export const browserPlacementJournal: PlacementJournal = {
     async getItem(key) { store ||= import("localforage").then(({ default: localforage }) => localforage.createInstance({ name: "infinite-canvas", storeName: "hn_local_sequence_placement_attempts" })); return (await store).getItem(key); },
     async setItem(key, value) { store ||= import("localforage").then(({ default: localforage }) => localforage.createInstance({ name: "infinite-canvas", storeName: "hn_local_sequence_placement_attempts" })); return (await store).setItem(key, value); },
+};
+
+export type PlacementV2Attempt = { owner: HNSelectionOwner; selectionIntentId: string; observedAt: string; command: PlacementCommand; state: "PLACING" | "UNKNOWN" | "COMMITTED" | "REJECTED"; receipt?: PlacementReceipt };
+export type PlacementV2Ledger = { version: 2; protocolVersion: 1; hnProjectId: string; sequenceId: "main"; revisionId: string; entries: PlacementV2Attempt[] };
+export type PlacementV2Journal = { getItem: (key: string) => Promise<unknown>; setItem: (key: string, value: PlacementV2Ledger) => Promise<unknown> };
+export type PlacementV2Projection = { version: 2; owner: HNSelectionOwner; selectionIntentId: string; observedAt: string; command: PlacementCommand; receipt: PlacementReceipt };
+export const placementV2Key = (project: string) => JSON.stringify(["v2", project, "main"]);
+export const commandForOwner = (owner: HNSelectionOwner, intent: string): PlacementCommand => ({ protocolVersion: 1, placementIntentId: intent, candidateId: owner.candidateId, shotId: owner.shotId, generationId: owner.generationId, resultId: owner.resultId, archiveJobId: owner.archiveJobId, preparedFrozenHash: owner.preparedFrozenHash });
+export function validV2Attempt(v: unknown, project: string): v is PlacementV2Attempt {
+    if (!v || typeof v !== "object") return false;
+    const e = v as PlacementV2Attempt, terminal = e.state === "COMMITTED" || e.state === "REJECTED";
+    return closedObject(v, ["owner", "selectionIntentId", "observedAt", "command", "state", ...(terminal ? ["receipt"] : [])]) && validPlacementOwner(e.owner) && e.owner.hnProjectId === project && uuid4(e.selectionIntentId) && browserTime(e.observedAt) && validCommand(e.command) && placementCanonical(commandForOwner(e.owner, e.command.placementIntentId)) === placementCanonical(e.command) && (terminal ? validCommandReceipt(e.receipt, project, e.command) && e.receipt.outcome === e.state : e.state === "PLACING" || e.state === "UNKNOWN");
+}
+export async function validV2Ledger(v: unknown, project: string): Promise<boolean> {
+    if (!closedObject(v, ["version", "protocolVersion", "hnProjectId", "sequenceId", "revisionId", "entries"]) || v.version !== 2 || v.protocolVersion !== 1 || v.hnProjectId !== project || v.sequenceId !== "main" || !uuid4(v.revisionId) || !Array.isArray(v.entries) || v.entries.length > 256) return false;
+    const intents = new Set<string>(), items = new Set<string>();
+    for (const e of v.entries) {
+        if (!validV2Attempt(e, project) || await mapHNCanvasProjectId(e.owner.canvasProjectId) !== project || intents.has(e.command.placementIntentId)) return false;
+        intents.add(e.command.placementIntentId);
+        if (e.receipt?.originalItem) { const id = e.receipt.originalItem.sequenceItemId; if (items.has(id)) return false; items.add(id); }
+    }
+    return true;
+}
+export function validV2Projection(v: unknown): v is PlacementV2Projection {
+    if (!closedObject(v, ["version", "owner", "selectionIntentId", "observedAt", "command", "receipt"]) || v.version !== 2) return false;
+    const p = v as PlacementV2Projection;
+    return validV2Attempt({ owner: p.owner, selectionIntentId: p.selectionIntentId, observedAt: p.observedAt, command: p.command, receipt: p.receipt, state: p.receipt?.outcome }, p.owner?.hnProjectId);
+}
+let storeV2: Promise<PlacementV2Journal> | undefined;
+export const browserPlacementV2Journal: PlacementV2Journal = {
+    async getItem(key) { storeV2 ||= import("localforage").then(({ default: f }) => f.createInstance({ name: "infinite-canvas", storeName: "hn_local_sequence_placement_commands_v2" })); return (await storeV2).getItem(key); },
+    async setItem(key, value) { storeV2 ||= import("localforage").then(({ default: f }) => f.createInstance({ name: "infinite-canvas", storeName: "hn_local_sequence_placement_commands_v2" })); return (await storeV2).setItem(key, value); },
 };

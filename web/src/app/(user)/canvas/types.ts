@@ -45,6 +45,7 @@ export type CanvasNodeMetadata = {
     hnLocalCandidate?: HNLocalCandidateReceipt;
     hnLocalSelection?: HNLocalSelectionReceipt;
     hnLocalSequencePlacement?: HNLocalSequencePlacementReceipt;
+    hnLocalSequencePlacementV2?: import("./components/hn-local-sequence-placement-journal").PlacementV2Projection;
     content?: string;
     groupId?: string;
     composerContent?: string;

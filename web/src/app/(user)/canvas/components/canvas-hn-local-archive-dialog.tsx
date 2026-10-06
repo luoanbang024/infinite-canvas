@@ -12,7 +12,7 @@ import type { HNLocalCandidateReceipt } from "../types";
 import { HNLocalSelectionController, HN_SELECTION_EXPLANATION, HN_SELECTION_REPEAT, HN_SELECTION_NO_READ } from "./hn-local-canvas-selection";
 import type { HNLocalSelectionReceipt } from "../types";
 import type { HNLocalSequencePlacementReceipt } from "../types";
-import { HNLocalSequencePlacementController, HN_PLACEMENT_CONFIRMATION } from "./hn-local-canvas-sequence-placement";
+import { HNLocalSequencePlacementController, HN_PLACEMENT_CONFIRMATION, type PlacementProjection } from "./hn-local-canvas-sequence-placement";
 import { CanvasHNLocalSequenceSection } from "./canvas-hn-local-sequence-section";
 
 export function HNLocalArchiveContent({ entry, onArchive, candidateRunning = false, operationBlocked = false }: { entry: HNArchiveEntry; onArchive: () => void; candidateRunning?: boolean; operationBlocked?: boolean }) {
@@ -41,7 +41,7 @@ type Props = {
     onReceipt: (receipt: HNLocalArchiveReceipt) => void; onClose: () => void; targetRevision: unknown;
     candidate?: { controller: HNLocalCandidateController; dependencies: HNCandidateDependencies; onReceipt: (receipt: HNLocalCandidateReceipt, archive: Extract<HNLocalArchiveReceipt, { outcome: "ARCHIVED" }>) => void };
     selection?: { controller: HNLocalSelectionController; onReceipt: (receipt: HNLocalSelectionReceipt, target: HNArchiveTarget) => void };
-    placement?: { controller: HNLocalSequencePlacementController; onReceipt: (receipt: HNLocalSequencePlacementReceipt, target: HNArchiveTarget) => void };
+    placement?: { controller: HNLocalSequencePlacementController; onReceipt: (receipt: PlacementProjection, target: HNArchiveTarget) => void };
 };
 export function runHNArchiveIfCandidateIdle(candidate: HNLocalCandidateController | undefined, project: string, node: string, action: () => void) {
     if (candidate?.entry(project, node).running) return false;
@@ -50,7 +50,7 @@ export function runHNArchiveIfCandidateIdle(candidate: HNLocalCandidateControlle
 export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, controller, readTarget, dependencies, onReceipt, onClose, targetRevision, candidate, selection, placement }: Props) {
     const theme = canvasThemes[useThemeStore((state) => state.theme)], { modal } = App.useApp();
     let archiveRevision = "";
-    try { if (open && nodeId) { const t = readTarget(nodeId), { hnLocalCandidate: _candidate, hnLocalSelection: _selection, hnLocalSequencePlacement: _placement, ...metadata } = t.node.metadata || {}; archiveRevision = JSON.stringify({ ...t, node: { ...t.node, metadata } }); } } catch { /* No target cannot authorize a write. */ }
+    try { if (open && nodeId) { const t = readTarget(nodeId), { hnLocalCandidate: _candidate, hnLocalSelection: _selection, hnLocalSequencePlacement: _placement, hnLocalSequencePlacementV2: _placementV2, ...metadata } = t.node.metadata || {}; archiveRevision = JSON.stringify({ ...t, node: { ...t.node, metadata } }); } } catch { /* No target cannot authorize a write. */ }
     useEffect(() => {
         if (!open || !nodeId) return;
         // Opening only reads local Blob/journal; no discovery, HTTP write or journal write.
@@ -98,12 +98,18 @@ export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, cont
     const place = () => {
         if (!nodeId || !candidate || !selection || !placement) return;
         void placement.controller.place(() => readTarget(nodeId), controller, candidate.controller, candidate.dependencies, (owner) => new Promise<boolean>((resolve) => {
-            modal.confirm({ title: "加入主序列", content: <div><p>SequenceID：main</p><p>ShotID：{owner.shotId}</p><p>CandidateID：{owner.candidateId}</p><p>ResultID：{owner.resultId}</p><p>{HN_PLACEMENT_CONFIRMATION}</p></div>, okText: "确认加入", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
+            modal.confirm({ title: "加入主序列", content: <div><p>SequenceID：main</p><p>ShotID：{owner.shotId}</p><p>CandidateID：{owner.candidateId}</p><p>ResultID：{owner.resultId}</p><p>{placement.controller.entry(canvasProjectId, nodeId).protocolV2 ? "此确认发起一个新的加入命令；不会自动重发，已确认的同一候选不重复加入。" : HN_PLACEMENT_CONFIRMATION}</p></div>, okText: "确认加入", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
         }), placement.onReceipt);
+    };
+    const recoverPlacement = (continuation: boolean) => {
+        if (!nodeId || !candidate || !placement) return;
+        void placement.controller.recover(() => readTarget(nodeId), candidate.dependencies, placement.onReceipt, continuation ? (owner) => new Promise<boolean>((resolve) => {
+            modal.confirm({ title: "继续同一次加入操作", content: <div><p>若此前未提交，此操作可能现在新增一个剪辑项；若已经提交，只返回原回执，不会再次加入。</p><p>这是一项明确的写入操作，不是只读确认。不会生成新 intent。</p><p>CandidateID：{owner.candidateId}</p></div>, okText: "确认继续同一次操作", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
+        }) : undefined);
     };
     return <Modal title="归档本地视频" open={open && !!nodeId} centered footer={null} onCancel={onClose} styles={{ body: { color: theme.node.text } }}>
         {entry ? <HNLocalArchiveContent entry={entry} onArchive={archive} candidateRunning={candidateEntry?.running} operationBlocked={operationBlocked("archive")} /> : <p>{HN_ARCHIVE_EXPLANATION}</p>}
         {candidateEntry ? <CanvasHNLocalCandidateSection entry={candidateEntry} archiveRunning={!!entry?.running} onEnsure={ensure} candidateBlocked={operationBlocked("candidate")} selection={selectionEntry ? { entry: selectionEntry, blocked: !!entry?.running || !!candidateEntry.running || operationBlocked("selection"), onSelect: select } : undefined} /> : null}
-        {nodeId && placement ? <CanvasHNLocalSequenceSection entry={placement.controller.entry(canvasProjectId, nodeId)} blocked={operationBlocked("placement") || !selectionEntry || !["SELECTED_CURRENT_SESSION", "SELECTION_RELOADED_UNVERIFIED"].includes(selectionEntry.phase)} selectionReloaded={selectionEntry?.phase === "SELECTION_RELOADED_UNVERIFIED"} onPlace={place} /> : null}
+        {nodeId && placement ? <CanvasHNLocalSequenceSection entry={placement.controller.entry(canvasProjectId, nodeId)} blocked={operationBlocked("placement") || !selectionEntry || !["SELECTED_CURRENT_SESSION", "SELECTION_RELOADED_UNVERIFIED"].includes(selectionEntry.phase)} selectionReloaded={selectionEntry?.phase === "SELECTION_RELOADED_UNVERIFIED"} onPlace={place} onLookup={() => recoverPlacement(false)} onContinue={() => recoverPlacement(true)} onRead={() => { if (candidate) void placement.controller.readSnapshot(() => readTarget(nodeId), candidate.dependencies); }} /> : null}
     </Modal>;
 }
