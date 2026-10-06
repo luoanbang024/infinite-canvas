@@ -50,3 +50,9 @@ description: 当前项目后续值得处理的事项
 - R25 GPT Review PASS；R26 已 GPT Audit PASS / AUDITED_INTEGRATED，三个已审计 commits 原样正常推送并 fast-forward 集成；本次仅一个治理收口 commit，等待 Closeout GPT Review，不启动下一阶段。
 - authoritative Sequence read、恢复协议、跨tab/process幂等、Reorder、compound、Export 独立后移；本轮无新增backend/Foundation。
 - API Key/account/channel secret/live继续延期，输入/检测/validation跳过；Provider calls=0。
+
+## HN P0-B R28 后续审核门
+
+- R27 Discovery GPT Review PASS 后，仅实现批准的 atomic durable placement command receipt + read-only main snapshot；本地三 commits，PENDING_GPT_AUDIT，Completion 供独立审计。
+- 先审查 full/focused/actual two-process/production HTTP/source/secret evidence；不得自行 integrate/push/开始 R29。人工浏览器验收和不保证范围见 pending-test。
+- 旧 v1 UNKNOWN 继续 fail closed；完全丢失 intent 不按 Candidate/order/time 推测。Reorder/compound/Export/Jianying、CAS/revision 与 credential/live Provider 不属于本轮。

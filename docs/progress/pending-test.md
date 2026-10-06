@@ -154,3 +154,10 @@ description: 当前版本已实现但仍需人工验证的变更项
 - SourceBaseline/R7/R8 fixes/R9/R15 validations/R16 policy及冻结source范围保持；无 authoritative GET/CAS/revision、Reorder/compound/Export或Provider/API Key功能。
 
 - R26 Closeout：只改六个治理文件；source/test bytes与已审计Completion保留，focused结果/最终main及origin身份详见Closeout Completion。人工DOM/IndexedDB/theme事项仍保留，Closeout GPT Review尚待独立审核。
+
+## HN P0-B R28（PENDING_GPT_AUDIT）
+
+- 完整 Go/Bridge/mod verify、R28 Foundation/service/handler/router、真实双进程同步屏障、R7/R8/R20/R22/R24/R26 preservation、全部 frontend、独立 tsc、隔离 production build 与 protected-byte checks 通过。首轮失败及修正记录、最终 source-bound logs/counters 在 Completion，不以 focused 代替 full suite。
+- 待独立 GPT Audit；真实浏览器 DOM/IndexedDB fsync、深浅主题布局、跨 tab 操作人工验收 NOT_CLAIMED。readonly metadata 不证明媒体文件现存/codec 可播放；lost K、损坏 schema/records、存储故障继续 fail closed。
+- 支持升级 legacy/new writer 同 SQLite（不含 concurrent legacy reorder）；mixed old binaries/直接 DB 写/跨主机 FS 不保证。v1 UNKNOWN 无自动迁移，v2 exact GET + 同 K/P 显式 continuation；无自动 POST retry，无当前 Selection GET/CAS/revision、Reorder/compound/Export/Jianying。
+- API Key/account/channel/live 延期；Provider/paid=0、真实 credential/env/media NONE；R7/R8 fixes、SourceBaseline 及既有 R20/R22/R24 语义保留；无 push/merge。

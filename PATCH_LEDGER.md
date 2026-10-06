@@ -625,3 +625,18 @@ CLOSEOUT_REVIEW_STATUS = READY_FOR_R26_AUDIT_CLOSEOUT_GPT_REVIEW after focused P
 当前main只集成已审计R26并新增一个治理commit。为保持原Completion混合LF/CRLF raw bytes，验证exactancestor与expectedoldref后使用等价exactfast-forward ref推进，再切换同一HEAD；无mergecommit、源码编辑或配置修改。原12个production/test文件rawSHA与Completion完全一致，Gitcanonicalblob身份亦保留；所有非治理文件不变。
 
 non-idempotent main append / no authoritative current Sequence read / single-page retained browser journal / UNKNOWN fail closed / no automatic retry / advisory reload UNVERIFIED / twelve interlocks 继续保持。真实browser DOM/IndexedDB/theme acceptance NOT_CLAIMED。SourceBaseline16047f46e2186373ea824e12e84ae8dfa2ccde32不变，R7/R8独立fix与R9/R15validation/R16 policy不改写。API Key/account/balance/entitlement/channel/live继续DEFERRED，input/detection/validation SKIPPED，preauthPAUSED_BY_USER_DECISION，liveauthorizationNOT_GRANTED；Provider/real/paid calls=0、realcredential/media读取NONE。无Reorder/compound/Export/Jianying/GET/list/recovery/CAS/revision/R27。最终focused/byte/scope/push证据见Closeout Completion，不自行宣布Closeout GPT Review PASS。
+
+## HN P0-B R28 — authoritative local Sequence command recovery
+
+PATCH_ID = HN-AI-IC-P0-B-R28-SEQUENCE-RECOVERY-001
+EXECUTION_ID = HN_AI_IC_P0_B_R28_NO_CREDENTIAL_SEQUENCE_AUTHORITATIVE_RECOVERY_PROTOCOL
+TYPE = OUR_EXTENSION / LOCAL_ONLY / AUTHORITATIVE_RECOVERY_PROTOCOL
+STATE = PENDING_GPT_AUDIT
+BASE_SHA = fa73edd13b9a4e3d7d24ed503c80d1c9c0c5e49a
+PRODUCTION_COMMIT = 8822ce60d30110fbae42f1759a78bef13b6d4cd9
+TEST_COMMIT = e42a55b7a2c67b193211fcc16d544f22a7dc800f
+UPSTREAM_BACKPORT = false
+
+R27 已审核主方案；additive command/receipt extension + readonly main snapshot，SQLite pinned BEGIN IMMEDIATE 串行升级 legacy/new append；same K/P one effect、changed P conflict、different K fresh。legacy payload/DTO/fresh semantics 保留，历史 A replay 不重新校验 B 当前 selection、不重选/append。v1 UNKNOWN 不迁移；v2 durable prePOST/readback、UNKNOWN、exact GET terminal recovery、explicit same-K/P continuation（mutation）、safe projection 和组合互锁。NOT_OBSERVED 不代表最终失败；snapshot 不归因。没有 CAS/revision/reorder/compound/export。
+
+完整验证和 source preservation 见 Completion；R7/R8 原独立 OUR_VERIFICATION_FIX 未动，R20/R22/R24、Provider/正常 Generate/Upload、Generation SourceBaseline raw/text 不变。支持 upgraded writer 同 SQLite/no concurrent legacy reorder；mixed old binaries/unauthorized DB write/browser全局journal原子性/真实 DOM IndexedDB 验收不声明。API Key/account/channel/live 延期；Provider/paid=0、real credential/env/media read NONE、dependency install/update=0。PUSH=NONE，MERGE=NONE；等待独立 GPT Audit，不宣称 AUDITED_INTEGRATED。

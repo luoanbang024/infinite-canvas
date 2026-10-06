@@ -46,3 +46,7 @@
 ## HN P0-B R26
 
 - [Canvas 本地主序列显式加入（GPT Audit PASS / 已集成）](hn/canvas_local_sequence_placement_workflow.md)：strict historical Candidate/Selection → non-idempotent append → durable browser ledger / advisory receipt；main固定、UNKNOWN停止。
+
+## HN P0-B R28
+
+- [Canvas 本地主序列命令与 exact-key 恢复（PENDING_GPT_AUDIT）](hn/canvas_local_sequence_recovery_workflow.md)：same-intent immutable receipt、SQLite cross-process append、readonly main snapshot；v1 UNKNOWN 不迁移。
