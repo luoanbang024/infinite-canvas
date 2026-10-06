@@ -594,3 +594,16 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 - EXPORT_UI = NONE
 - ACTUAL_BROWSER_DOM_LAYOUT_ACCEPTANCE = NOT_CLAIMED
 - ACTUAL_BROWSER_INDEXEDDB_DURABILITY = NOT_CLAIMED
+
+## HN P0-B R26 — Canvas local main Sequence placement
+
+- PATCH_ID = HN-AI-IC-P0-B-R26-CANVAS-LOCAL-SEQUENCE-PLACEMENT-001
+- EXECUTION_ID = HN_AI_IC_P0_B_R26_NO_CREDENTIAL_CANVAS_LOCAL_SEQUENCE_PLACEMENT
+- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = PENDING_GPT_AUDIT; upstreamBackport = false; not a verification fix.
+- BASE_SHA = 2d901cb0ce215f11c98d6c607a65eed1262f4548; IMPLEMENTATION_COMMIT = 078ec1629fbd2bf2550240049881a6975d4395f0; TEST_COMMIT = 2a4f3937392a8458ce85b7ac5ec1ec2f34997a17; final governance/head SHA in Completion.
+- SCOPE = 7 production / 5 NEW tests / 6 governance files; R24 controller/request frozen raw bytes, R20/R22/backend/Foundation/schema/dependencies unchanged.
+- APPEND = NON_IDEMPOTENT; sequence main; browser ledger prePOST set/read equality, strict final seal; same known Candidate duplicate POST=0; UNKNOWN no auto/fresh resend/override.
+- LOCK = page Sequence then Shot/node; twelve directions; unknown entire main placement barrier + originating Shot three-action barrier; no cross-tab/process claim.
+- RECEIPT = advisory 17 closed fields; reload PLACEMENT_RELOADED_UNVERIFIED; no current Sequence read; no R20/R22/R24 reload promotion.
+- PROVIDER_BOUND_CALLS/REAL_PROVIDER_CALLS/PAID_CALLS = 0; REAL_CREDENTIAL_READ/REAL_REMOTE_MEDIA_DOWNLOAD = NONE; API Key/account/live deferral preserved.
+- Reorder/compound/Export/production Generation creation/source baseline change/historical rewrite = NONE; PUSH/MERGE = NONE; NEXT_ACTION = GPT Review / Audit.

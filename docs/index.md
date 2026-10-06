@@ -42,3 +42,7 @@
 ## HN P0-B R24
 
 - [Canvas 本地候选显式选择（GPT Audit PASS / AUDITED_INTEGRATED）](hn/canvas_local_selection_workflow.md)：strict historical Candidate → mutable Selection → advisory receipt；同 Shot 六方向互锁及 UNKNOWN 停止边界。
+
+## HN P0-B R26
+
+- [Canvas 本地主序列显式加入（pending audit）](hn/canvas_local_sequence_placement_workflow.md)：strict historical Candidate/Selection → non-idempotent append → durable browser ledger / advisory receipt；main固定、UNKNOWN停止。
