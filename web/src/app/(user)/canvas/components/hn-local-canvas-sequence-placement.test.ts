@@ -7,6 +7,7 @@ import { HNLocalSelectionController } from "./hn-local-canvas-selection";
 import { HNLocalSequencePlacementController, hnPlacementRequest, validPlacementItem, mergeHNLocalSequencePlacementReceipt } from "./hn-local-canvas-sequence-placement";
 import { placementJournalKey, type PlacementLedger, type PlacementJournal } from "./hn-local-sequence-placement-journal";
 import type { HNLocalSequencePlacementReceipt } from "../types";
+import type { PlacementProjection } from "./hn-local-canvas-sequence-placement";
 
 const evidence: object[] = [];
 export async function placementFixture() {
@@ -23,7 +24,7 @@ export async function placementFixture() {
     }) as typeof fetch;
     const d = { ...s.d, request, placementJournal: journal };
     const entry = () => controller.entry(s.f.project, s.f.nodeId);
-    const receive = (r: HNLocalSequencePlacementReceipt, t: ReturnType<typeof s.f.current>) => { counts.merge++; const v = values.get(placementJournalKey(r.hnProjectId)) as PlacementLedger; assert.equal(v.entries.at(-1)?.state, "PLACED"); s.f.setTarget({ ...s.f.current(), node: mergeHNLocalSequencePlacementReceipt([s.f.current().node], r, s.f.project, t)[0] }); };
+    const receive = (r: PlacementProjection, t: ReturnType<typeof s.f.current>) => { assert.equal(r.version, 1); if (r.version !== 1) assert.fail("v1 fixture received v2 projection"); counts.merge++; const v = values.get(placementJournalKey(r.hnProjectId)) as PlacementLedger; assert.equal(v.entries.at(-1)?.state, "PLACED"); s.f.setTarget({ ...s.f.current(), node: mergeHNLocalSequencePlacementReceipt([s.f.current().node], r, s.f.project, t)[0] }); };
     const confirm = async () => { counts.confirmation++; return true; };
     const run = (confirmation = confirm, deps = d, receiver = receive) => controller.place(s.f.current, s.f.archive, s.f.c, deps, confirmation, receiver);
     const inspect = () => controller.inspect(s.f.current, s.f.archive, s.f.c, d);
