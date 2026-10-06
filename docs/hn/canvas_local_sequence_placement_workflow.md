@@ -2,7 +2,8 @@
 
 EXECUTION_ID = HN_AI_IC_P0_B_R26_NO_CREDENTIAL_CANVAS_LOCAL_SEQUENCE_PLACEMENT
 TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 
 ## 入口与事实边界
 
@@ -30,4 +31,22 @@ root Go、独立 Bridge Go、go mod verify、全部frontend、独立tsc、env-fr
 
 R24 controller/request冻结raw segments不变；R20/R22 controllers、R7/backend/router/Foundation/Auth/schema/dependency/lockfile字节保留。R7/R8独立OUR_VERIFICATION_FIX、R9/R15 audited validations、R16 deferral不变。SourceBaseline仍16047f46e2186373ea824e12e84ae8dfa2ccde32，生产不新建Generation/Result/Archive/Candidate/Selection（测试隔离fixture除外），不改历史Generation。
 
-Provider/real/paid calls=0，REAL_CREDENTIAL_READ/REAL_REMOTE_MEDIA_DOWNLOAD=NONE。API_KEY_SETUP/ACCOUNT_CREDENTIAL_CHECK/ACCOUNT_BALANCE_CHECK/ACCOUNT_ENTITLEMENT_CHECK/CHANNEL_SECRET_SETUP/LIVE_PROVIDER_VALIDATION=DEFERRED；API_KEY_INPUT/DETECTION/VALIDATION=SKIPPED；PREAUTH=PAUSED_BY_USER_DECISION；LIVE_AUTHORIZATION=NOT_GRANTED。不Reorder/compound/Export/Jianying，不merge/push，等待GPT Review/Audit。
+Provider/real/paid calls=0，REAL_CREDENTIAL_READ/REAL_REMOTE_MEDIA_DOWNLOAD=NONE。API_KEY_SETUP/ACCOUNT_CREDENTIAL_CHECK/ACCOUNT_BALANCE_CHECK/ACCOUNT_ENTITLEMENT_CHECK/CHANNEL_SECRET_SETUP/LIVE_PROVIDER_VALIDATION=DEFERRED；API_KEY_INPUT/DETECTION/VALIDATION=SKIPPED；PREAUTH=PAUSED_BY_USER_DECISION；LIVE_AUTHORIZATION=NOT_GRANTED。不Reorder/compound/Export/Jianying。本次授权normal non-force feature/main push、ff-only集成与治理收口；最终stable SHA及focused checks见Closeout Completion，等待Closeout GPT Review。
+
+### R26 GPT Audit closeout binding
+
+GPT_AUDIT = PASS
+STATE = AUDITED_INTEGRATED
+AUDITED_FEATURE_HEAD = 7718b379cf11bb2ac5ef4b5685d186230335bc99
+AUDITED_COMPLETION_SHA256 = fda786657c19c292447f6fc08f1b85f06f6b313f46e4b65681123b81145b12bf
+AUDITED_COMPLETION_COUNTS = 122 ZIP members / 121 payloads / CRC PASS / exact final secret inventory / empty allowlist
+REVIEWED_COMMITS = 078ec1629fbd2bf2550240049881a6975d4395f0, 2a4f3937392a8458ce85b7ac5ec1ec2f34997a17, 7718b379cf11bb2ac5ef4b5685d186230335bc99
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+CLOSEOUT_STABLE_SHA = recorded in Closeout Completion (no self-reference)
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R26_AUDIT_CLOSEOUT_GPT_REVIEW after focused PASS and final origin identity
+
+当前main只集成已审计R26并新增一个治理commit。为保持原Completion混合LF/CRLF raw bytes，验证exactancestor与expectedoldref后使用等价exactfast-forward ref推进，再切换同一HEAD；无mergecommit、源码编辑或配置修改。原12个production/test文件rawSHA与Completion完全一致，Gitcanonicalblob身份亦保留；所有非治理文件不变。
+
+non-idempotent main append / no authoritative current Sequence read / single-page retained browser journal / UNKNOWN fail closed / no automatic retry / advisory reload UNVERIFIED / twelve interlocks 继续保持。真实browser DOM/IndexedDB/theme acceptance NOT_CLAIMED。SourceBaseline16047f46e2186373ea824e12e84ae8dfa2ccde32不变，R7/R8独立fix与R9/R15validation/R16 policy不改写。API Key/account/balance/entitlement/channel/live继续DEFERRED，input/detection/validation SKIPPED，preauthPAUSED_BY_USER_DECISION，liveauthorizationNOT_GRANTED；Provider/real/paid calls=0、realcredential/media读取NONE。无Reorder/compound/Export/Jianying/GET/list/recovery/CAS/revision/R27。最终focused/byte/scope/push证据见Closeout Completion，不自行宣布Closeout GPT Review PASS。

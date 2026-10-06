@@ -47,6 +47,6 @@ description: 当前项目后续值得处理的事项
 
 ## HN P0-B R26 后续审核门
 
-- R25 GPT Review PASS；R26 本地 main append UI 与自动验证完成，PENDING_GPT_AUDIT。等待GPT独立审核，不merge/push。
+- R25 GPT Review PASS；R26 已 GPT Audit PASS / AUDITED_INTEGRATED，三个已审计 commits 原样正常推送并 fast-forward 集成；本次仅一个治理收口 commit，等待 Closeout GPT Review，不启动下一阶段。
 - authoritative Sequence read、恢复协议、跨tab/process幂等、Reorder、compound、Export 独立后移；本轮无新增backend/Foundation。
 - API Key/account/channel secret/live继续延期，输入/检测/validation跳过；Provider calls=0。

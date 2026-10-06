@@ -45,4 +45,4 @@
 
 ## HN P0-B R26
 
-- [Canvas 本地主序列显式加入（pending audit）](hn/canvas_local_sequence_placement_workflow.md)：strict historical Candidate/Selection → non-idempotent append → durable browser ledger / advisory receipt；main固定、UNKNOWN停止。
+- [Canvas 本地主序列显式加入（GPT Audit PASS / 已集成）](hn/canvas_local_sequence_placement_workflow.md)：strict historical Candidate/Selection → non-idempotent append → durable browser ledger / advisory receipt；main固定、UNKNOWN停止。

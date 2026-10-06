@@ -599,11 +599,29 @@ Prefer extension points over direct Canvas/Node/Agent/Provider/Workflow/Asset/Di
 
 - PATCH_ID = HN-AI-IC-P0-B-R26-CANVAS-LOCAL-SEQUENCE-PLACEMENT-001
 - EXECUTION_ID = HN_AI_IC_P0_B_R26_NO_CREDENTIAL_CANVAS_LOCAL_SEQUENCE_PLACEMENT
-- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = PENDING_GPT_AUDIT; upstreamBackport = false; not a verification fix.
+- TYPE = OUR_EXTENSION / PRODUCT_WIRING / LOCAL_ONLY; STATE = AUDITED_INTEGRATED; upstreamBackport = false; not a verification fix.
 - BASE_SHA = 2d901cb0ce215f11c98d6c607a65eed1262f4548; IMPLEMENTATION_COMMIT = 078ec1629fbd2bf2550240049881a6975d4395f0; TEST_COMMIT = 2a4f3937392a8458ce85b7ac5ec1ec2f34997a17; final governance/head SHA in Completion.
 - SCOPE = 7 production / 5 NEW tests / 6 governance files; R24 controller/request frozen raw bytes, R20/R22/backend/Foundation/schema/dependencies unchanged.
 - APPEND = NON_IDEMPOTENT; sequence main; browser ledger prePOST set/read equality, strict final seal; same known Candidate duplicate POST=0; UNKNOWN no auto/fresh resend/override.
 - LOCK = page Sequence then Shot/node; twelve directions; unknown entire main placement barrier + originating Shot three-action barrier; no cross-tab/process claim.
 - RECEIPT = advisory 17 closed fields; reload PLACEMENT_RELOADED_UNVERIFIED; no current Sequence read; no R20/R22/R24 reload promotion.
 - PROVIDER_BOUND_CALLS/REAL_PROVIDER_CALLS/PAID_CALLS = 0; REAL_CREDENTIAL_READ/REAL_REMOTE_MEDIA_DOWNLOAD = NONE; API Key/account/live deferral preserved.
-- Reorder/compound/Export/production Generation creation/source baseline change/historical rewrite = NONE; PUSH/MERGE = NONE; NEXT_ACTION = GPT Review / Audit.
+- Reorder/compound/Export/production Generation creation/source baseline change/historical rewrite = NONE; PUSH = NORMAL_NON_FORCE_AUTHORIZED_FEATURE_AND_OUR_MAIN; INTEGRATION = FAST_FORWARD_ONLY; NEXT_ACTION = Closeout GPT Review.
+
+### R26 GPT Audit closeout binding
+
+GPT_AUDIT = PASS
+STATE = AUDITED_INTEGRATED
+AUDITED_FEATURE_HEAD = 7718b379cf11bb2ac5ef4b5685d186230335bc99
+AUDITED_COMPLETION_SHA256 = fda786657c19c292447f6fc08f1b85f06f6b313f46e4b65681123b81145b12bf
+AUDITED_COMPLETION_COUNTS = 122 ZIP members / 121 payloads / CRC PASS / exact final secret inventory / empty allowlist
+REVIEWED_COMMITS = 078ec1629fbd2bf2550240049881a6975d4395f0, 2a4f3937392a8458ce85b7ac5ec1ec2f34997a17, 7718b379cf11bb2ac5ef4b5685d186230335bc99
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+CLOSEOUT_STABLE_SHA = recorded in Closeout Completion (no self-reference)
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R26_AUDIT_CLOSEOUT_GPT_REVIEW after focused PASS and final origin identity
+
+当前main只集成已审计R26并新增一个治理commit。为保持原Completion混合LF/CRLF raw bytes，验证exactancestor与expectedoldref后使用等价exactfast-forward ref推进，再切换同一HEAD；无mergecommit、源码编辑或配置修改。原12个production/test文件rawSHA与Completion完全一致，Gitcanonicalblob身份亦保留；所有非治理文件不变。
+
+non-idempotent main append / no authoritative current Sequence read / single-page retained browser journal / UNKNOWN fail closed / no automatic retry / advisory reload UNVERIFIED / twelve interlocks 继续保持。真实browser DOM/IndexedDB/theme acceptance NOT_CLAIMED。SourceBaseline16047f46e2186373ea824e12e84ae8dfa2ccde32不变，R7/R8独立fix与R9/R15validation/R16 policy不改写。API Key/account/balance/entitlement/channel/live继续DEFERRED，input/detection/validation SKIPPED，preauthPAUSED_BY_USER_DECISION，liveauthorizationNOT_GRANTED；Provider/real/paid calls=0、realcredential/media读取NONE。无Reorder/compound/Export/Jianying/GET/list/recovery/CAS/revision/R27。最终focused/byte/scope/push证据见Closeout Completion，不自行宣布Closeout GPT Review PASS。

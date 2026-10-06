@@ -146,9 +146,11 @@ description: 当前版本已实现但仍需人工验证的变更项
 
 - 本次仅六个治理 allowlist paths、一个 governance-only commit；R24 production/test 和既有 R5–R22 实现字节保留。规定 focused verification 和 normal non-force our-main push、实际 stable SHA 见 Completion；真实 DOM/IndexedDB/主题布局人工验收仍 NOT_CLAIMED。
 
-## HN P0-B R26（PENDING_GPT_AUDIT）
+## HN P0-B R26（GPT Audit PASS / AUDITED_INTEGRATED，人工验收未声明）
 
 - archive Dialog新增“本地序列”区与“加入主序列”，固定main，明确确认；成功同Candidate禁止repeat，UNKNOWN不重发，新Candidate只在已知旧success后明确新Selection才能独立append。
 - durable aggregate ledger、prePOST写入/读回、strictack最终封存、page Sequence+Shot/node锁、十二方向互锁、原Shot UNKNOWN barrier、reload UNVERIFIED及零Blob/Provider边界自动验证通过。实际production handler已提交后断连接POST=1/item=1、reload追加POST=0；独立tsc/build/Go/Bridge/full frontend/focused通过，完整证据见Completion。
 - 待人工：真实浏览器localforage IndexedDB写入/重载、Dialog深浅主题、关闭重开/快速点击/取消、跨Shot互锁、storage不可用、未确认结果停止、新Candidate操作。SSR/受控事件/controller与JSON roundtrip不等于真实DOM/IndexedDB人工验收。
 - SourceBaseline/R7/R8 fixes/R9/R15 validations/R16 policy及冻结source范围保持；无 authoritative GET/CAS/revision、Reorder/compound/Export或Provider/API Key功能。
+
+- R26 Closeout：只改六个治理文件；source/test bytes与已审计Completion保留，focused结果/最终main及origin身份详见Closeout Completion。人工DOM/IndexedDB/theme事项仍保留，Closeout GPT Review尚待独立审核。
