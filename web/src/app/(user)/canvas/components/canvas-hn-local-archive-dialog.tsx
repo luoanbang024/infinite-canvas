@@ -11,6 +11,9 @@ import { CanvasHNLocalCandidateSection, HNLocalCandidateFacts } from "./canvas-h
 import type { HNLocalCandidateReceipt } from "../types";
 import { HNLocalSelectionController, HN_SELECTION_EXPLANATION, HN_SELECTION_REPEAT, HN_SELECTION_NO_READ } from "./hn-local-canvas-selection";
 import type { HNLocalSelectionReceipt } from "../types";
+import type { HNLocalSequencePlacementReceipt } from "../types";
+import { HNLocalSequencePlacementController, HN_PLACEMENT_CONFIRMATION } from "./hn-local-canvas-sequence-placement";
+import { CanvasHNLocalSequenceSection } from "./canvas-hn-local-sequence-section";
 
 export function HNLocalArchiveContent({ entry, onArchive, candidateRunning = false, operationBlocked = false }: { entry: HNArchiveEntry; onArchive: () => void; candidateRunning?: boolean; operationBlocked?: boolean }) {
     const r = entry.receipt;
@@ -38,15 +41,16 @@ type Props = {
     onReceipt: (receipt: HNLocalArchiveReceipt) => void; onClose: () => void; targetRevision: unknown;
     candidate?: { controller: HNLocalCandidateController; dependencies: HNCandidateDependencies; onReceipt: (receipt: HNLocalCandidateReceipt, archive: Extract<HNLocalArchiveReceipt, { outcome: "ARCHIVED" }>) => void };
     selection?: { controller: HNLocalSelectionController; onReceipt: (receipt: HNLocalSelectionReceipt, target: HNArchiveTarget) => void };
+    placement?: { controller: HNLocalSequencePlacementController; onReceipt: (receipt: HNLocalSequencePlacementReceipt, target: HNArchiveTarget) => void };
 };
 export function runHNArchiveIfCandidateIdle(candidate: HNLocalCandidateController | undefined, project: string, node: string, action: () => void) {
     if (candidate?.entry(project, node).running) return false;
     action(); return true;
 }
-export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, controller, readTarget, dependencies, onReceipt, onClose, targetRevision, candidate, selection }: Props) {
+export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, controller, readTarget, dependencies, onReceipt, onClose, targetRevision, candidate, selection, placement }: Props) {
     const theme = canvasThemes[useThemeStore((state) => state.theme)], { modal } = App.useApp();
     let archiveRevision = "";
-    try { if (open && nodeId) { const t = readTarget(nodeId), { hnLocalCandidate: _candidate, hnLocalSelection: _selection, ...metadata } = t.node.metadata || {}; archiveRevision = JSON.stringify({ ...t, node: { ...t.node, metadata } }); } } catch { /* No target cannot authorize a write. */ }
+    try { if (open && nodeId) { const t = readTarget(nodeId), { hnLocalCandidate: _candidate, hnLocalSelection: _selection, hnLocalSequencePlacement: _placement, ...metadata } = t.node.metadata || {}; archiveRevision = JSON.stringify({ ...t, node: { ...t.node, metadata } }); } } catch { /* No target cannot authorize a write. */ }
     useEffect(() => {
         if (!open || !nodeId) return;
         // Opening only reads local Blob/journal; no discovery, HTTP write or journal write.
@@ -62,7 +66,10 @@ export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, cont
     useEffect(() => {
         if (open && nodeId && candidate && selection) void selection.controller.inspect(() => readTarget(nodeId), controller, candidate.controller, candidate.dependencies);
     }, [open, nodeId, canvasProjectId, controller, candidate?.controller, candidate?.dependencies, selection?.controller, readTarget, targetRevision, candidateEntry?.phase]);
-    const operationBlocked = (operation: "archive" | "candidate" | "selection") => {
+    useEffect(() => {
+        if (open && nodeId && candidate && selection && placement) void placement.controller.inspect(() => readTarget(nodeId), controller, candidate.controller, candidate.dependencies);
+    }, [open, nodeId, canvasProjectId, controller, candidate?.controller, candidate?.dependencies, placement?.controller, selectionEntry?.phase, candidateEntry?.phase, readTarget, targetRevision]);
+    const operationBlocked = (operation: "archive" | "candidate" | "selection" | "placement") => {
         if (!selection || !nodeId) return false;
         try { return selection.controller.coordinator.blocked(readTarget(nodeId), operation, operation === "selection" ? selectionEntry?.owner : undefined); } catch { return true; }
     };
@@ -88,8 +95,15 @@ export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, cont
             modal.confirm({ title: "选择此候选", content: <div><p>{HN_SELECTION_EXPLANATION}</p><p>{HN_SELECTION_NO_READ}</p><p>{HN_SELECTION_REPEAT}</p><p>ShotID：{owner.shotId}</p><p>CandidateID：{owner.candidateId}</p><p>ResultID：{owner.resultId}</p></div>, okText: "确认选择", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
         }), selection.onReceipt);
     };
+    const place = () => {
+        if (!nodeId || !candidate || !selection || !placement) return;
+        void placement.controller.place(() => readTarget(nodeId), controller, candidate.controller, candidate.dependencies, (owner) => new Promise<boolean>((resolve) => {
+            modal.confirm({ title: "加入主序列", content: <div><p>SequenceID：main</p><p>ShotID：{owner.shotId}</p><p>CandidateID：{owner.candidateId}</p><p>ResultID：{owner.resultId}</p><p>{HN_PLACEMENT_CONFIRMATION}</p></div>, okText: "确认加入", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
+        }), placement.onReceipt);
+    };
     return <Modal title="归档本地视频" open={open && !!nodeId} centered footer={null} onCancel={onClose} styles={{ body: { color: theme.node.text } }}>
         {entry ? <HNLocalArchiveContent entry={entry} onArchive={archive} candidateRunning={candidateEntry?.running} operationBlocked={operationBlocked("archive")} /> : <p>{HN_ARCHIVE_EXPLANATION}</p>}
         {candidateEntry ? <CanvasHNLocalCandidateSection entry={candidateEntry} archiveRunning={!!entry?.running} onEnsure={ensure} candidateBlocked={operationBlocked("candidate")} selection={selectionEntry ? { entry: selectionEntry, blocked: !!entry?.running || !!candidateEntry.running || operationBlocked("selection"), onSelect: select } : undefined} /> : null}
+        {nodeId && placement ? <CanvasHNLocalSequenceSection entry={placement.controller.entry(canvasProjectId, nodeId)} blocked={operationBlocked("placement") || !selectionEntry || !["SELECTED_CURRENT_SESSION", "SELECTION_RELOADED_UNVERIFIED"].includes(selectionEntry.phase)} selectionReloaded={selectionEntry?.phase === "SELECTION_RELOADED_UNVERIFIED"} onPlace={place} /> : null}
     </Modal>;
 }

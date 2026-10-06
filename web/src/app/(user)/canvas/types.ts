@@ -44,6 +44,7 @@ export type CanvasNodeMetadata = {
     hnLocalArchive?: HNLocalArchiveReceipt;
     hnLocalCandidate?: HNLocalCandidateReceipt;
     hnLocalSelection?: HNLocalSelectionReceipt;
+    hnLocalSequencePlacement?: HNLocalSequencePlacementReceipt;
     content?: string;
     groupId?: string;
     composerContent?: string;
@@ -139,6 +140,10 @@ export type HNLocalSelectionReceipt = {
     candidateId: string; intentId: string; observedAt: string;
 };
 export type HNLocalKnownJob = { resultId: string; archiveJobId: string };
+export type HNLocalSequencePlacementReceipt = Omit<HNLocalSelectionReceipt, "intentId"> & {
+    sequenceId: "main"; sequenceItemId: string; orderIndex: number;
+    placementIntentId: string; selectionIntentId: string;
+};
 export type HNLocalArchiveReceipt = HNLocalArchiveOwner & (
     | { outcome: "NOT_ARCHIVED" }
     | { outcome: "ARCHIVING" | "ARCHIVE_OUTCOME_UNKNOWN"; knownJob: HNLocalKnownJob | null }

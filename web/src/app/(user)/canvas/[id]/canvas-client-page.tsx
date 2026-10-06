@@ -60,6 +60,8 @@ import { HNLocalArchiveController, mergeHNLocalArchiveReceipt } from "../compone
 import { HNLocalCandidateController, mergeHNLocalCandidateReceipt } from "../components/hn-local-canvas-candidate";
 import { HNLocalSelectionController, mergeHNLocalSelectionReceipt } from "../components/hn-local-canvas-selection";
 import type { HNLocalSelectionReceipt } from "../types";
+import { HNLocalSequencePlacementController, mergeHNLocalSequencePlacementReceipt } from "../components/hn-local-canvas-sequence-placement";
+import type { HNLocalSequencePlacementReceipt } from "../types";
 import type { HNArchiveTarget } from "../components/hn-local-canvas-archive";
 import { getMediaBlob } from "@/services/file-storage";
 import { captureHNLocalIntent, HNLocalPrepareController, mergeHNLocalReceipt } from "../components/hn-local-canvas-prepare";
@@ -450,6 +452,20 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
         setNodes((current) => mergeHNLocalSelectionReceipt(current, receipt, localArchiveSnapshotRef.current.projectId, target));
     }, []);
     const [, refreshLocalPrepare] = useState(0);
+    const [, refreshLocalPlacement] = useState(0);
+    const localPlacementController = useRef<HNLocalSequencePlacementController | null>(null);
+    if (!localPlacementController.current) localPlacementController.current = new HNLocalSequencePlacementController(localSelectionController.current!, () => refreshLocalPlacement((n) => n + 1));
+    useEffect(() => {
+        const controller = localPlacementController.current!; controller.activate();
+        return () => controller.dispose();
+    }, [projectId]);
+    useEffect(() => {
+        const projects = new Set(nodes.flatMap((node) => node.metadata?.hnLocalPrepared ? [node.metadata.hnLocalPrepared.hnProjectId] : []));
+        for (const project of projects) void localPlacementController.current!.hydrate(project);
+    }, [projectId, nodes]);
+    const receiveLocalPlacementReceipt = useCallback((receipt: HNLocalSequencePlacementReceipt, target: HNArchiveTarget) => {
+        setNodes((current) => mergeHNLocalSequencePlacementReceipt(current, receipt, localArchiveSnapshotRef.current.projectId, target));
+    }, []);
     const localPrepareController = useRef<HNLocalPrepareController | null>(null);
     if (!localPrepareController.current) localPrepareController.current = new HNLocalPrepareController(() => refreshLocalPrepare((n) => n + 1));
     const localPrepareDependencies = useMemo(() => ({ readBlob: getImageBlob }), []);
@@ -4525,7 +4541,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
 
                 <CanvasNodeInfoModal node={infoNode} open={Boolean(infoNode)} onClose={() => setInfoNodeId(null)} />
                 <CanvasHNLocalPrepareDialog open={Boolean(localPrepareNodeId)} canvasProjectId={projectId} nodeId={localPrepareNodeId} controller={localPrepareController.current!} intentRevision={localPrepareSnapshot} readIntent={readLocalPrepareIntent} dependencies={localPrepareDependencies} onReceipt={receiveLocalPrepareReceipt} onClose={() => setLocalPrepareNodeId(null)} />
-                <CanvasHNLocalArchiveDialog open={Boolean(localArchiveNodeId)} canvasProjectId={projectId} nodeId={localArchiveNodeId} controller={localArchiveController.current!} targetRevision={localArchiveSnapshot} readTarget={readLocalArchiveTarget} dependencies={localArchiveDependencies} onReceipt={receiveLocalArchiveReceipt} onClose={() => setLocalArchiveNodeId(null)} candidate={{ controller: localCandidateController.current!, dependencies: localCandidateDependencies, onReceipt: receiveLocalCandidateReceipt }} selection={{ controller: localSelectionController.current!, onReceipt: receiveLocalSelectionReceipt }} />
+                <CanvasHNLocalArchiveDialog open={Boolean(localArchiveNodeId)} canvasProjectId={projectId} nodeId={localArchiveNodeId} controller={localArchiveController.current!} targetRevision={localArchiveSnapshot} readTarget={readLocalArchiveTarget} dependencies={localArchiveDependencies} onReceipt={receiveLocalArchiveReceipt} onClose={() => setLocalArchiveNodeId(null)} candidate={{ controller: localCandidateController.current!, dependencies: localCandidateDependencies, onReceipt: receiveLocalCandidateReceipt }} selection={{ controller: localSelectionController.current!, onReceipt: receiveLocalSelectionReceipt }} placement={{ controller: localPlacementController.current!, onReceipt: receiveLocalPlacementReceipt }} />
 
                 <Modal
                     title="截取音频"

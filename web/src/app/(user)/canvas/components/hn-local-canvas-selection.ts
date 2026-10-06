@@ -46,10 +46,12 @@ function historicalTarget(t: HNArchiveTarget): HNArchiveTarget {
     return { canvasProjectId: t.canvasProjectId, node: { id: n.id, type: n.type, title: "", width: 0, height: 0, position: { x: 0, y: 0 }, metadata: { hnLocalPrepared: structuredClone(p), hnLocalArchive: structuredClone(n.metadata?.hnLocalArchive), hnLocalCandidate: structuredClone(n.metadata?.hnLocalCandidate) } } };
 }
 const revision = (t: HNArchiveTarget) => JSON.stringify(historicalTarget(t));
-type Operation = "archive" | "candidate" | "selection";
+type Operation = "archive" | "candidate" | "selection" | "placement";
 type Token = { shotKey: string; nodeKey: string; identity: symbol };
 
 export class HNShotOperationCoordinator {
+    private admission?: (target: HNArchiveTarget, operation: Operation) => boolean;
+    setAdmissionGate(gate: (target: HNArchiveTarget, operation: Operation) => boolean) { this.admission = gate; }
     private shots = new Map<string, Token>();
     private nodes = new Map<string, Token>();
     private unknown = new Map<string, HNSelectionOwner>();
@@ -60,6 +62,7 @@ export class HNShotOperationCoordinator {
     }
     acquire(target: HNArchiveTarget, operation: Operation, owner?: HNSelectionOwner): Token | undefined {
         try {
+            if (this.admission && !this.admission(target, operation)) return;
             const ids = this.identifiers(target), barrier = this.unknown.get(ids.shotKey);
             if (this.shots.has(ids.shotKey) || this.nodes.has(ids.nodeKey) || barrier && (operation !== "selection" || !owner || !same(barrier, owner))) return;
             const token = { ...ids, identity: Symbol(operation) }; this.shots.set(token.shotKey, token); this.nodes.set(token.nodeKey, token); this.notify(); return token;
@@ -74,6 +77,7 @@ export class HNShotOperationCoordinator {
     clearUnknown(token: Token, owner: HNSelectionOwner) { const prior = this.unknown.get(token.shotKey); if (prior && same(prior, owner)) this.unknown.delete(token.shotKey); this.notify(); }
     allowsSelection(token: Token, owner: HNSelectionOwner) { const b = this.unknown.get(token.shotKey); return this.shots.get(token.shotKey) === token && this.nodes.get(token.nodeKey) === token && token.shotKey === JSON.stringify([owner.hnProjectId, owner.shotId]) && (!b || same(b, owner)); }
     blocked(target: HNArchiveTarget, operation: Operation, owner?: HNSelectionOwner) {
+        if (this.admission && !this.admission(target, operation)) return true;
         try { const ids = this.identifiers(target), b = this.unknown.get(ids.shotKey); return this.shots.has(ids.shotKey) || this.nodes.has(ids.nodeKey) || !!b && (operation !== "selection" || !owner || !same(b, owner)); } catch { return true; }
     }
 }
