@@ -45,7 +45,7 @@ func TestR28HandlerClosedBoundaryLookupAndReadonly(t *testing.T) {
 	b, _ := json.Marshal(p)
 	for _, body := range []string{`null`, `{}`, string(b) + ` {}`, strings.Replace(string(b), `"protocolVersion":1`, `"ProtocolVersion":1`, 1), strings.Replace(string(b), `"protocolVersion":1`, `"protocolVersion":1,"protocolVersion":1`, 1), strings.TrimSuffix(string(b), "}") + `,"extra":1}`} {
 		out := httptest.NewRecorder()
-		HNPlacementCommand(out, r28Request("POST", body), f.project)
+		HNPlacementCommand(out, r28Request("POST", body), f.project, "main")
 		if out.Code != 400 {
 			t.Fatal(body, out.Code)
 		}
@@ -71,13 +71,13 @@ func TestR28HandlerClosedBoundaryLookupAndReadonly(t *testing.T) {
 			r.Header.Set("Authorization", "synthetic")
 		}
 		out := httptest.NewRecorder()
-		HNReadMainSequence(out, r, f.project)
+		HNReadMainSequence(out, r, f.project, "main")
 		if out.Code != 400 && out.Code != 403 {
 			t.Fatal(scenario, out.Code)
 		}
 	}
 	out := httptest.NewRecorder()
-	HNLookupPlacement(out, r28Request("GET", ""), f.project, p.PlacementIntentID)
+	HNLookupPlacement(out, r28Request("GET", ""), f.project, "main", p.PlacementIntentID)
 	if out.Code != 409 || !strings.Contains(out.Body.String(), "PLACEMENT_PROTOCOL_NOT_INITIALIZED") {
 		t.Fatal(out.Body.String())
 	}
@@ -87,7 +87,7 @@ func TestR28HandlerClosedBoundaryLookupAndReadonly(t *testing.T) {
 		t.Fatal(e)
 	}
 	out = httptest.NewRecorder()
-	HNReadMainSequence(out, r28Request("GET", ""), f.project)
+	HNReadMainSequence(out, r28Request("GET", ""), f.project, "main")
 	if out.Code != 200 || out.Header().Get("Cache-Control") != "no-store" {
 		t.Fatal(out.Code, out.Body.String())
 	}
@@ -96,14 +96,14 @@ func TestR28HandlerClosedBoundaryLookupAndReadonly(t *testing.T) {
 		t.Fatal("GET wrote DB")
 	}
 	out = httptest.NewRecorder()
-	HNPlacementCommand(out, r28Request("POST", string(b)), f.project)
+	HNPlacementCommand(out, r28Request("POST", string(b)), f.project, "main")
 	if out.Code != 200 {
 		t.Fatal(out.Body.String())
 	}
 	var a struct{ Data foundation.PlacementReceipt }
 	json.Unmarshal(out.Body.Bytes(), &a)
 	lookup := httptest.NewRecorder()
-	HNLookupPlacement(lookup, r28Request("GET", ""), f.project, p.PlacementIntentID)
+	HNLookupPlacement(lookup, r28Request("GET", ""), f.project, "main", p.PlacementIntentID)
 	if lookup.Code != 200 {
 		t.Fatal(lookup.Body.String())
 	}
@@ -113,7 +113,7 @@ func TestR28HandlerClosedBoundaryLookupAndReadonly(t *testing.T) {
 		t.Fatal("receipt changed")
 	}
 	notObserved := httptest.NewRecorder()
-	HNLookupPlacement(notObserved, r28Request("GET", ""), f.project, uuid.NewString())
+	HNLookupPlacement(notObserved, r28Request("GET", ""), f.project, "main", uuid.NewString())
 	if notObserved.Code != 200 || !strings.Contains(notObserved.Body.String(), "NOT_OBSERVED") {
 		t.Fatal(notObserved.Body.String())
 	}
@@ -144,7 +144,7 @@ func TestR28ActualHTTPCommittedLossContinuationAndDelayedRace(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		posts.Add(1)
 		out := httptest.NewRecorder()
-		HNPlacementCommand(out, r, f.project)
+		HNPlacementCommand(out, r, f.project, "main")
 		if out.Code != 200 {
 			t.Error(out.Code, out.Body.String())
 		}
@@ -168,14 +168,14 @@ func TestR28ActualHTTPCommittedLossContinuationAndDelayedRace(t *testing.T) {
 		t.Fatal("response loss not observed")
 	}
 	lookup := httptest.NewRecorder()
-	HNLookupPlacement(lookup, r28Request("GET", ""), f.project, p.PlacementIntentID)
+	HNLookupPlacement(lookup, r28Request("GET", ""), f.project, "main", p.PlacementIntentID)
 	if lookup.Code != 200 {
 		t.Fatal(lookup.Body.String())
 	}
 	var ack struct{ Data foundation.PlacementReceipt }
 	json.Unmarshal(lookup.Body.Bytes(), &ack)
 	continued := httptest.NewRecorder()
-	HNPlacementCommand(continued, r28Request("POST", string(body)), f.project)
+	HNPlacementCommand(continued, r28Request("POST", string(body)), f.project, "main")
 	var same struct{ Data foundation.PlacementReceipt }
 	json.Unmarshal(continued.Body.Bytes(), &same)
 	if continued.Code != 200 || !reflect.DeepEqual(ack, same) {
@@ -195,7 +195,7 @@ func TestR28ActualHTTPCommittedLossContinuationAndDelayedRace(t *testing.T) {
 			defer wg.Done()
 			<-start
 			out := httptest.NewRecorder()
-			HNPlacementCommand(out, r28Request("POST", string(body)), f.project)
+			HNPlacementCommand(out, r28Request("POST", string(body)), f.project, "main")
 			if out.Code != 200 {
 				t.Error(out.Code, out.Body.String())
 			}
@@ -250,12 +250,12 @@ func TestR28LegacyHTTPFreshAndTerminalRejection(t *testing.T) {
 	p.PreparedFrozenHash = strings.Repeat("a", 64)
 	b, _ := json.Marshal(p)
 	out = httptest.NewRecorder()
-	HNPlacementCommand(out, r28Request("POST", string(b)), f.project)
+	HNPlacementCommand(out, r28Request("POST", string(b)), f.project, "main")
 	if out.Code != 200 || !strings.Contains(out.Body.String(), `"outcome":"REJECTED"`) {
 		t.Fatal(out.Body.String())
 	}
 	lookup := httptest.NewRecorder()
-	HNLookupPlacement(lookup, r28Request("GET", ""), f.project, p.PlacementIntentID)
+	HNLookupPlacement(lookup, r28Request("GET", ""), f.project, "main", p.PlacementIntentID)
 	if !bytes.Equal(out.Body.Bytes(), lookup.Body.Bytes()) {
 		t.Fatal("terminal rejection drift")
 	}
@@ -287,7 +287,7 @@ func TestR28ProductionHTTPBunClientRecovery(t *testing.T) {
 			n := posts.Add(1)
 			if n == 1 {
 				out := httptest.NewRecorder()
-				HNPlacementCommand(out, r, f.project)
+				HNPlacementCommand(out, r, f.project, "main")
 				if out.Code != 200 {
 					t.Error(out.Body.String())
 				}
@@ -299,12 +299,12 @@ func TestR28ProductionHTTPBunClientRecovery(t *testing.T) {
 				conn.Close()
 				return
 			}
-			HNPlacementCommand(w, r, f.project)
+			HNPlacementCommand(w, r, f.project, "main")
 			return
 		}
 		if r.URL.Path == base+"/"+p.PlacementIntentID && r.Method == "GET" {
 			queries.Add(1)
-			HNLookupPlacement(w, r, f.project, p.PlacementIntentID)
+			HNLookupPlacement(w, r, f.project, "main", p.PlacementIntentID)
 			return
 		}
 		forbidden.Add(1)
@@ -327,5 +327,63 @@ func TestR28ProductionHTTPBunClientRecovery(t *testing.T) {
 		data, _ := json.MarshalIndent(map[string]any{"runtime": "installed Bun production TypeScript service + actual Go HTTP handlers", "serverPOST": posts.Load(), "serverLookupGET": queries.Load(), "items": 1, "forbidden": forbidden.Load(), "clientEvidence": string(out), "providerCalls": 0}, "", "  ")
 		os.MkdirAll(dir, 0700)
 		os.WriteFile(filepath.Join(dir, "bun-production-bridge.json"), data, 0600)
+	}
+}
+
+func TestR28AuditFixHandlerNonMainNoStoreMutation(t *testing.T) {
+	f, p := r28Fixture(t)
+	path := filepath.Join(f.root, f.project, "metadata", "hn-extension.sqlite")
+	before, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, err := json.Marshal(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	handlers := []struct {
+		name, method string
+		call         func(http.ResponseWriter, *http.Request)
+	}{
+		{"snapshot", "GET", func(w http.ResponseWriter, r *http.Request) { HNReadMainSequence(w, r, f.project, "other") }},
+		{"command", "POST", func(w http.ResponseWriter, r *http.Request) { HNPlacementCommand(w, r, f.project, "other") }},
+		{"lookup", "GET", func(w http.ResponseWriter, r *http.Request) {
+			HNLookupPlacement(w, r, f.project, "other", p.PlacementIntentID)
+		}},
+	}
+	for _, h := range handlers {
+		for _, remote := range []bool{true, false} {
+			r := r28Request(h.method, "")
+			r.Header.Set("Origin", "http://localhost:3000")
+			if h.method == "POST" {
+				r.Body = io.NopCloser(bytes.NewReader(body))
+			}
+			want := 400
+			if remote {
+				r.RemoteAddr = "192.0.2.1:9"
+				want = 403
+			}
+			w := httptest.NewRecorder()
+			h.call(w, r)
+			if w.Code != want || w.Header().Get("Cache-Control") != "no-store" {
+				t.Fatal(h.name, remote, w.Code, w.Body.String())
+			}
+			if !remote && !strings.Contains(w.Body.String(), "PLACEMENT_INPUT_INVALID") {
+				t.Fatal(w.Body.String())
+			}
+		}
+	}
+	after, err := os.ReadFile(path)
+	if err != nil || sha256.Sum256(before) != sha256.Sum256(after) {
+		t.Fatal("non-main wrote existing DB", err)
+	}
+	out := httptest.NewRecorder()
+	HNLookupPlacement(out, r28Request("GET", ""), f.project, "main", p.PlacementIntentID)
+	if out.Code != 409 || !strings.Contains(out.Body.String(), "PLACEMENT_PROTOCOL_NOT_INITIALIZED") {
+		t.Fatal("non-main created command extension/receipt", out.Code, out.Body.String())
+	}
+	snapshot, err := service.ReadLocalMainSequence(f.root, f.project)
+	if err != nil || len(snapshot.Items) != 0 {
+		t.Fatal("non-main created sequence item", err)
 	}
 }
