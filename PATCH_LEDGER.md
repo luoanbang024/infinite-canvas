@@ -663,7 +663,7 @@ local-boundary 修正为独立 OUR_VERIFICATION_FIX / SECURITY_BOUNDARY_ORDERING
 
 EXECUTION_ID = HN_AI_IC_P0_B_R30_NO_CREDENTIAL_SEQUENCE_REORDER_PROTOCOL
 TYPE = OUR_EXTENSION / LOCAL_ONLY / METADATA_PROTOCOL / NO_UI
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
 BASE_SHA = 4efcd6b94ae7c311cffcd25f97943190d06c1e31
 PRODUCTION_COMMIT = 16fad9a4d50f91cf6aa6f23d66d438fbcd8f9b31
 TEST_COMMIT = 37d1c7931afe799e36fb2e337ddfe872c7e838da
@@ -681,4 +681,22 @@ Tests cover nine real two-process races, handler commit+drop/exact lookup/explic
 Supported guarantee: upgraded writers on the same SQLite file; mixed old binaries, raw unauthorized writers and distributed DB copies excluded.
 API Key/account/balance/entitlement/channel/live all deferred; input/detection/validation skipped. PROVIDER_CALLS=0; PAID_CALLS=0; LIVE_CALLS=0; REAL_CREDENTIAL_READ=NONE; REAL_REMOTE_MEDIA_DOWNLOAD=NONE; dependency install/update=0.
 Canvas/drag-drop/browser reorder journal/controller, compound/Export/Jianying/R31 = NONE.
-PUSH=NONE; MERGE=NONE; NEXT_ACTION=Independent GPT Review of R30 Completion.
+PUSH=NORMAL_NON_FORCE; INTEGRATION=FAST_FORWARD_ONLY; NEXT_ACTION=Independent GPT Review of R30 Audit Closeout Completion.
+
+### R30 GPT Audit closeout binding
+
+GPT_AUDIT = PASS
+STATE = AUDITED_INTEGRATED
+AUDITED_FEATURE_HEAD = bae2b76d444ac508771f7319fd4dbd3960095f95
+AUDITED_COMPLETION_SHA256 = 62ebcc2aefcbab2007dccc0b338e9c348bd10ab2fb2996654a452c5aa4ef9286
+AUDITED_COMPLETION_COUNTS = 233 ZIP members / 232 payloads / CRC PASS / exact final secret inventory
+REVIEWED_COMMITS = 16fad9a4d50f91cf6aa6f23d66d438fbcd8f9b31, 37d1c7931afe799e36fb2e337ddfe872c7e838da, bae2b76d444ac508771f7319fd4dbd3960095f95
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+FINAL_STABLE_SHA = recorded in Closeout Completion (no self-reference)
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R30_AUDIT_CLOSEOUT_GPT_REVIEW after required checks and final origin identity
+
+本轮仅治理收口：原三个 reviewed commits 原样正常 push、祖先/expected-old-ref 检查后 equivalent exact fast-forward 并切换同 HEAD，保持混合 LF/CRLF 原字节；仅六个治理文件和一个 closeout commit。R30 production/test 原始字节及两处 EOF 空行警告保留，不修改已审计前端。Closeout GPT Review 仍待独立审查。
+
+revision/CAS 防止 stale-state 覆盖；immutable reorder command/receipt 负责 response-loss 命令归因，两种 authority 不替代。revision 是 Sequence metadata，不是 UpdatedAt/count/time。upgraded legacy Add、首次 R28 placement insert、accepted legacy/CAS main Reorder（含 no-op）、supported main Delete 与 revision 同写事务；replay/reject/conflict/rollback +0，accepted no-op +1。R7 only-OrderIndex/indexed order_index、UpdatedAt 及其他字段保持，R28五key /items 和 placement K/P/receipt/controller/journal/UI 不变。legacy Reorder wire unchanged/unconditional，NOT CAS SAFE；typed R30 transport 不接 Canvas，无 Reorder UI/browser journal/controller。mixed old binaries/raw DB writers/distributed copies 不保证。无 R31/compound/Export/Jianying；Provider/paid/live calls=0、real credential/env/remote media read=NONE，API Key/account/balance/entitlement/channel/live 继续延期，input/detection/validation SKIPPED，live authorization NOT_GRANTED。实际完整/focused/双进程/frontend/独立tsc和 source-bound build 证据见 Closeout Completion。

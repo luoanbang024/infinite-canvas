@@ -55,4 +55,6 @@
 
 ## HN P0-B R30
 
-- [本地主序列 revision/CAS/command 协议（PENDING_GPT_AUDIT / NO_UI）](hn/sequence_reorder_protocol.md)：upgraded main writers 同事务 revision、immutable historical receipt、readonly full snapshot；无 Canvas Reorder 接线。
+- [本地主序列 revision/CAS/command 协议（GPT Audit PASS / AUDITED_INTEGRATED / NO_UI）](hn/sequence_reorder_protocol.md)：upgraded main writers 同事务 revision、immutable historical receipt、readonly full snapshot；无 Canvas Reorder 接线。
+
+- R30 三个 reviewed commits 原样正常推送、ff-only 集成；六文件一个治理收口 commit，production/test 和 EOF 字节保留；等待 Closeout Completion GPT Review。无 R31/Reorder UI/Provider。

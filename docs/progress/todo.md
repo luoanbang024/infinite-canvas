@@ -61,6 +61,8 @@ description: 当前项目后续值得处理的事项
 
 ## HN P0-B R30 后续审核门
 
-- R29 Discovery GPT Review PASS；仅实现批准的 monotonic revision CAS + durable reorder command/receipt server/typed transport 协议。STATE=PENDING_GPT_AUDIT，三本地 commits，等待 R30 Completion 独立 GPT Audit。
-- PUSH=NONE，MERGE=NONE；不启动 R31、Canvas Reorder/drag-drop/browser journal/controller、compound/Export/Jianying。
+- R29 Discovery GPT Review PASS；仅实现批准的 monotonic revision CAS + durable reorder command/receipt server/typed transport 协议。STATE=AUDITED_INTEGRATED，原三个 reviewed commits 不改写，正常非 force 推送并 ff-only 集成；本轮一个治理收口 commit，等待 Closeout Completion 独立 GPT Review。
+- PUSH=NORMAL_NON_FORCE，INTEGRATION=FAST_FORWARD_ONLY；不启动 R31、Canvas Reorder/drag-drop/browser journal/controller、compound/Export/Jianying。
 - API Key/account/balance/entitlement/channel/live 延期；input/detection/validation skipped；Provider/paid/live calls=0，真实 credential/env/remote media read=NONE。
+
+- Closeout：仅六个治理文件，生产/测试字节不变；完整 Go/mod verify/R30 focused/真实双进程/R7/R28/R20/R22/R24/frontend/独立 TypeScript 与审计 build-source 绑定复验见 Completion。两处已审计 EOF 空行不修。最终 main SHA 仅写 Completion，不自引用；无 R31。
