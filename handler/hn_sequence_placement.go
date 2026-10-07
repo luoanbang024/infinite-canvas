@@ -73,9 +73,13 @@ func hnPlacementResponse(w http.ResponseWriter, data any, err error) {
 	}
 	FailWithStatus(w, status, msg)
 }
-func HNPlacementCommand(w http.ResponseWriter, r *http.Request, projectID string) {
+func HNPlacementCommand(w http.ResponseWriter, r *http.Request, projectID, sequenceID string) {
 	root, ok := hnPlacementBoundary(w, r, false)
 	if !ok {
+		return
+	}
+	if sequenceID != "main" {
+		FailWithStatus(w, 400, "PLACEMENT_INPUT_INVALID")
 		return
 	}
 	media, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
@@ -119,17 +123,25 @@ func HNPlacementCommand(w http.ResponseWriter, r *http.Request, projectID string
 	data, err := service.ExecuteLocalPlacement(root, projectID, command)
 	hnPlacementResponse(w, data, err)
 }
-func HNReadMainSequence(w http.ResponseWriter, r *http.Request, projectID string) {
+func HNReadMainSequence(w http.ResponseWriter, r *http.Request, projectID, sequenceID string) {
 	root, ok := hnPlacementBoundary(w, r, true)
 	if !ok {
+		return
+	}
+	if sequenceID != "main" {
+		FailWithStatus(w, 400, "PLACEMENT_INPUT_INVALID")
 		return
 	}
 	data, err := service.ReadLocalMainSequence(root, projectID)
 	hnPlacementResponse(w, data, err)
 }
-func HNLookupPlacement(w http.ResponseWriter, r *http.Request, projectID, intent string) {
+func HNLookupPlacement(w http.ResponseWriter, r *http.Request, projectID, sequenceID, intent string) {
 	root, ok := hnPlacementBoundary(w, r, true)
 	if !ok {
+		return
+	}
+	if sequenceID != "main" {
+		FailWithStatus(w, 400, "PLACEMENT_INPUT_INVALID")
 		return
 	}
 	data, err := service.LookupLocalPlacement(root, projectID, intent)

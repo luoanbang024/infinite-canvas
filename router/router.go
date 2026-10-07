@@ -59,25 +59,13 @@ func New() *gin.Engine {
 		handler.HNAddSequenceItem(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
 	})
 	api.GET("/hn/projects/:projectId/sequences/:sequenceId/items", func(c *gin.Context) {
-		if c.Param("sequenceId") != "main" {
-			c.JSON(400, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_INPUT_INVALID"})
-			return
-		}
-		handler.HNReadMainSequence(c.Writer, c.Request, c.Param("projectId"))
+		handler.HNReadMainSequence(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
 	})
 	api.POST("/hn/projects/:projectId/sequences/:sequenceId/placement-commands", func(c *gin.Context) {
-		if c.Param("sequenceId") != "main" {
-			c.JSON(400, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_INPUT_INVALID"})
-			return
-		}
-		handler.HNPlacementCommand(c.Writer, c.Request, c.Param("projectId"))
+		handler.HNPlacementCommand(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
 	})
 	api.GET("/hn/projects/:projectId/sequences/:sequenceId/placement-commands/:placementIntentId", func(c *gin.Context) {
-		if c.Param("sequenceId") != "main" {
-			c.JSON(400, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_INPUT_INVALID"})
-			return
-		}
-		handler.HNLookupPlacement(c.Writer, c.Request, c.Param("projectId"), c.Param("placementIntentId"))
+		handler.HNLookupPlacement(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"), c.Param("placementIntentId"))
 	})
 	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/placement-commands", gin.WrapF(handler.HNReferenceOptions))
 	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/placement-commands/:placementIntentId", gin.WrapF(handler.HNPlacementReadOptions))
