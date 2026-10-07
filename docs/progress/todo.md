@@ -53,6 +53,8 @@ description: 当前项目后续值得处理的事项
 
 ## HN P0-B R28 后续审核门
 
-- R27 Discovery GPT Review PASS 后，仅实现批准的 atomic durable placement command receipt + read-only main snapshot；本地三 commits，PENDING_GPT_AUDIT，Completion 供独立审计。
-- 先审查 full/focused/actual two-process/production HTTP/source/secret evidence；不得自行 integrate/push/开始 R29。人工浏览器验收和不保证范围见 pending-test。
+- R27 Discovery GPT Review PASS 后，仅实现批准的 atomic durable placement command receipt + read-only main snapshot；原实现三 commits + 独立 local-boundary OUR_VERIFICATION_FIX 两 commits 已一起 GPT Audit PASS / AUDITED_INTEGRATED；reviewed head 1b93f9f660412e0460da6479b8bd1e273e4d6056。
+- 本次已授权正常非 force feature push、ff-only 集成、一个六文件 governance-only commit；完整 closeout 验证 PASS 后才正常推送 our-main，最终 SHA 和证据写 Completion。等待独立 Closeout GPT Review；不得开始 R29。人工浏览器验收和不保证范围见 pending-test。
 - 旧 v1 UNKNOWN 继续 fail closed；完全丢失 intent 不按 Candidate/order/time 推测。Reorder/compound/Export/Jianying、CAS/revision 与 credential/live Provider 不属于本轮。
+
+- legacy Add fresh/non-idempotent；same correlated intent + same payload one-effect；different intent 为新 placement；command receipt/item 同事务。readonly snapshot/exact lookup 不写库，PROTOCOL_NOT_INITIALIZED != NOT_OBSERVED；v1 UNKNOWN 不伪恢复；v2 exact terminal lookup / explicit same-key continuation 保持，boundary 先于 sequence validation。无 Provider/paid、真实 credential/env/media；API Key/account/balance/entitlement/channel/live 继续延期，Reorder/compound/Export/Jianying 继续独立后移。

@@ -631,7 +631,7 @@ non-idempotent main append / no authoritative current Sequence read / single-pag
 PATCH_ID = HN-AI-IC-P0-B-R28-SEQUENCE-RECOVERY-001
 EXECUTION_ID = HN_AI_IC_P0_B_R28_NO_CREDENTIAL_SEQUENCE_AUTHORITATIVE_RECOVERY_PROTOCOL
 TYPE = OUR_EXTENSION / LOCAL_ONLY / AUTHORITATIVE_RECOVERY_PROTOCOL
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
 BASE_SHA = fa73edd13b9a4e3d7d24ed503c80d1c9c0c5e49a
 PRODUCTION_COMMIT = 8822ce60d30110fbae42f1759a78bef13b6d4cd9
 TEST_COMMIT = e42a55b7a2c67b193211fcc16d544f22a7dc800f
@@ -639,4 +639,22 @@ UPSTREAM_BACKPORT = false
 
 R27 已审核主方案；additive command/receipt extension + readonly main snapshot，SQLite pinned BEGIN IMMEDIATE 串行升级 legacy/new append；same K/P one effect、changed P conflict、different K fresh。legacy payload/DTO/fresh semantics 保留，历史 A replay 不重新校验 B 当前 selection、不重选/append。v1 UNKNOWN 不迁移；v2 durable prePOST/readback、UNKNOWN、exact GET terminal recovery、explicit same-K/P continuation（mutation）、safe projection 和组合互锁。NOT_OBSERVED 不代表最终失败；snapshot 不归因。没有 CAS/revision/reorder/compound/export。
 
-完整验证和 source preservation 见 Completion；R7/R8 原独立 OUR_VERIFICATION_FIX 未动，R20/R22/R24、Provider/正常 Generate/Upload、Generation SourceBaseline raw/text 不变。支持 upgraded writer 同 SQLite/no concurrent legacy reorder；mixed old binaries/unauthorized DB write/browser全局journal原子性/真实 DOM IndexedDB 验收不声明。API Key/account/channel/live 延期；Provider/paid=0、real credential/env/media read NONE、dependency install/update=0。PUSH=NONE，MERGE=NONE；等待独立 GPT Audit，不宣称 AUDITED_INTEGRATED。
+完整验证和 source preservation 见 Completion；R7/R8 原独立 OUR_VERIFICATION_FIX 未动，R20/R22/R24、Provider/正常 Generate/Upload、Generation SourceBaseline raw/text 不变。支持 upgraded writer 同 SQLite/no concurrent legacy reorder；mixed old binaries/unauthorized DB write/browser全局journal原子性/真实 DOM IndexedDB 验收不声明。API Key/account/channel/live 延期；Provider/paid=0、real credential/env/media read NONE、dependency install/update=0。PUSH=NORMAL_NON_FORCE_FEATURE_AND_OUR_MAIN，INTEGRATION=FAST_FORWARD_ONLY；原实现与 local-boundary fix 已 GPT Audit PASS，等待 Closeout Completion 的独立 GPT Review。
+
+### R28 GPT Audit closeout binding
+
+GPT_AUDIT = PASS
+STATE = AUDITED_INTEGRATED
+AUDITED_FEATURE_HEAD = 1b93f9f660412e0460da6479b8bd1e273e4d6056
+AUDITED_ORIGINAL_R28_COMPLETION_SHA256 = 599cb9c61f6b14c0ba671a0ef01c1ba5d25ac1aae80400fe245162c6d4aab0b3
+AUDITED_FIX_COMPLETION_SHA256 = bf425de9de75ab9df478382c5004b2374ed44e22ef94c0c210be9ba6b3735024
+AUDIT_FIX_ID = R28-AUDIT-FIX-LOCAL-BOUNDARY-001
+AUDIT_FIX_RESULT = PASS
+REVIEWED_COMMITS = 8822ce60d30110fbae42f1759a78bef13b6d4cd9, e42a55b7a2c67b193211fcc16d544f22a7dc800f, 486224eab909e80715f2ccc44b3fd2ec1fbf01a9, 1615240f5a5dad5fe3b750e38285c3a006b76041, 1b93f9f660412e0460da6479b8bd1e273e4d6056
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+CLOSEOUT_STABLE_SHA = recorded in Closeout Completion (no self-reference)
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R28_AUDIT_CLOSEOUT_GPT_REVIEW after required checks and final origin identity
+
+local-boundary 修正为独立 OUR_VERIFICATION_FIX / SECURITY_BOUNDARY_ORDERING / MINIMAL_DELTA，production 1615240f5a5dad5fe3b750e38285c3a006b76041、regression 1b93f9f660412e0460da6479b8bd1e273e4d6056；不是 upstream backport，不 squash/rewrite。全部 reviewed production/test 字节保持；治理收口仅六文件、一个 commit。真实浏览器 DOM/IndexedDB/theme acceptance = NOT_CLAIMED；本次 Closeout GPT Review 仍待独立审查。

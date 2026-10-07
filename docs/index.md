@@ -49,4 +49,6 @@
 
 ## HN P0-B R28
 
-- [Canvas 本地主序列命令与 exact-key 恢复（PENDING_GPT_AUDIT）](hn/canvas_local_sequence_recovery_workflow.md)：same-intent immutable receipt、SQLite cross-process append、readonly main snapshot；v1 UNKNOWN 不迁移。
+- [Canvas 本地主序列命令与 exact-key 恢复（GPT Audit PASS / AUDITED_INTEGRATED）](hn/canvas_local_sequence_recovery_workflow.md)：same-intent immutable receipt、SQLite cross-process append、readonly main snapshot；v1 UNKNOWN 不迁移。
+
+- R28 原实现与 local-boundary OUR_VERIFICATION_FIX 已一起通过独立 GPT Audit；五个 reviewed commits 原样正常推送、ff-only 集成，六文件治理收口。boundary 先于 sequence validation；等待 Closeout Completion GPT Review，真实 browser 验收 NOT_CLAIMED，未启动 R29。

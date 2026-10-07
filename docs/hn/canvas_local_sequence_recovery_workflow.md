@@ -2,7 +2,7 @@
 
 EXECUTION_ID = HN_AI_IC_P0_B_R28_NO_CREDENTIAL_SEQUENCE_AUTHORITATIVE_RECOVERY_PROTOCOL
 TYPE = OUR_EXTENSION / LOCAL_ONLY / AUTHORITATIVE_RECOVERY_PROTOCOL
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
 BASE_SHA = fa73edd13b9a4e3d7d24ed503c80d1c9c0c5e49a
 
 ## 一次命令的身份
@@ -35,4 +35,26 @@ response loss、opaque/invalid、timeout、terminal-seal ambiguity → UNKNOWN�
 
 保证范围仅为所有升级 writer / 同一个本地 SQLite 文件 / 无 concurrent legacy reorder。mixed old binaries、未经授权直接 DB writes、跨主机 FS 故障、永久丢失全部 intent、不可靠浏览器 fsync/全局 journal CAS、真实 DOM/IndexedDB/theme 人工验收均不声明。rollback 只停用 v2，保留扩展/receipts/items；回滚到旧 writer 将失去本轮并发保证。没有 automatic resend、Sequence CAS/revision、Reorder/compound/Export/Jianying 工作。
 
-API Key/account/balance/entitlement/channel secret/live 全部继续 DEFERRED，input/detection/validation SKIPPED，preauth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。Provider/real/paid calls=0；真实 credential/env/remote media read=NONE；无依赖安装/升级、merge/push。下一步仅独立 GPT Audit。
+API Key/account/balance/entitlement/channel secret/live 全部继续 DEFERRED，input/detection/validation SKIPPED，preauth PAUSED_BY_USER_DECISION，live authorization NOT_GRANTED。Provider/real/paid calls=0；真实 credential/env/remote media read=NONE；无依赖安装/升级；本次仅已审计 feature 正常非 force 推送、ff-only 集成与治理收口。下一步仅独立 Closeout GPT Review。
+
+## Local boundary 与审计收口
+
+所有三个动态路由（含 non-main）先执行 hnPlacementBoundary：remote/bad Host/Origin/missing marker/forbidden headers 先 403；完整合法 local boundary 后 non-main 才返回 closed 400 PLACEMENT_INPUT_INVALID。handler-path 统一 no-store；non-main 不初始化 command extension、不插入 item、不记录请求。main GET/POST/exact lookup、GET OPTIONS 与旧 POST-only OPTIONS 不变。
+
+### R28 GPT Audit closeout binding
+
+GPT_AUDIT = PASS
+STATE = AUDITED_INTEGRATED
+AUDITED_FEATURE_HEAD = 1b93f9f660412e0460da6479b8bd1e273e4d6056
+AUDITED_ORIGINAL_R28_COMPLETION_SHA256 = 599cb9c61f6b14c0ba671a0ef01c1ba5d25ac1aae80400fe245162c6d4aab0b3
+AUDITED_FIX_COMPLETION_SHA256 = bf425de9de75ab9df478382c5004b2374ed44e22ef94c0c210be9ba6b3735024
+AUDIT_FIX_ID = R28-AUDIT-FIX-LOCAL-BOUNDARY-001
+AUDIT_FIX_RESULT = PASS
+REVIEWED_COMMITS = 8822ce60d30110fbae42f1759a78bef13b6d4cd9, e42a55b7a2c67b193211fcc16d544f22a7dc800f, 486224eab909e80715f2ccc44b3fd2ec1fbf01a9, 1615240f5a5dad5fe3b750e38285c3a006b76041, 1b93f9f660412e0460da6479b8bd1e273e4d6056
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+CLOSEOUT_STABLE_SHA = recorded in Closeout Completion (no self-reference)
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R28_AUDIT_CLOSEOUT_GPT_REVIEW after required checks and final origin identity
+
+local-boundary 修正为独立 OUR_VERIFICATION_FIX / SECURITY_BOUNDARY_ORDERING / MINIMAL_DELTA，production 1615240f5a5dad5fe3b750e38285c3a006b76041、regression 1b93f9f660412e0460da6479b8bd1e273e4d6056；不是 upstream backport，不 squash/rewrite。全部 reviewed production/test 字节保持；治理收口仅六文件、一个 commit。真实浏览器 DOM/IndexedDB/theme acceptance = NOT_CLAIMED；本次 Closeout GPT Review 仍待独立审查。
