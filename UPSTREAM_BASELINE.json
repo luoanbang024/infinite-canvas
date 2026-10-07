@@ -35,7 +35,42 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [],
+  "pendingReview": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R30_NO_CREDENTIAL_SEQUENCE_REORDER_PROTOCOL",
+      "patchId": "HN-AI-IC-P0-B-R30-SEQUENCE-REORDER-PROTOCOL-001",
+      "type": "OUR_EXTENSION / LOCAL_ONLY / METADATA_PROTOCOL / NO_UI",
+      "state": "PENDING_GPT_AUDIT",
+      "baseOurCommit": "4efcd6b94ae7c311cffcd25f97943190d06c1e31",
+      "featureBranch": "feature/p0-b-r30-no-credential-sequence-reorder-protocol",
+      "productionCommit": "16fad9a4d50f91cf6aa6f23d66d438fbcd8f9b31",
+      "testCommit": "37d1c7931afe799e36fb2e337ddfe872c7e838da",
+      "model": "MONOTONIC_SEQUENCE_REVISION_CAS_PLUS_ATOMIC_DURABLE_REORDER_COMMAND_RECEIPT",
+      "upstreamBackport": false,
+      "schemaVersionChange": "NONE",
+      "extension": "reorder_protocol / sequence_state / immutable reorder_commands",
+      "revisionWire": "CANONICAL_DECIMAL_STRING_SIGNED_INT64",
+      "mainWriters": "upgraded legacy Add / R28 first placement / legacy Reorder / new CAS reorder / public Delete; same SQLite transaction",
+      "commandIdentity": "scoped UUIDv4 K; same canonical P one-effect; changed P conflict; different K explicit new command",
+      "readonly": "OpenExisting readonly; no initialize/reconcile/media",
+      "legacyReorder": "wire unchanged; unconditional; transactional authority/capture; NOT CAS SAFE",
+      "r7Invariant": "only JSON OrderIndex + indexed order_index; UpdatedAt unchanged",
+      "r28Compatibility": "five-key /items and K/P/receipt unchanged; v1/v2 UI/controller/journal unchanged",
+      "responseLoss": "exact-key terminal receipt; historical not current order; NOT_OBSERVED provisional; automatic POST retry zero",
+      "uiWiring": "NONE",
+      "guarantee": "upgraded writers against same SQLite file; real separate OS processes tested",
+      "excludedGuarantee": "mixed old binaries / raw unauthorized writers / distributed DB copies",
+      "providerCalls": 0,
+      "paidCalls": 0,
+      "liveCalls": 0,
+      "realCredentialRead": "NONE",
+      "realRemoteMediaDownload": "NONE",
+      "dependencyInstallUpdate": 0,
+      "push": "NONE",
+      "merge": "NONE",
+      "nextAction": "Independent GPT Review of R30 Completion"
+    }
+  ],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",

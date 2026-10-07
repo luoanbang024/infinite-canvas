@@ -163,3 +163,9 @@ description: 当前版本已实现但仍需人工验证的变更项
 - API Key/account/channel/live 延期；Provider/paid=0、真实 credential/env/media NONE；R7/R8 fixes、SourceBaseline 及既有 R20/R22/R24 语义保留；已审计 feature 正常非 force push / fast-forward-only 集成；本次 closeout 不修改 production/test，最终 required checks 与 local/origin SHA 见 Closeout Completion。
 
 - local-boundary ordering 的 21-case regression 保留：18 boundary-invalid non-main = 403，3 valid-local non-main = closed 400；no-store / no request logging / no DB write。审计绑定和两个独立 fix commits 见 PATCH_LEDGER.md；五个 reviewed commits 不重写。
+
+## HN P0-B R30（PENDING_GPT_AUDIT / metadata protocol only）
+
+- 自动验证实际结果见 R30 Completion：完整 Go、Bridge、mod verify、focused/two-process、R7/R28 与 R20/R22/R24、全部 frontend、独立 tsc、隔离 production build、scope/raw-byte 和 exact-member secret scan。
+- 尚待独立 GPT Audit。无 Reorder UI/browser journal/controller，所以不声明真实 browser DOM/IndexedDB/拖拽人工验收；mixed old binaries/raw DB writer/distributed copies 不保证。legacy Reorder 仍 unconditional，不能给旧客户端宣称 CAS-safe。
+- readonly metadata 不证明 media 存在/codec 播放；terminal receipt 是历史命令结果，不是当前排序；NOT_OBSERVED provisional。API Key/account/channel/live 延期，真实 Provider/credential/media 为零/无。

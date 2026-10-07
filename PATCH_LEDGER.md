@@ -658,3 +658,27 @@ CLOSEOUT_STABLE_SHA = recorded in Closeout Completion (no self-reference)
 CLOSEOUT_REVIEW_STATUS = READY_FOR_R28_AUDIT_CLOSEOUT_GPT_REVIEW after required checks and final origin identity
 
 local-boundary 修正为独立 OUR_VERIFICATION_FIX / SECURITY_BOUNDARY_ORDERING / MINIMAL_DELTA，production 1615240f5a5dad5fe3b750e38285c3a006b76041、regression 1b93f9f660412e0460da6479b8bd1e273e4d6056；不是 upstream backport，不 squash/rewrite。全部 reviewed production/test 字节保持；治理收口仅六文件、一个 commit。真实浏览器 DOM/IndexedDB/theme acceptance = NOT_CLAIMED；本次 Closeout GPT Review 仍待独立审查。
+
+## HN P0-B R30 — Sequence reorder metadata protocol (no UI)
+
+EXECUTION_ID = HN_AI_IC_P0_B_R30_NO_CREDENTIAL_SEQUENCE_REORDER_PROTOCOL
+TYPE = OUR_EXTENSION / LOCAL_ONLY / METADATA_PROTOCOL / NO_UI
+STATE = PENDING_GPT_AUDIT
+BASE_SHA = 4efcd6b94ae7c311cffcd25f97943190d06c1e31
+PRODUCTION_COMMIT = 16fad9a4d50f91cf6aa6f23d66d438fbcd8f9b31
+TEST_COMMIT = 37d1c7931afe799e36fb2e337ddfe872c7e838da
+FINAL_FEATURE_HEAD = recorded in Completion (avoid commit self-reference)
+UPSTREAM_BACKPORT = false
+
+R29 reviewed model: MONOTONIC_SEQUENCE_REVISION_CAS_PLUS_ATOMIC_DURABLE_REORDER_COMMAND_RECEIPT.
+Additive reorder_protocol / main sequence_state / immutable reorder_commands, historical SequenceItem shape and SchemaVersion untouched.
+Canonical signed-int64 decimal string revision is advanced atomically by each actual upgraded main Add, first R28 placement insert, legacy/new accepted reorder including no-op, or successful supported Delete. Replay/reject/conflict/rollback = +0; overflow blocks effect.
+New CAS command uses scoped intent + canonical expectedRevision/desired IDs; stale/set conflicts persist exact terminal receipt. Historical same K/P returns original receipt before current CAS; changed P conflicts, no reapply. NOT_OBSERVED is provisional, not final failure.
+Legacy full-set Reorder now checks, mutates, advances revision, and captures DTO under one BEGIN IMMEDIATE; legacy payload/response remain unchanged and unconditional (NOT stale-client CAS safe).
+R7 only-OrderIndex / indexed order_index invariant remains; UpdatedAt and every other field are preserved. R28 /items five keys, placement K/P/receipt, readonly opener, v1/v2 controllers/journals/UI and prior independent verification fixes remain.
+New initialize/snapshot/command/exact lookup run local boundary BEFORE main validation; strict closed payloads/no-store/no credentials/query/log echo; typed transport only, no automatic retry/fallback.
+Tests cover nine real two-process races, handler commit+drop/exact lookup/explicit same-key continuation, rollback, overflow, corrupted schema/state/receipt, SQL CHECK and full fields/indexed preservation. Verification results and corrected initial failures are retained in Completion.
+Supported guarantee: upgraded writers on the same SQLite file; mixed old binaries, raw unauthorized writers and distributed DB copies excluded.
+API Key/account/balance/entitlement/channel/live all deferred; input/detection/validation skipped. PROVIDER_CALLS=0; PAID_CALLS=0; LIVE_CALLS=0; REAL_CREDENTIAL_READ=NONE; REAL_REMOTE_MEDIA_DOWNLOAD=NONE; dependency install/update=0.
+Canvas/drag-drop/browser reorder journal/controller, compound/Export/Jianying/R31 = NONE.
+PUSH=NONE; MERGE=NONE; NEXT_ACTION=Independent GPT Review of R30 Completion.

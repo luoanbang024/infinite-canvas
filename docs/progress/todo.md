@@ -58,3 +58,9 @@ description: 当前项目后续值得处理的事项
 - 旧 v1 UNKNOWN 继续 fail closed；完全丢失 intent 不按 Candidate/order/time 推测。Reorder/compound/Export/Jianying、CAS/revision 与 credential/live Provider 不属于本轮。
 
 - legacy Add fresh/non-idempotent；same correlated intent + same payload one-effect；different intent 为新 placement；command receipt/item 同事务。readonly snapshot/exact lookup 不写库，PROTOCOL_NOT_INITIALIZED != NOT_OBSERVED；v1 UNKNOWN 不伪恢复；v2 exact terminal lookup / explicit same-key continuation 保持，boundary 先于 sequence validation。无 Provider/paid、真实 credential/env/media；API Key/account/balance/entitlement/channel/live 继续延期，Reorder/compound/Export/Jianying 继续独立后移。
+
+## HN P0-B R30 后续审核门
+
+- R29 Discovery GPT Review PASS；仅实现批准的 monotonic revision CAS + durable reorder command/receipt server/typed transport 协议。STATE=PENDING_GPT_AUDIT，三本地 commits，等待 R30 Completion 独立 GPT Audit。
+- PUSH=NONE，MERGE=NONE；不启动 R31、Canvas Reorder/drag-drop/browser journal/controller、compound/Export/Jianying。
+- API Key/account/balance/entitlement/channel/live 延期；input/detection/validation skipped；Provider/paid/live calls=0，真实 credential/env/remote media read=NONE。
