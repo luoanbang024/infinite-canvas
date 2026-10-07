@@ -1,8 +1,10 @@
 "use client";
 import { Button } from "antd";
+import { HN_REORDER_LOAD, HN_REORDER_EXPLANATION, HN_REORDER_UNKNOWN, type ReorderEntry } from "./hn-local-canvas-sequence-reorder";
+import { unresolvedReorder } from "./hn-local-sequence-reorder-journal";
 import { HN_PLACEMENT_EXPLANATION, HN_PLACEMENT_NO_READ, HN_PLACEMENT_UNKNOWN, HN_PLACEMENT_RELOAD, HN_PLACEMENT_SUCCESS, HN_PLACEMENT_DUPLICATE, HN_PLACEMENT_SELECTION_RELOAD, type PlacementEntry } from "./hn-local-canvas-sequence-placement";
 
-export function CanvasHNLocalSequenceSection({ entry, blocked, selectionReloaded, onPlace, onLookup, onContinue, onRead }: { entry: PlacementEntry; blocked: boolean; selectionReloaded: boolean; onPlace: () => void; onLookup?: () => void; onContinue?: () => void; onRead?: () => void }) {
+export function CanvasHNLocalSequenceSection({ entry, blocked, selectionReloaded, onPlace, onLookup, onContinue, onRead, reorder }: { entry: PlacementEntry; blocked: boolean; selectionReloaded: boolean; onPlace: () => void; onLookup?: () => void; onContinue?: () => void; onRead?: () => void; reorder?: ReorderSectionProps }) {
     const r = entry.receipt, known = entry.phase === "PLACED_CURRENT_SESSION" || entry.phase === "PLACEMENT_RELOADED_UNVERIFIED";
     const unknown = entry.protocolV2 && !entry.legacyUnknown ? "加入结果未确认；可能已经创建剪辑项，不会自动重试。可明确检查服务器结果，或确认继续同一次加入操作。" : HN_PLACEMENT_UNKNOWN;
     const status = entry.phase === "PLACEMENT_OUTCOME_UNKNOWN" ? unknown : entry.phase === "PLACEMENT_RELOADED_UNVERIFIED" ? HN_PLACEMENT_RELOAD : entry.phase === "PLACED_CURRENT_SESSION" ? HN_PLACEMENT_SUCCESS : entry.running ? "正在加入主序列…" : entry.error || (entry.phase === "SELECTION_NOT_ELIGIBLE" ? "请先明确选择一个有效的历史本地候选。" : "尚无本地确认的加入回执。");
@@ -17,5 +19,26 @@ export function CanvasHNLocalSequenceSection({ entry, blocked, selectionReloaded
         <Button type="primary" loading={entry.running} disabled={blocked || entry.running || known || entry.phase === "PLACEMENT_OUTCOME_UNKNOWN" || entry.phase === "SELECTION_NOT_ELIGIBLE"} onClick={onPlace}>加入主序列</Button>
         {entry.protocolV2 ? <div className="flex flex-wrap gap-2"><Button disabled={entry.running || !entry.recoverable} onClick={onLookup}>检查服务器结果</Button><Button disabled={entry.running || !entry.recoverable || entry.legacyUnknown} onClick={onContinue}>继续同一次加入操作</Button><Button disabled={entry.running} onClick={onRead}>读取主序列快照</Button></div> : null}
         {entry.snapshot ? <div><p>读取时的主序列快照；不用于推断未确认操作的归因。</p><ol>{entry.snapshot.items.map((i) => <li key={i.sequenceItemId}>{i.orderIndex} · {i.sequenceItemId} · {i.candidateId}</li>)}</ol></div> : null}
+        {reorder ? <CanvasHNLocalReorderSection {...reorder} /> : null}
+    </section>;
+}
+
+export type ReorderSectionProps = { entry: ReorderEntry; canSubmit: boolean; onLoad: () => void; onRefresh: () => void; onMove: (id: string, delta: -1 | 1) => void; onSubmit: () => void; onLookup: (intent: string) => void; onContinue: (intent: string) => void };
+export function CanvasHNLocalReorderSection({ entry: e, canSubmit, onLoad, onRefresh, onMove, onSubmit, onLookup, onContinue }: ReorderSectionProps) {
+    const unresolved = e.records.filter(unresolvedReorder), locked = e.running || e.storageBlocked || unresolved.length > 0;
+    return <section className="mt-6 space-y-3" aria-label="主序列安全排序">
+        <h4>主序列安全排序</h4><p>{HN_REORDER_EXPLANATION}</p>
+        <p>排序作用于整个 HN 项目的 main 序列，与打开此对话框的视频节点无关。</p>
+        <div className="flex flex-wrap gap-2"><Button disabled={e.running} onClick={onLoad}>{HN_REORDER_LOAD}</Button><Button disabled={e.running || !e.snapshot} onClick={onRefresh}>重新读取当前顺序（重置草稿）</Button></div>
+        {e.error ? <p role="status">{e.error}</p> : null}
+        {e.running ? <p role="status">正在处理安全排序…</p> : null}
+        <p>{e.currentVerified ? "当前主序列快照（读取时）" : "当前顺序未读取"}</p>
+        {e.snapshot ? <div><p>SequenceID：main · sequenceRevision：{e.snapshot.sequenceRevision}</p><p>上次读取的顺序：{e.snapshot.items.map(i => i.sequenceItemId).join(" → ") || "空序列"}</p><p>草稿仅在本页暂存；上移、下移不发送请求。确认后才提交排序。</p>
+            <ol>{e.draft.map((id, index) => { const item = e.snapshot!.items.find(i => i.sequenceItemId === id)!; return <li key={id} className="space-y-1 break-words"><p>草稿 {index + 1} · 读取时 {e.snapshot!.items.indexOf(item) + 1} · SequenceItemID：{id} · CandidateID：{item.candidateId} · ShotID：{item.shotId}</p><Button disabled={locked || index === 0} onClick={() => onMove(id, -1)}>上移</Button><Button disabled={locked || index === e.draft.length - 1} onClick={() => onMove(id, 1)}>下移</Button></li>; })}</ol>
+        </div> : null}
+        <Button type="primary" disabled={!canSubmit || locked} onClick={onSubmit}>确认提交排序</Button>
+        {unresolved.length ? <div><p role="status">{HN_REORDER_UNKNOWN}</p><p>存在未确认命令时禁止创建新的排序命令；NOT_OBSERVED 也不能解除限制。</p>{unresolved.map(r => <div key={r.command.reorderIntentId}><p>Intent：{r.command.reorderIntentId.slice(0,8)} · 预期 revision：{r.command.expectedRevision}</p><Button disabled={e.running} onClick={() => onLookup(r.command.reorderIntentId)}>检查服务器结果</Button><Button disabled={e.running} onClick={() => onContinue(r.command.reorderIntentId)}>继续同一次排序操作</Button></div>)}</div> : null}
+        {e.records.filter(r => !!r.receipt).map(r => <div key={r.command.reorderIntentId} className="break-words" data-hn-reorder-outcome={r.state}><p>历史排序命令回执 · {r.command.reorderIntentId}</p><p>{r.state === "COMMITTED" ? `此命令已提交于历史 revision ${r.receipt!.appliedRevision}` : "排序冲突，未覆盖较新的状态；此命令没有排序效果。请读取新快照并重新编辑、确认。"}</p><p>历史回执不证明当前顺序、媒体完整性或 AI/Provider 成功。</p>{r.state === "COMMITTED" && e.currentVerified && e.snapshot && (BigInt(e.snapshot.sequenceRevision) > BigInt(r.receipt!.appliedRevision!) || JSON.stringify(e.snapshot.items.map(i => i.sequenceItemId)) !== JSON.stringify(r.command.desiredSequenceItemIds)) ? <p>序列已发生后续变化；不重新应用历史顺序。</p> : null}</div>)}
+        {e.storageBlocked ? <p>日志完整性无法确认；已停止排序写入。</p> : null}
     </section>;
 }

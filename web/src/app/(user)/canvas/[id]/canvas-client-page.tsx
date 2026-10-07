@@ -62,6 +62,7 @@ import { HNLocalSelectionController, mergeHNLocalSelectionReceipt } from "../com
 import type { HNLocalSelectionReceipt } from "../types";
 import { HNLocalSequencePlacementController, mergeHNLocalSequencePlacementReceipt, type PlacementProjection } from "../components/hn-local-canvas-sequence-placement";
 import type { HNLocalSequencePlacementReceipt } from "../types";
+import { HNLocalSequenceReorderController } from "../components/hn-local-canvas-sequence-reorder";
 import type { HNArchiveTarget } from "../components/hn-local-canvas-archive";
 import { getMediaBlob } from "@/services/file-storage";
 import { captureHNLocalIntent, HNLocalPrepareController, mergeHNLocalReceipt } from "../components/hn-local-canvas-prepare";
@@ -453,6 +454,9 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
     }, []);
     const [, refreshLocalPrepare] = useState(0);
     const [, refreshLocalPlacement] = useState(0);
+    const [, refreshLocalReorder] = useState(0);
+    const localReorderController = useRef<HNLocalSequenceReorderController | null>(null);
+    if (!localReorderController.current) localReorderController.current = new HNLocalSequenceReorderController(() => refreshLocalReorder((n) => n + 1));
     const localPlacementController = useRef<HNLocalSequencePlacementController | null>(null);
     if (!localPlacementController.current) localPlacementController.current = new HNLocalSequencePlacementController(localSelectionController.current!, () => refreshLocalPlacement((n) => n + 1), true);
     useEffect(() => {
@@ -4541,7 +4545,7 @@ function InfiniteCanvasPage({ projectId }: { projectId: string }) {
 
                 <CanvasNodeInfoModal node={infoNode} open={Boolean(infoNode)} onClose={() => setInfoNodeId(null)} />
                 <CanvasHNLocalPrepareDialog open={Boolean(localPrepareNodeId)} canvasProjectId={projectId} nodeId={localPrepareNodeId} controller={localPrepareController.current!} intentRevision={localPrepareSnapshot} readIntent={readLocalPrepareIntent} dependencies={localPrepareDependencies} onReceipt={receiveLocalPrepareReceipt} onClose={() => setLocalPrepareNodeId(null)} />
-                <CanvasHNLocalArchiveDialog open={Boolean(localArchiveNodeId)} canvasProjectId={projectId} nodeId={localArchiveNodeId} controller={localArchiveController.current!} targetRevision={localArchiveSnapshot} readTarget={readLocalArchiveTarget} dependencies={localArchiveDependencies} onReceipt={receiveLocalArchiveReceipt} onClose={() => setLocalArchiveNodeId(null)} candidate={{ controller: localCandidateController.current!, dependencies: localCandidateDependencies, onReceipt: receiveLocalCandidateReceipt }} selection={{ controller: localSelectionController.current!, onReceipt: receiveLocalSelectionReceipt }} placement={{ controller: localPlacementController.current!, onReceipt: receiveLocalPlacementReceipt }} />
+                <CanvasHNLocalArchiveDialog reorder={localReorderController.current!} open={Boolean(localArchiveNodeId)} canvasProjectId={projectId} nodeId={localArchiveNodeId} controller={localArchiveController.current!} targetRevision={localArchiveSnapshot} readTarget={readLocalArchiveTarget} dependencies={localArchiveDependencies} onReceipt={receiveLocalArchiveReceipt} onClose={() => setLocalArchiveNodeId(null)} candidate={{ controller: localCandidateController.current!, dependencies: localCandidateDependencies, onReceipt: receiveLocalCandidateReceipt }} selection={{ controller: localSelectionController.current!, onReceipt: receiveLocalSelectionReceipt }} placement={{ controller: localPlacementController.current!, onReceipt: receiveLocalPlacementReceipt }} />
 
                 <Modal
                     title="截取音频"
