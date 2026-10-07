@@ -706,11 +706,12 @@ revision/CAS 防止 stale-state 覆盖；immutable reorder command/receipt 负�
 PROJECT_ID = HN_AI_IC
 EXECUTION_ID = HN_AI_IC_P0_B_R31_NO_CREDENTIAL_CANVAS_SEQUENCE_REORDER_UI
 TYPE = OUR_EXTENSION / LOCAL_ONLY / CANVAS_UI_WORKFLOW / NO_PROVIDER
-STATE = PENDING_GPT_AUDIT
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
 BASE_SHA = 5df83b19e661b8677d070b43379f7c4a818b0207
 FEATURE_BRANCH = feature/p0-b-r31-no-credential-canvas-sequence-reorder-ui
-PUSH = NONE
-MERGE = NONE
+PUSH = NORMAL_NON_FORCE
+INTEGRATION = FAST_FORWARD_ONLY
 
 Only audited R30 revision/CAS + immutable reorderIntentId/receipt. No legacy /reorder, backend/Foundation/schema or drag/drop changes. The existing archive dialog contains a sequence-global 主序列安全排序 subsection; one Canvas-page controller owns each HN project/main state. Explicit load may initialize metadata then read a complete snapshot. Opening/inspection only reads the journal; no HTTP or journal write. Up/down edits an ephemeral draft only; confirmation binds exact loaded revision and full unique item set to one new UUID.
 
@@ -734,7 +735,25 @@ CHANNEL_SECRET_SETUP = DEFERRED
 LIVE_PROVIDER_VALIDATION = DEFERRED
 LIVE_AUTHORIZATION = NOT_GRANTED
 
-NEXT_ACTION = Independent GPT Review of R31 Completion. No R32, compound, Export, Jianying or Provider work.
+NEXT_ACTION = Independent GPT Review of R31 Audit Closeout Completion. No R32, compound, Export, Jianying or Provider work.
 
 
 R31 verification history: initial test-literal typecheck failure and nested React-array controlled-click harness failure were corrected in new tests only. Initial full Go run hit the default 10m timeout during concurrent disk-intensive build-copy work, with no business assertion failure observed; final full suite reruns all packages with a 30m harness ceiling. Initial failures and final actual gate results are retained separately in Completion. Protected source never changed to address these harness issues.
+
+### R31 GPT Audit closeout binding
+
+GPT_AUDIT = PASS
+STATE = AUDITED_INTEGRATED
+AUDITED_FEATURE_HEAD = 8a0801b5559a4240ca5ddf58351473f012679a3d
+AUDITED_COMPLETION_SHA256 = 9ae3290be25a2878d8d0f00d0dd3d3e52c82f8ef7db768be67169be363bbf090
+AUDITED_COMPLETION_COUNTS = 229 ZIP members / 228 payloads / CRC PASS / exact final secret inventory
+REVIEWED_COMMITS = 8f4f81a50eecc3e84dcc347c1115a28a1d34c53a, 2023362fd37c5b35878dbb399a115f95e084f9e0, 8a0801b5559a4240ca5ddf58351473f012679a3d
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+FINAL_STABLE_SHA = recorded in Closeout Completion (no self-reference)
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R31_AUDIT_CLOSEOUT_GPT_REVIEW after required checks and final origin identity
+
+R31 independently reviewed implementation is integrated unchanged. This closeout changes only the six authorized governance paths in one commit. All eight R31 production/test files and every non-governance file retain the audited raw bytes; the three reviewed commits remain unchanged. Required fresh full Go/mod verify, R31/R30 focused, prior UI/full frontend, independent TypeScript and actual production frontend + Bridge build evidence are in the Closeout Completion. Real browser acceptance remains NOT_CLAIMED. Closeout GPT Review is still pending independently.
+
+Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fallback. Per-intent PREPARED -> DISPATCHING durable readback precedes the actual POST; dispatched ambiguity is UNKNOWN, auto POST retry=0. NOT_OBSERVED retains the barrier; exact lookup and explicit identical-key/payload continuation preserve separate unresolved identities. Receipts prove historical commands only; conflict does not reapply an old draft. Controller remains page-owned and sequence-global, with no Video metadata receipt or drag/drop. R20/R22/R24/R26/R28 and R30 transport/backend/Foundation/schema remain byte-identical. Provider/paid/live calls=0; real credential/env content read and remote media download=NONE. API Key input/detection/validation remain SKIPPED; account/balance/entitlement/channel secret/live validation remain DEFERRED, live authorization NOT_GRANTED. No R32/compound/Export/Jianying work.
