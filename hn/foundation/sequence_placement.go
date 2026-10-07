@@ -174,12 +174,19 @@ func placementTime(t string) bool {
 }
 
 func (w *Workspace) appendPlacement(q placementConnection, sequence string, c Candidate) (SequenceItem, error) {
+	previous, err := w.reorderBeforeMutation(q, sequence)
+	if err != nil {
+		return SequenceItem{}, err
+	}
 	var index int
 	if err := q.QueryRow("SELECT coalesce(max(order_index)+1,0) FROM sequence_items WHERE project_id=? AND sequence_id=?", w.ProjectID, sequence).Scan(&index); err != nil {
 		return SequenceItem{}, err
 	}
 	i := SequenceItem{Identity: w.identity(), SequenceID: sequence, OrderIndex: index, ShotID: c.ShotID, CandidateID: c.ID, ResultID: c.ResultID}
-	return i, insert(q, "sequence_items", i.Identity, i, "sequence_id,order_index,shot_id,candidate_id,result_id", sequence, index, c.ShotID, c.ID, c.ResultID)
+	if err := insert(q, "sequence_items", i.Identity, i, "sequence_id,order_index,shot_id,candidate_id,result_id", sequence, index, c.ShotID, c.ID, c.ResultID); err != nil {
+		return SequenceItem{}, err
+	}
+	return i, w.reorderAdvance(q, sequence, previous)
 }
 
 // Parallel indexed columns must agree with the project-owned record JSON.

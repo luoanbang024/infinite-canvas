@@ -12,15 +12,22 @@ import (
 func New() *gin.Engine {
 	// New local recovery requests never log arbitrary query/header/error text.
 	// All existing routes retain Gin's default logger and recovery behavior.
+	reorderRequest := func(r *http.Request) bool {
+		return strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/reorder-protocol/") || strings.HasSuffix(r.URL.Path, "/reorder-snapshot") || strings.Contains(r.URL.Path, "/reorder-commands"))
+	}
 	recoveryRequest := func(r *http.Request) bool {
-		return strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/placement-commands") || r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/items"))
+		return reorderRequest(r) || strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/placement-commands") || r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/items"))
 	}
 	router := gin.New()
 	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Skip: func(c *gin.Context) bool { return recoveryRequest(c.Request) }}), gin.Recovery(), func(c *gin.Context) {
 		if recoveryRequest(c.Request) {
 			defer func() {
 				if recover() != nil {
-					c.AbortWithStatusJSON(500, gin.H{"code": 1, "data": nil, "msg": "PLACEMENT_STORE_UNAVAILABLE"})
+					msg := "PLACEMENT_STORE_UNAVAILABLE"
+					if reorderRequest(c.Request) {
+						msg = "REORDER_STORE_UNAVAILABLE"
+					}
+					c.AbortWithStatusJSON(500, gin.H{"code": 1, "data": nil, "msg": msg})
 				}
 			}()
 		}
@@ -69,6 +76,24 @@ func New() *gin.Engine {
 	})
 	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/placement-commands", gin.WrapF(handler.HNReferenceOptions))
 	api.OPTIONS("/hn/projects/:projectId/sequences/:sequenceId/placement-commands/:placementIntentId", gin.WrapF(handler.HNPlacementReadOptions))
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/reorder-protocol/initialize", func(c *gin.Context) {
+		handler.HNInitializeReorder(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	api.GET("/hn/projects/:projectId/sequences/:sequenceId/reorder-snapshot", func(c *gin.Context) {
+		handler.HNReorderSnapshot(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/reorder-commands", func(c *gin.Context) {
+		handler.HNReorderCommand(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	api.GET("/hn/projects/:projectId/sequences/:sequenceId/reorder-commands/:reorderIntentId", func(c *gin.Context) {
+		handler.HNLookupReorder(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"), c.Param("reorderIntentId"))
+	})
+	for _, path := range []string{"/hn/projects/:projectId/sequences/:sequenceId/reorder-snapshot", "/hn/projects/:projectId/sequences/:sequenceId/reorder-commands/:reorderIntentId"} {
+		api.OPTIONS(path, func(c *gin.Context) { handler.HNReorderOptions(c.Writer, c.Request, true) })
+	}
+	for _, path := range []string{"/hn/projects/:projectId/sequences/:sequenceId/reorder-protocol/initialize", "/hn/projects/:projectId/sequences/:sequenceId/reorder-commands"} {
+		api.OPTIONS(path, func(c *gin.Context) { handler.HNReorderOptions(c.Writer, c.Request, false) })
+	}
 	api.POST("/hn/projects/:projectId/sequences/:sequenceId/reorder", func(c *gin.Context) {
 		handler.HNReorderSequence(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
 	})

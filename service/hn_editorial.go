@@ -210,46 +210,20 @@ func ReorderLocalSequence(root, projectID, sequenceID string, ids []string) ([]H
 	ids = append([]string{}, ids...)
 	hnReferenceWriter.Lock()
 	defer hnReferenceWriter.Unlock()
-	w, err := foundation.Open(root, projectID)
+	w, err := foundation.OpenExisting(root, projectID, false)
 	if err != nil {
 		return nil, err
 	}
 	defer w.Close()
-	rows, err := w.List("sequence_items")
+	items, err := w.ReorderSequenceItems(sequenceID, ids)
+	if errors.Is(err, foundation.ErrReorderInput) || errors.Is(err, foundation.ErrReorderIntegrity) {
+		return nil, ErrHNSequenceIdentity
+	}
 	if err != nil {
 		return nil, err
 	}
-	items := map[string]foundation.SequenceItem{}
-	for _, raw := range rows {
-		var i foundation.SequenceItem
-		if json.Unmarshal(raw, &i) != nil {
-			return nil, ErrHNSequenceIdentity
-		}
-		if i.SequenceID != sequenceID {
-			continue
-		}
-		if i.ProjectID != projectID || !hnEditorialIDs(i.ID, i.ShotID, i.CandidateID, i.ResultID) || i.OrderIndex < 0 {
-			return nil, ErrHNSequenceIdentity
-		}
-		items[i.ID] = i
-	}
-	if len(items) != len(ids) {
-		return nil, ErrHNSequenceIdentity
-	}
-	for _, id := range ids {
-		if _, ok := items[id]; !ok {
-			return nil, ErrHNSequenceIdentity
-		}
-	}
-	if err = w.Reorder(sequenceID, ids); err != nil {
-		return nil, err
-	}
-	out := make([]HNSequenceItem, 0, len(ids))
-	for _, id := range ids {
-		var i foundation.SequenceItem
-		if err = hnReadRecord(w, "sequence_items", id, &i); err != nil {
-			return nil, err
-		}
+	out := make([]HNSequenceItem, 0, len(items))
+	for _, i := range items {
 		out = append(out, hnSequenceFacts(i))
 	}
 	return out, nil

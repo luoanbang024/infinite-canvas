@@ -458,37 +458,6 @@ func (w *Workspace) AddSequenceItem(sequenceID, candidateID string) (SequenceIte
 	return item, err
 }
 func (w *Workspace) Reorder(sequenceID string, ids []string) error {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-	var count int
-	if err := w.db.QueryRow("SELECT count(*) FROM sequence_items WHERE sequence_id=?", sequenceID).Scan(&count); err != nil {
-		return err
-	}
-	if count != len(ids) {
-		return errors.New("reorder must name every sequence item")
-	}
-	tx, err := w.db.Begin()
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
-	seen := map[string]bool{}
-	for index, id := range ids {
-		var i SequenceItem
-		if err = read(tx, "sequence_items", id, &i); err != nil {
-			return err
-		}
-		if seen[id] || i.SequenceID != sequenceID {
-			return errors.New("duplicate/foreign sequence item")
-		}
-		seen[id] = true
-		i.OrderIndex = index
-		if err = put(tx, "sequence_items", id, i); err != nil {
-			return err
-		}
-		if _, err = tx.Exec("UPDATE sequence_items SET order_index=? WHERE id=?", index, id); err != nil {
-			return err
-		}
-	}
-	return tx.Commit()
+	_, err := w.ReorderSequenceItems(sequenceID, ids)
+	return err
 }

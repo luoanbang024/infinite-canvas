@@ -155,6 +155,9 @@ func (w *Workspace) Delete(kind, id string) error {
 	if !tables[kind] {
 		return errors.New("unknown entity")
 	}
+	if kind == "sequence_items" {
+		return w.placementWrite(func(q placementConnection) error { return w.deleteSequenceItem(q, id) })
+	}
 	if kind == "generations" {
 		var g Generation
 		if err := read(w.db, kind, id, &g); err != nil {
