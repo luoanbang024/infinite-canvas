@@ -123,4 +123,4 @@ Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fall
 
 ## R33 next action
 
-STATE = PENDING_GPT_AUDIT. Submit the sealed R33 Completion to independent GPT review. Preserve the current local feature and fixed our-main; do not push, merge, start R34 or wire Export UI/Jianying/drag/drop/compound. Keep API Key/account/channel/live work deferred. R33 uses revision+full-vector CAS, durable immutable terminal receipts, one ExportID per exact intent, three bounded retained attempts and persistent kernel locks; historical completion and current sampled health remain distinct.
+R33 GPT Audit=PASS; STATE=AUDITED_INTEGRATED. Finish required closeout verification and normal final main push, then submit sealed Closeout Completion for independent GPT Review. Final stable SHA is recorded in Completion only. Do not start R34 / Export UI, browser journal/controller, Jianying, compound, drag/drop or credential/live work. All audited R33/R8/R30/R31 semantics and bytes remain preserved.

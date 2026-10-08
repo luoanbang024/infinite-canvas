@@ -758,17 +758,27 @@ R31 independently reviewed implementation is integrated unchanged. This closeout
 
 Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fallback. Per-intent PREPARED -> DISPATCHING durable readback precedes the actual POST; dispatched ambiguity is UNKNOWN, auto POST retry=0. NOT_OBSERVED retains the barrier; exact lookup and explicit identical-key/payload continuation preserve separate unresolved identities. Receipts prove historical commands only; conflict does not reapply an old draft. Controller remains page-owned and sequence-global, with no Video metadata receipt or drag/drop. R20/R22/R24/R26/R28 and R30 transport/backend/Foundation/schema remain byte-identical. Provider/paid/live calls=0; real credential/env content read and remote media download=NONE. API Key input/detection/validation remain SKIPPED; account/balance/entitlement/channel secret/live validation remain DEFERRED, live authorization NOT_GRANTED. No R32/compound/Export/Jianying work.
 
-## R33 local Sequence Export Recovery Protocol (pending audit)
+## R33 local Sequence Export Recovery Protocol — audited integration
+
+### R33 independent GPT Audit closeout binding
 
 EXECUTION_ID = HN_AI_IC_P0_B_R33_NO_CREDENTIAL_SEQUENCE_EXPORT_RECOVERY_PROTOCOL
+CLOSEOUT_EXECUTION_ID = HN_AI_IC_P0_B_R33_AUDIT_CLOSEOUT_INTEGRATION
 TYPE = OUR_EXTENSION / LOCAL_ONLY / EXPORT_RECOVERY_PROTOCOL / NO_UI
-STATE = PENDING_GPT_AUDIT
-BASE_SHA = 790439097de0f3f03995c9ea9c0ef010091d7b56
-PRODUCTION_COMMIT = e410d1d78108a6906a01b658adecdb6e76ad2a0b
-TEST_COMMIT = f385c7f707d5aa58f444736107ac3cec43eb1e19
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
+AUDITED_FEATURE_HEAD = 874e8adbea74f8255acd4256af07926fda7c37df
+AUDITED_COMPLETION_SHA256 = 4b5324e8710f03a44bf8996e38b5499c274c0f93ec1ad882ab82f062650ca8ac
+AUDITED_COMPLETION_COUNTS = 354 ZIP members / 353 payloads / CRC PASS / exact final secret inventory
+REVIEWED_COMMITS = e410d1d78108a6906a01b658adecdb6e76ad2a0b, f385c7f707d5aa58f444736107ac3cec43eb1e19, 874e8adbea74f8255acd4256af07926fda7c37df
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+FINAL_STABLE_SHA = recorded only in Closeout Completion
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R33_AUDIT_CLOSEOUT_GPT_REVIEW after all required gates and final remote equality
 
-Add-only Foundation export protocol/job/terminal receipt tables and platform kernel-lock/publication helpers; new service/handler routes and typed transport. This is planned extension work, not an upstream backport or verification fix. Legacy R8 Export and R7/R8 independent OUR_VERIFICATION_FIX provenance remain unchanged. Export CAS uses R30 revision plus full vector inside a short reservation transaction; accepted work owns an immutable minimal archive snapshot and one ExportID. File copy has no long SQLite writer lock. Same exact key/canonical payload continues the original job; different payload conflicts; different intent is a new explicit export. No automatic POST retry.
+R33 independently audited production/test bytes are integrated without modification. This commit changes only six governance files. Fresh full Go/mod verify, Foundation/service/handler/router focused tests, actual two-process and 11 process-kill boundaries, bounded attempt/kernel lock/sequence race/current health, prior R7/R8/R28/R30/R31 and local UI regression, full frontend, independent TypeScript and isolated production frontend + Bridge build must PASS before final main push. Evidence and actual final stable SHA belong to Closeout Completion. Closeout GPT Review remains independently pending.
 
-At most three retained staging attempts; complete stage/final can recover without recopy. Persistent per-key OS lock is never TTL-stolen or unlinked. Final full hash/byte/JSON/CSV/marker verification precedes immutable COMMITTED receipt. Historical receipt does not assert current Sequence/Selection/disk health or Provider success. Explicit readonly verification samples current bundle health. Windows uses file Sync and write-through whole-directory publication; universal hardware power-loss atomicity is not claimed.
+Legacy R8 Export remains unchanged/fresh/non-idempotent. R33 uses expectedRevision + exact ordered vector + exportIntentId; one intent owns one durable ExportID and the accepted snapshot freezes before filesystem effects. Same-key continuation never recaptures current Sequence. Persistent exact-K kernel lock has no TTL stealing/unlink, staging has at most three retained attempts and no destructive partial cleanup. R8 JSON/CSV semantics remain with a separate export-command.json. Final publication and full verification precede immutable COMMITTED receipt; valid final without receipt is adopted by same-key continuation. Receipt is historical; readonly bundle verification reports current sampled health separately. Export does not advance Sequence revision. R30/R31 bytes and semantics remain unchanged. Universal hardware power-loss durability and browser/editor/live acceptance are not claimed.
 
-PUSH = NONE; MERGE = NONE; PROVIDER_CALLS = 0; REAL_CREDENTIAL_READ = NONE; REAL_REMOTE_MEDIA_DOWNLOAD = NONE. API Key/account/channel/live work remains deferred. No Export UI/browser journal, Jianying, drag/drop, compound or next stage. Final governance SHA and complete gate evidence are recorded only in Completion to avoid self-reference.
+No Canvas Export UI/browser journal/controller, R34, Jianying, compound or drag/drop. PROVIDER_CALLS = 0; PAID_CALLS = 0; LIVE_CALLS = 0; REAL_CREDENTIAL_READ = NONE; REAL_REMOTE_MEDIA_DOWNLOAD = NONE. API Key input/detection/validation remain SKIPPED; setup/account/balance/entitlement/channel secret/live Provider validation remain DEFERRED; authorization NOT_GRANTED.

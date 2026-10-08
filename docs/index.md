@@ -113,6 +113,6 @@ R31 independently reviewed implementation is integrated unchanged. This closeout
 
 Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fallback. Per-intent PREPARED -> DISPATCHING durable readback precedes the actual POST; dispatched ambiguity is UNKNOWN, auto POST retry=0. NOT_OBSERVED retains the barrier; exact lookup and explicit identical-key/payload continuation preserve separate unresolved identities. Receipts prove historical commands only; conflict does not reapply an old draft. Controller remains page-owned and sequence-global, with no Video metadata receipt or drag/drop. R20/R22/R24/R26/R28 and R30 transport/backend/Foundation/schema remain byte-identical. Provider/paid/live calls=0; real credential/env content read and remote media download=NONE. API Key input/detection/validation remain SKIPPED; account/balance/entitlement/channel secret/live validation remain DEFERRED, live authorization NOT_GRANTED. No R32/compound/Export/Jianying work.
 
-## R33 export recovery protocol — pending independent audit
+## R33 export recovery protocol — audited integration
 
-[Local Sequence export recovery protocol](hn/sequence_export_recovery_protocol.md): backend protocol + typed transport only. STATE=PENDING_GPT_AUDIT. Legacy R8 Export and R30/R31 remain unchanged. No Export UI/Jianying/Provider/credentials; no push/merge.
+[Local Sequence export recovery protocol](hn/sequence_export_recovery_protocol.md). R33 GPT Audit=PASS; STATE=AUDITED_INTEGRATED. Exact reviewed feature is integrated ff-only; no implementation bytes changed. Closeout verification and final stable SHA are in Completion. Closeout GPT Review remains pending. No Export UI/browser journal/Jianying/Provider/credentials.
