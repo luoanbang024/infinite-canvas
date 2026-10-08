@@ -757,3 +757,18 @@ CLOSEOUT_REVIEW_STATUS = READY_FOR_R31_AUDIT_CLOSEOUT_GPT_REVIEW after required 
 R31 independently reviewed implementation is integrated unchanged. This closeout changes only the six authorized governance paths in one commit. All eight R31 production/test files and every non-governance file retain the audited raw bytes; the three reviewed commits remain unchanged. Required fresh full Go/mod verify, R31/R30 focused, prior UI/full frontend, independent TypeScript and actual production frontend + Bridge build evidence are in the Closeout Completion. Real browser acceptance remains NOT_CLAIMED. Closeout GPT Review is still pending independently.
 
 Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fallback. Per-intent PREPARED -> DISPATCHING durable readback precedes the actual POST; dispatched ambiguity is UNKNOWN, auto POST retry=0. NOT_OBSERVED retains the barrier; exact lookup and explicit identical-key/payload continuation preserve separate unresolved identities. Receipts prove historical commands only; conflict does not reapply an old draft. Controller remains page-owned and sequence-global, with no Video metadata receipt or drag/drop. R20/R22/R24/R26/R28 and R30 transport/backend/Foundation/schema remain byte-identical. Provider/paid/live calls=0; real credential/env content read and remote media download=NONE. API Key input/detection/validation remain SKIPPED; account/balance/entitlement/channel secret/live validation remain DEFERRED, live authorization NOT_GRANTED. No R32/compound/Export/Jianying work.
+
+## R33 local Sequence Export Recovery Protocol (pending audit)
+
+EXECUTION_ID = HN_AI_IC_P0_B_R33_NO_CREDENTIAL_SEQUENCE_EXPORT_RECOVERY_PROTOCOL
+TYPE = OUR_EXTENSION / LOCAL_ONLY / EXPORT_RECOVERY_PROTOCOL / NO_UI
+STATE = PENDING_GPT_AUDIT
+BASE_SHA = 790439097de0f3f03995c9ea9c0ef010091d7b56
+PRODUCTION_COMMIT = e410d1d78108a6906a01b658adecdb6e76ad2a0b
+TEST_COMMIT = f385c7f707d5aa58f444736107ac3cec43eb1e19
+
+Add-only Foundation export protocol/job/terminal receipt tables and platform kernel-lock/publication helpers; new service/handler routes and typed transport. This is planned extension work, not an upstream backport or verification fix. Legacy R8 Export and R7/R8 independent OUR_VERIFICATION_FIX provenance remain unchanged. Export CAS uses R30 revision plus full vector inside a short reservation transaction; accepted work owns an immutable minimal archive snapshot and one ExportID. File copy has no long SQLite writer lock. Same exact key/canonical payload continues the original job; different payload conflicts; different intent is a new explicit export. No automatic POST retry.
+
+At most three retained staging attempts; complete stage/final can recover without recopy. Persistent per-key OS lock is never TTL-stolen or unlinked. Final full hash/byte/JSON/CSV/marker verification precedes immutable COMMITTED receipt. Historical receipt does not assert current Sequence/Selection/disk health or Provider success. Explicit readonly verification samples current bundle health. Windows uses file Sync and write-through whole-directory publication; universal hardware power-loss atomicity is not claimed.
+
+PUSH = NONE; MERGE = NONE; PROVIDER_CALLS = 0; REAL_CREDENTIAL_READ = NONE; REAL_REMOTE_MEDIA_DOWNLOAD = NONE. API Key/account/channel/live work remains deferred. No Export UI/browser journal, Jianying, drag/drop, compound or next stage. Final governance SHA and complete gate evidence are recorded only in Completion to avoid self-reference.
