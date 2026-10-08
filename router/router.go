@@ -15,8 +15,11 @@ func New() *gin.Engine {
 	reorderRequest := func(r *http.Request) bool {
 		return strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/reorder-protocol/") || strings.HasSuffix(r.URL.Path, "/reorder-snapshot") || strings.Contains(r.URL.Path, "/reorder-commands"))
 	}
+	exportRequest := func(r *http.Request) bool {
+		return strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/export-protocol/") || strings.Contains(r.URL.Path, "/export-commands"))
+	}
 	recoveryRequest := func(r *http.Request) bool {
-		return reorderRequest(r) || strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/placement-commands") || r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/items"))
+		return exportRequest(r) || reorderRequest(r) || strings.HasPrefix(r.URL.Path, "/api/hn/projects/") && (strings.Contains(r.URL.Path, "/placement-commands") || r.Method == http.MethodGet && strings.HasSuffix(r.URL.Path, "/items"))
 	}
 	router := gin.New()
 	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Skip: func(c *gin.Context) bool { return recoveryRequest(c.Request) }}), gin.Recovery(), func(c *gin.Context) {
@@ -24,7 +27,9 @@ func New() *gin.Engine {
 			defer func() {
 				if recover() != nil {
 					msg := "PLACEMENT_STORE_UNAVAILABLE"
-					if reorderRequest(c.Request) {
+					if exportRequest(c.Request) {
+						msg = "EXPORT_STORE_UNAVAILABLE"
+					} else if reorderRequest(c.Request) {
 						msg = "REORDER_STORE_UNAVAILABLE"
 					}
 					c.AbortWithStatusJSON(500, gin.H{"code": 1, "data": nil, "msg": msg})
@@ -105,6 +110,25 @@ func New() *gin.Engine {
 			}
 			handler.HNReferenceOptions(c.Writer, c.Request)
 		})
+	}
+
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/export-protocol/initialize", func(c *gin.Context) {
+		handler.HNInitializeExportProtocol(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	api.POST("/hn/projects/:projectId/sequences/:sequenceId/export-commands", func(c *gin.Context) {
+		handler.HNExportCommand(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
+	})
+	api.GET("/hn/projects/:projectId/sequences/:sequenceId/export-commands/:exportIntentId", func(c *gin.Context) {
+		handler.HNLookupExportCommand(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"), c.Param("exportIntentId"))
+	})
+	api.GET("/hn/projects/:projectId/sequences/:sequenceId/export-commands/:exportIntentId/bundle-verification", func(c *gin.Context) {
+		handler.HNVerifyExportBundle(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"), c.Param("exportIntentId"))
+	})
+	for _, path := range []string{"/hn/projects/:projectId/sequences/:sequenceId/export-protocol/initialize", "/hn/projects/:projectId/sequences/:sequenceId/export-commands"} {
+		api.OPTIONS(path, func(c *gin.Context) { handler.HNExportCommandOptions(c.Writer, c.Request, false) })
+	}
+	for _, path := range []string{"/hn/projects/:projectId/sequences/:sequenceId/export-commands/:exportIntentId", "/hn/projects/:projectId/sequences/:sequenceId/export-commands/:exportIntentId/bundle-verification"} {
+		api.OPTIONS(path, func(c *gin.Context) { handler.HNExportCommandOptions(c.Writer, c.Request, true) })
 	}
 	api.POST("/hn/projects/:projectId/sequences/:sequenceId/export", func(c *gin.Context) {
 		handler.HNExportSequence(c.Writer, c.Request, c.Param("projectId"), c.Param("sequenceId"))
