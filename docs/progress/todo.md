@@ -126,20 +126,30 @@ Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fall
 R33 GPT Audit=PASS; STATE=AUDITED_INTEGRATED. Finish required closeout verification and normal final main push, then submit sealed Closeout Completion for independent GPT Review. Final stable SHA is recorded in Completion only. Do not start R34 / Export UI, browser journal/controller, Jianying, compound, drag/drop or credential/live work. All audited R33/R8/R30/R31 semantics and bytes remain preserved.
 
 
-## R34 Canvas main Sequence safe export UI — pending independent audit
+## R34 Canvas main Sequence safe export UI — audited integration
 
-PROJECT_ID = HN_AI_IC
+### R34 independent GPT Audit closeout binding
+
 EXECUTION_ID = HN_AI_IC_P0_B_R34_NO_CREDENTIAL_CANVAS_SEQUENCE_EXPORT_UI
-BASE_SHA = 150c0bd345804c078b93a20ebb910ff0c413f4a9
+CLOSEOUT_EXECUTION_ID = HN_AI_IC_P0_B_R34_AUDIT_CLOSEOUT_INTEGRATION
 TYPE = OUR_EXTENSION / LOCAL_ONLY / CANVAS_UI_WORKFLOW / NO_PROVIDER
-STATE = PENDING_GPT_AUDIT
-IMPLEMENTATION_COMMITS = b1565397bc8adc74a9826f258d20713e8453fab5, f0c9221388317638c7be82b0af5c2858f46d37f3
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS
+AUDITED_FEATURE_HEAD = 91abbf0309fe0453d3b3625e46989277642fa022
+AUDITED_COMPLETION_SHA256 = 7d2e9596c48f54d7a18dcc9e85dbc9bbbc2517d702979276e689c2534f82c6ab
+AUDITED_COMPLETION_COUNTS = 478 ZIP members / 477 payloads / CRC PASS / exact final secret inventory
+REVIEWED_COMMITS = b1565397bc8adc74a9826f258d20713e8453fab5, f0c9221388317638c7be82b0af5c2858f46d37f3, 91abbf0309fe0453d3b3625e46989277642fa022
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+FINAL_STABLE_SHA = recorded only in Closeout Completion
+CLOSEOUT_REVIEW_STATUS = READY_FOR_R34_AUDIT_CLOSEOUT_GPT_REVIEW after required final checks and remote equality
 
-Page-owned project/main controller and dedicated per-intent localforage journal use the unchanged R30 snapshot and R33 typed command/job/receipt transport. Opening the dialog only inspects the local journal. Explicit load initializes R30 then R33 metadata and reads a complete <=256 main snapshot. Exact revision/vector are confirmed before a new UUID. PREPARED and immediately pre-POST DISPATCHING both require strict durable readback; persistence failure forwards zero export POSTs. Ambiguity remains UNKNOWN; automatic POST retry=0. Known nonterminal status remains unresolved. Exact lookup and explicitly confirmed same-key continuation preserve every unresolved identity. No current snapshot is rebound during continuation. Terminal authority is sealed before UI projection. Historical COMMITTED receipt, current Sequence preview and explicit ephemeral bundle health remain separate. MISSING/CORRUPT never rebuild.
+Exactly reviewed R34 production/test bytes are integrated unchanged. This closeout changes only the six authorized governance files. R34 moves pendingReview -> auditedIntegrations; unrelated history remains unchanged. Required fresh root Go/mod verify, R34/R33/R31/prior local UI focused regression, full frontend, independent TypeScript and isolated production frontend + Bridge build must PASS before final main push. The actual final stable SHA belongs only in Closeout Completion. Closeout GPT Review remains independently pending.
 
-Only the five authorized production paths, three new tests and six governance paths change. All backend/Foundation/schema, R33/R30 typed transports, legacy export, R31/R28 controllers/journals, archive/candidate/selection controllers, Generate/Upload/Provider/Auth, dependencies and lockfiles remain byte-identical. Existing placement/reorder UI remains. No node metadata receipt, browser media read, editor/folder launch, compound or drag/drop.
+R34 uses R30 authoritative snapshot + R33 export command/job/receipt only, with no legacy /export fallback. Dedicated one-record-per-intent journal preserves PREPARED -> DISPATCHING exact durable readback before actual export POST. Ambiguous dispatched result remains UNKNOWN; automatic POST retry=0. Known nonterminal states stay unresolved and NOT_OBSERVED never clears their barrier. Exact lookup + explicitly confirmed identical K/P continuation create no new UUID and never rebind current Sequence. Multiple unresolved identities remain independent. Historical terminal receipt, current Sequence and explicit ephemeral bundle health remain separate; MISSING/CORRUPT never auto-rebuild. Controller is page-owned and project/main-global, with no Video metadata receipt or editable export order. No backend/Foundation/schema change. R33 typed transport, legacy R8, R31/R28/prior UI and dependencies/lockfiles remain unchanged.
 
-Final actual Go/mod verify, full frontend, focused R34/R33 transport, independent TypeScript and isolated frontend + Bridge production build evidence are retained in Completion. No installation/upgrade. Controlled render/click, injected localforage/JSON reopen and localhost HTTP evidence are automated; real IndexedDB, real dialog/browser reload, two real tabs, long export UX, themes/layout/accessibility, rapid clicks/cancel and large-bundle verification responsiveness require manual acceptance and are NOT_CLAIMED.
+Real browser manual acceptance remains NOT_CLAIMED: IndexedDB/localforage persistence, real close/reopen/full reload, two real tabs, long export UX, theme/layout/accessibility, rapid click/cancel and large-bundle verification responsiveness require manual acceptance. Controlled render/storage/localhost fixtures do not replace these claims.
 
 PROVIDER_CALLS = 0
 PAID_CALLS = 0
@@ -157,6 +167,5 @@ ACCOUNT_ENTITLEMENT_CHECK = DEFERRED
 CHANNEL_SECRET_SETUP = DEFERRED
 LIVE_PROVIDER_VALIDATION = DEFERRED
 LIVE_AUTHORIZATION = NOT_GRANTED
-PUSH = NONE
-MERGE = NONE
-NEXT_ACTION = Independent GPT Review of R34 Completion; no R35.
+
+No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.

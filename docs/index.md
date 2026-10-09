@@ -118,6 +118,6 @@ Audited R30 revision/CAS + reorder command receipt only; no legacy /reorder fall
 [Local Sequence export recovery protocol](hn/sequence_export_recovery_protocol.md). R33 GPT Audit=PASS; STATE=AUDITED_INTEGRATED. Exact reviewed feature is integrated ff-only; no implementation bytes changed. Closeout verification and final stable SHA are in Completion. Closeout GPT Review remains pending. No Export UI/browser journal/Jianying/Provider/credentials.
 
 
-## R34 safe local Sequence export UI — pending audit
+## R34 Canvas safe export UI — audited integration
 
-[Canvas main safe export workflow](hn/canvas_local_sequence_export_workflow.md). STATE=PENDING_GPT_AUDIT. R30 snapshot + R33 command/job/receipt only; durable per-intent recovery, no automatic POST retry, separate historical receipt/current preview/explicit ephemeral health. Real browser acceptance NOT_CLAIMED; Provider/paid/live=0; credentials/account work DEFERRED. No push/merge/R35.
+[Canvas main safe export workflow](hn/canvas_local_sequence_export_workflow.md). GPT_AUDIT=PASS; STATE=AUDITED_INTEGRATED. Exact reviewed bytes integrated ff-only; closeout evidence and final stable SHA are in Completion. Closeout GPT Review pending independently. Manual browser acceptance NOT_CLAIMED; no R35/editor/compound/drag/drop/Provider/credential work.
