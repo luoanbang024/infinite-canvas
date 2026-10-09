@@ -252,3 +252,39 @@ R33 independently audited production/test bytes are integrated without modificat
 Legacy R8 Export remains unchanged/fresh/non-idempotent. R33 uses expectedRevision + exact ordered vector + exportIntentId; one intent owns one durable ExportID and the accepted snapshot freezes before filesystem effects. Same-key continuation never recaptures current Sequence. Persistent exact-K kernel lock has no TTL stealing/unlink, staging has at most three retained attempts and no destructive partial cleanup. R8 JSON/CSV semantics remain with a separate export-command.json. Final publication and full verification precede immutable COMMITTED receipt; valid final without receipt is adopted by same-key continuation. Receipt is historical; readonly bundle verification reports current sampled health separately. Export does not advance Sequence revision. R30/R31 bytes and semantics remain unchanged. Universal hardware power-loss durability and browser/editor/live acceptance are not claimed.
 
 No Canvas Export UI/browser journal/controller, R34, Jianying, compound or drag/drop. PROVIDER_CALLS = 0; PAID_CALLS = 0; LIVE_CALLS = 0; REAL_CREDENTIAL_READ = NONE; REAL_REMOTE_MEDIA_DOWNLOAD = NONE. API Key input/detection/validation remain SKIPPED; setup/account/balance/entitlement/channel secret/live Provider validation remain DEFERRED; authorization NOT_GRANTED.
+
+
+## R34 Canvas main Sequence safe export UI — pending independent audit
+
+PROJECT_ID = HN_AI_IC
+EXECUTION_ID = HN_AI_IC_P0_B_R34_NO_CREDENTIAL_CANVAS_SEQUENCE_EXPORT_UI
+BASE_SHA = 150c0bd345804c078b93a20ebb910ff0c413f4a9
+TYPE = OUR_EXTENSION / LOCAL_ONLY / CANVAS_UI_WORKFLOW / NO_PROVIDER
+STATE = PENDING_GPT_AUDIT
+IMPLEMENTATION_COMMITS = b1565397bc8adc74a9826f258d20713e8453fab5, f0c9221388317638c7be82b0af5c2858f46d37f3
+
+Page-owned project/main controller and dedicated per-intent localforage journal use the unchanged R30 snapshot and R33 typed command/job/receipt transport. Opening the dialog only inspects the local journal. Explicit load initializes R30 then R33 metadata and reads a complete <=256 main snapshot. Exact revision/vector are confirmed before a new UUID. PREPARED and immediately pre-POST DISPATCHING both require strict durable readback; persistence failure forwards zero export POSTs. Ambiguity remains UNKNOWN; automatic POST retry=0. Known nonterminal status remains unresolved. Exact lookup and explicitly confirmed same-key continuation preserve every unresolved identity. No current snapshot is rebound during continuation. Terminal authority is sealed before UI projection. Historical COMMITTED receipt, current Sequence preview and explicit ephemeral bundle health remain separate. MISSING/CORRUPT never rebuild.
+
+Only the five authorized production paths, three new tests and six governance paths change. All backend/Foundation/schema, R33/R30 typed transports, legacy export, R31/R28 controllers/journals, archive/candidate/selection controllers, Generate/Upload/Provider/Auth, dependencies and lockfiles remain byte-identical. Existing placement/reorder UI remains. No node metadata receipt, browser media read, editor/folder launch, compound or drag/drop.
+
+Final actual Go/mod verify, full frontend, focused R34/R33 transport, independent TypeScript and isolated frontend + Bridge production build evidence are retained in Completion. No installation/upgrade. Controlled render/click, injected localforage/JSON reopen and localhost HTTP evidence are automated; real IndexedDB, real dialog/browser reload, two real tabs, long export UX, themes/layout/accessibility, rapid clicks/cancel and large-bundle verification responsiveness require manual acceptance and are NOT_CLAIMED.
+
+PROVIDER_CALLS = 0
+PAID_CALLS = 0
+LIVE_CALLS = 0
+REAL_CREDENTIAL_READ = NONE
+REAL_ENV_CONTENT_READ = NONE
+REAL_REMOTE_MEDIA_DOWNLOAD = NONE
+API_KEY_SETUP = DEFERRED
+API_KEY_INPUT = SKIPPED
+API_KEY_DETECTION = SKIPPED
+API_KEY_VALIDATION = SKIPPED
+ACCOUNT_CREDENTIAL_CHECK = DEFERRED
+ACCOUNT_BALANCE_CHECK = DEFERRED
+ACCOUNT_ENTITLEMENT_CHECK = DEFERRED
+CHANNEL_SECRET_SETUP = DEFERRED
+LIVE_PROVIDER_VALIDATION = DEFERRED
+LIVE_AUTHORIZATION = NOT_GRANTED
+PUSH = NONE
+MERGE = NONE
+NEXT_ACTION = Independent GPT Review of R34 Completion; no R35.

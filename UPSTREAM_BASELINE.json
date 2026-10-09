@@ -35,7 +35,33 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [],
+  "pendingReview": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R34_NO_CREDENTIAL_CANVAS_SEQUENCE_EXPORT_UI",
+      "type": "OUR_EXTENSION / LOCAL_ONLY / CANVAS_UI_WORKFLOW / NO_PROVIDER",
+      "state": "PENDING_GPT_AUDIT",
+      "baseSha": "150c0bd345804c078b93a20ebb910ff0c413f4a9",
+      "featureBranch": "feature/p0-b-r34-no-credential-canvas-sequence-export-ui",
+      "implementationCommits": [
+        "b1565397bc8adc74a9826f258d20713e8453fab5",
+        "f0c9221388317638c7be82b0af5c2858f46d37f3"
+      ],
+      "protocolAuthority": "R30_SNAPSHOT_PLUS_R33_EXPORT_COMMAND_JOB_RECEIPT",
+      "journal": "PER_INTENT_PREPARED_DISPATCHING_READBACK",
+      "automaticPostRetry": 0,
+      "unknownRecovery": "EXACT_LOOKUP_OR_EXPLICIT_SAME_KEY_CONTINUATION",
+      "bundleHealth": "EXPLICIT_EPHEMERAL_ONLY",
+      "browserAcceptance": "NOT_CLAIMED",
+      "providerCalls": 0,
+      "paidCalls": 0,
+      "liveCalls": 0,
+      "realCredentialRead": "NONE",
+      "realRemoteMediaDownload": "NONE",
+      "push": "NONE",
+      "merge": "NONE",
+      "nextAction": "Independent GPT Review of R34 Completion"
+    }
+  ],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
