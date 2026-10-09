@@ -15,6 +15,7 @@ import type { HNLocalSequencePlacementReceipt } from "../types";
 import { HNLocalSequencePlacementController, HN_PLACEMENT_CONFIRMATION, type PlacementProjection } from "./hn-local-canvas-sequence-placement";
 import { CanvasHNLocalSequenceSection } from "./canvas-hn-local-sequence-section";
 import { HNLocalSequenceReorderController, HN_REORDER_CONFIRMATION, HN_REORDER_CONTINUATION } from "./hn-local-canvas-sequence-reorder";
+import { HNLocalSequenceExportController, HN_EXPORT_CONFIRMATION, HN_EXPORT_CONTINUATION } from "./hn-local-canvas-sequence-export";
 import { mapHNCanvasProjectId } from "./hn-local-canvas-prepare";
 
 export function HNLocalArchiveContent({ entry, onArchive, candidateRunning = false, operationBlocked = false }: { entry: HNArchiveEntry; onArchive: () => void; candidateRunning?: boolean; operationBlocked?: boolean }) {
@@ -44,21 +45,22 @@ type Props = {
     candidate?: { controller: HNLocalCandidateController; dependencies: HNCandidateDependencies; onReceipt: (receipt: HNLocalCandidateReceipt, archive: Extract<HNLocalArchiveReceipt, { outcome: "ARCHIVED" }>) => void };
     selection?: { controller: HNLocalSelectionController; onReceipt: (receipt: HNLocalSelectionReceipt, target: HNArchiveTarget) => void };
     reorder?: HNLocalSequenceReorderController;
+    sequenceExport?: HNLocalSequenceExportController;
     placement?: { controller: HNLocalSequencePlacementController; onReceipt: (receipt: PlacementProjection, target: HNArchiveTarget) => void };
 };
 export function runHNArchiveIfCandidateIdle(candidate: HNLocalCandidateController | undefined, project: string, node: string, action: () => void) {
     if (candidate?.entry(project, node).running) return false;
     action(); return true;
 }
-export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, controller, readTarget, dependencies, onReceipt, onClose, targetRevision, candidate, selection, placement, reorder }: Props) {
+export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, controller, readTarget, dependencies, onReceipt, onClose, targetRevision, candidate, selection, placement, reorder, sequenceExport }: Props) {
     const theme = canvasThemes[useThemeStore((state) => state.theme)], { modal } = App.useApp();
     const [reorderProject, setReorderProject] = useState<{ canvas: string; hn: string } | null>(null);
     useEffect(() => {
-        if (!open || !reorder) return;
+        if (!open || (!reorder && !sequenceExport)) return;
         let active = true;
-        void mapHNCanvasProjectId(canvasProjectId).then(hn => { if (active) { setReorderProject({ canvas: canvasProjectId, hn }); void reorder.inspect(hn); } }).catch(() => { if (active) setReorderProject(null); });
+        void mapHNCanvasProjectId(canvasProjectId).then(hn => { if (active) { setReorderProject({ canvas: canvasProjectId, hn }); void reorder?.inspect(hn); void sequenceExport?.inspect(hn); } }).catch(() => { if (active) setReorderProject(null); });
         return () => { active = false; };
-    }, [open, canvasProjectId, reorder]); // local hashing + journal reads only; no HTTP or write on open
+    }, [open, canvasProjectId, reorder, sequenceExport]); // local hashing + journal reads only; no HTTP or write on open
     const hn = reorderProject?.canvas === canvasProjectId ? reorderProject.hn : null;
     const reorderControls = reorder && hn ? {
         entry: reorder.entry(hn), canSubmit: reorder.canSubmit(hn),
@@ -71,6 +73,18 @@ export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, cont
         onContinue: (intent: string) => { void reorder.continueSame(hn, intent, command => new Promise<boolean>(resolve => {
             modal.confirm({ title: "继续同一次排序操作", content: <div><p>{HN_REORDER_CONTINUATION}</p><p>Intent：{command.reorderIntentId}</p><p>sequenceRevision：{command.expectedRevision}</p></div>, okText: "确认继续同一次操作", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
         })); },
+    } : undefined;
+    const exportControls = sequenceExport && hn ? {
+        entry: sequenceExport.entry(hn), canSubmit: sequenceExport.canSubmit(hn),
+        onLoad: () => { void sequenceExport.load(hn); }, onRefresh: () => { void sequenceExport.refresh(hn); },
+        onSubmit: () => { void sequenceExport.submit(hn, command => new Promise<boolean>(resolve => {
+            modal.confirm({ title: "确认导出当前主序列", content: <div><p>{HN_EXPORT_CONFIRMATION}</p><p>sequenceRevision：{command.expectedRevision}</p><p>有序项：{command.orderedSequenceItemIds.join(" → ")}</p></div>, okText: "确认新建本地导出包", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
+        })); },
+        onLookup: (intent: string) => { void sequenceExport.lookup(hn, intent); },
+        onContinue: (intent: string) => { void sequenceExport.continueSame(hn, intent, command => new Promise<boolean>(resolve => {
+            modal.confirm({ title: "继续同一次导出", content: <div><p>{HN_EXPORT_CONTINUATION}</p><p>Intent：{command.exportIntentId}</p><p>sequenceRevision：{command.expectedRevision}</p></div>, okText: "确认继续同一次导出", cancelText: "取消", onOk: () => resolve(true), onCancel: () => resolve(false) });
+        })); },
+        onVerify: (intent: string) => { void sequenceExport.verifyBundle(hn, intent); },
     } : undefined;
     let archiveRevision = "";
     try { if (open && nodeId) { const t = readTarget(nodeId), { hnLocalCandidate: _candidate, hnLocalSelection: _selection, hnLocalSequencePlacement: _placement, hnLocalSequencePlacementV2: _placementV2, ...metadata } = t.node.metadata || {}; archiveRevision = JSON.stringify({ ...t, node: { ...t.node, metadata } }); } } catch { /* No target cannot authorize a write. */ }
@@ -133,6 +147,6 @@ export function CanvasHNLocalArchiveDialog({ open, canvasProjectId, nodeId, cont
     return <Modal title="归档本地视频" open={open && !!nodeId} centered footer={null} onCancel={onClose} styles={{ body: { color: theme.node.text } }}>
         {entry ? <HNLocalArchiveContent entry={entry} onArchive={archive} candidateRunning={candidateEntry?.running} operationBlocked={operationBlocked("archive")} /> : <p>{HN_ARCHIVE_EXPLANATION}</p>}
         {candidateEntry ? <CanvasHNLocalCandidateSection entry={candidateEntry} archiveRunning={!!entry?.running} onEnsure={ensure} candidateBlocked={operationBlocked("candidate")} selection={selectionEntry ? { entry: selectionEntry, blocked: !!entry?.running || !!candidateEntry.running || operationBlocked("selection"), onSelect: select } : undefined} /> : null}
-        {nodeId && placement ? <CanvasHNLocalSequenceSection reorder={reorderControls} entry={placement.controller.entry(canvasProjectId, nodeId)} blocked={operationBlocked("placement") || !selectionEntry || !["SELECTED_CURRENT_SESSION", "SELECTION_RELOADED_UNVERIFIED"].includes(selectionEntry.phase)} selectionReloaded={selectionEntry?.phase === "SELECTION_RELOADED_UNVERIFIED"} onPlace={place} onLookup={() => recoverPlacement(false)} onContinue={() => recoverPlacement(true)} onRead={() => { if (candidate) void placement.controller.readSnapshot(() => readTarget(nodeId), candidate.dependencies); }} /> : null}
+        {nodeId && placement ? <CanvasHNLocalSequenceSection sequenceExport={exportControls} reorder={reorderControls} entry={placement.controller.entry(canvasProjectId, nodeId)} blocked={operationBlocked("placement") || !selectionEntry || !["SELECTED_CURRENT_SESSION", "SELECTION_RELOADED_UNVERIFIED"].includes(selectionEntry.phase)} selectionReloaded={selectionEntry?.phase === "SELECTION_RELOADED_UNVERIFIED"} onPlace={place} onLookup={() => recoverPlacement(false)} onContinue={() => recoverPlacement(true)} onRead={() => { if (candidate) void placement.controller.readSnapshot(() => readTarget(nodeId), candidate.dependencies); }} /> : null}
     </Modal>;
 }
