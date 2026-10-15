@@ -11,7 +11,7 @@ type Dependencies = { journal?:ReorderJournal; request?:typeof fetch; uuid?:()=>
 export class HNLocalSequenceReorderController {
  private entries = new Map<string,ReorderEntry>();
  private readonly journal:ReorderJournal; private readonly request:typeof fetch; private readonly uuid:()=>string; private readonly now:()=>string;
- constructor(private readonly changed:()=>void = ()=>{}, deps:Dependencies = {}) { this.journal=deps.journal||browserReorderJournal;this.request=deps.request||fetch;this.uuid=deps.uuid||(()=>crypto.randomUUID());this.now=deps.now||(()=>new Date().toISOString()); }
+ constructor(private readonly changed:()=>void = ()=>{}, deps:Dependencies = {}) { this.journal=deps.journal||browserReorderJournal;const request=deps.request||fetch;this.request=(input,init)=>request(input,init);this.uuid=deps.uuid||(()=>crypto.randomUUID());this.now=deps.now||(()=>new Date().toISOString()); }
  private state(project:string) { let e=this.entries.get(project); if(!e){ e={running:false,records:[],snapshot:null,draft:[],currentVerified:false,storageBlocked:false,error:null,laterChanges:false};this.entries.set(project,e); }return e; }
  entry(project:string):ReorderEntry { return structuredClone(this.state(project)); }
  canSubmit(project:string) { const e=this.state(project), ids=e.snapshot?.items.map(i=>i.sequenceItemId);return isHNProjectId(project)&&!e.running&&!e.storageBlocked&&!e.records.some(unresolvedReorder)&&!!ids&&ids.length>1&&ids.length<=256&&ids.length===e.draft.length&&new Set(e.draft).size===ids.length&&e.draft.every(id=>ids.includes(id))&&JSON.stringify(ids)!==JSON.stringify(e.draft); }

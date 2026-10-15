@@ -18,7 +18,7 @@ type Dependencies = { journal?: ExportJournal; request?: typeof fetch; uuid?: ()
 export class HNLocalSequenceExportController {
     private entries = new Map<string, ExportEntry>();
     private readonly journal: ExportJournal; private readonly request: typeof fetch; private readonly uuid: () => string; private readonly now: () => string;
-    constructor(private readonly changed: () => void = () => {}, deps: Dependencies = {}) { this.journal = deps.journal || browserExportJournal; this.request = deps.request || fetch; this.uuid = deps.uuid || (() => crypto.randomUUID()); this.now = deps.now || (() => new Date().toISOString()); }
+    constructor(private readonly changed: () => void = () => {}, deps: Dependencies = {}) { this.journal = deps.journal || browserExportJournal; const request = deps.request || fetch; this.request = (input, init) => request(input, init); this.uuid = deps.uuid || (() => crypto.randomUUID()); this.now = deps.now || (() => new Date().toISOString()); }
     private state(project: string) { let e = this.entries.get(project); if (!e) { e = { running: false, records: [], snapshot: null, currentVerified: false, storageBlocked: false, error: null, health: {} }; this.entries.set(project, e); } return e; }
     entry(project: string): ExportEntry { return structuredClone(this.state(project)); }
     canSubmit(project: string) { const e = this.state(project); return isHNProjectId(project) && !e.running && !e.storageBlocked && !e.records.some(unresolvedExport) && e.currentVerified && !!e.snapshot && e.snapshot.items.length > 0 && e.snapshot.items.length <= 256; }
