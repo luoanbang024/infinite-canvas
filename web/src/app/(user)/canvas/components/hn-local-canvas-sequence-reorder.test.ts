@@ -45,3 +45,24 @@ test("R31 localhost fake HTTP server observes exact POST after seal and one-effe
 });
 
 test("R31 continuation opaque loss remains unresolved and project switch does not share drafts",async()=>{const f=reorderFixture();await f.load();f.move();f.setPost("drop-before");await f.submit();const command=structuredClone(f.posts[0]);assert.equal(await f.controller.continueSame(f.project,f.intent(),async()=>true),false);assert.equal(f.counts.post,2);assert.equal(f.counts.uuid,1);assert.deepEqual(f.posts[1],command);assert.equal(f.entry().records[0].state,"UNKNOWN");assert.equal(await f.submit(),false);assert.equal(f.controller.entry("other").records.length,0);assert.equal(f.controller.entry("other").snapshot,null);const fresh=new HNLocalSequenceReorderController(()=>{},f.deps);await fresh.inspect(f.project);assert.equal(fresh.entry(f.project).records[0].state,"UNKNOWN");assert.deepEqual(fresh.entry(f.project).records[0].command,command);evidence.push({scenario:"continuation-second-loss-reopen",counts:f.counts,records:fresh.entry(f.project).records});});
+
+
+test("R36 receiver-sensitive Reorder load and dispatch use plain request, one POST with durable terminal", async () => {
+    for (const outcome of ["COMMITTED", "CONFLICT"] as const) {
+        const f = reorderFixture(); let foreignReceivers = 0, plainCalls = 0;
+        const original = f.deps.request;
+        const request = (async function (this: unknown, input: Parameters<typeof fetch>[0], init?: RequestInit) {
+            if (this !== undefined && this !== globalThis) { foreignReceivers++; throw new TypeError("Illegal invocation: foreign request receiver"); }
+            plainCalls++; return original(input, init);
+        }) as typeof fetch;
+        const c = new HNLocalSequenceReorderController(() => {}, { ...f.deps, request });
+        assert.equal(await c.load(f.project), true); assert.equal(f.counts.post, 0); assert.equal(foreignReceivers, 0);
+        c.move(f.project, "B", -1); if (outcome === "CONFLICT") f.setCurrent(["C", "B", "A"], "2");
+        const submitted = await c.submit(f.project, async () => true);
+        evidence.push({ scenario: "R36-receiver-" + outcome, submitted, foreignReceivers, plainCalls, posts: f.counts.post, records: c.entry(f.project).records, events: f.m.events });
+        assert.equal(submitted, true); assert.equal(foreignReceivers, 0); assert.ok(plainCalls > 0);
+        assert.equal(f.counts.post, 1); assert.equal(f.counts.uuid, 1); assert.equal(c.entry(f.project).records[0].state, outcome);
+        assert.equal((f.m.values.get(reorderJournalKey(f.project, c.entry(f.project).records[0].command.reorderIntentId)) as ReorderJournalRecord).state, outcome);
+        assert.equal(f.m.events.filter(x => x === "actualPOST").length, 1);
+    }
+});

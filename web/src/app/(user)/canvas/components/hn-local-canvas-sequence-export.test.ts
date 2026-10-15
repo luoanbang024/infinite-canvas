@@ -129,3 +129,23 @@ test("R34 bundle health cannot attach to a different historical ExportID", async
     const changed = await exportStatus(f.project, r.command); assert.notEqual(changed.exportId, r.status!.exportId); f.stored.set(r.command.exportIntentId, changed);
     assert.equal(await f.c.verifyBundle(f.project, r.command.exportIntentId), false); assert.deepEqual(f.entry().health, {}); assert.equal(JSON.stringify([...f.m.values]), before); assert.equal(f.counts.post, 1);
 });
+
+
+test("R36 receiver-sensitive Export load and dispatch use plain request, one POST with durable terminal", async () => {
+    for (const outcome of ["COMMITTED", "REJECTED", "FAILED"] as const) {
+        const f = exportFixture(); let foreignReceivers = 0, plainCalls = 0;
+        const original = f.deps.request;
+        const request = (async function (this: unknown, input: Parameters<typeof fetch>[0], init?: RequestInit) {
+            if (this !== undefined && this !== globalThis) { foreignReceivers++; throw new TypeError("Illegal invocation: foreign request receiver"); }
+            plainCalls++; return original(input, init);
+        }) as typeof fetch;
+        const c = new HNLocalSequenceExportController(() => {}, { ...f.deps, request });
+        assert.equal(await c.load(f.project), true); assert.equal(f.counts.post, 0); assert.equal(foreignReceivers, 0); f.setOutcome(outcome);
+        const submitted = await c.submit(f.project, async () => true);
+        facts.push({ scenario: "R36-receiver-" + outcome, submitted, foreignReceivers, plainCalls, posts: f.counts.post, records: c.entry(f.project).records, events: f.m.events });
+        assert.equal(submitted, true); assert.equal(foreignReceivers, 0); assert.ok(plainCalls > 0);
+        assert.equal(f.counts.post, 1); assert.equal(f.counts.uuid, 1); assert.equal(f.counts.verify, 0);
+        const r = c.entry(f.project).records[0]; assert.equal(r.state, outcome);
+        assert.equal((f.m.values.get(exportJournalKey(f.project, r.command.exportIntentId)) as ExportJournalRecord).state, outcome);
+    }
+});
