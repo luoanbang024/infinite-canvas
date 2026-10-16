@@ -827,3 +827,39 @@ LIVE_PROVIDER_VALIDATION = DEFERRED
 LIVE_AUTHORIZATION = NOT_GRANTED
 
 No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.
+
+
+## R36 browser-native fetch receiver fix — pending GPT Audit
+
+EXECUTION_ID = HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX
+BASE_SHA = a231f15a913df0a6755ff8463f3f4fd2f6e989a8
+TYPE = OUR_VERIFICATION_FIX / NARROW_FIX / FRONTEND_ONLY / NO_PROVIDER
+STATE = PENDING_GPT_AUDIT
+IMPLEMENTATION_COMMITS = 0bb2263abba76542f415fef14fe501101aa2f975, 57febe571ced1a1f6a32cb3832539d296123dacc
+R35_GPT_AUDIT = NEEDS_FIX_CONFIRMED
+R35_COMPLETION_SHA256 = d0863070b9010c118b0831c9328038d176583aa3d421cc56430fded93e1790bb
+
+Only R31/R34 controller construction normalizes the selected request into a receiver-safe wrapper calling the original as a plain function. Two existing controller tests add non-arrow receiver-sensitive regressions: load succeeds on the old source, dispatch fails before POST; R36 reaches one POST and durably seals terminal state. Existing arrow-injected behavior remains covered. No transport/header/body/retry/journal/backend change; this is our local verification fix, not an upstream backport.
+
+Human-browser revalidation: one reorder POST COMMITTED (revision 3→4), two separately confirmed export POSTs COMMITTED with distinct intent/ExportID, explicit bundle verification and F5/reverify VERIFIED, historical receipt persistence and two-tab identity preservation. Human confirmed all seven gates PASS. Missing standalone reverify image and unexpanded second export IndexedDB record are disclosed; proxy, journal-only fresh reload UI and readonly DB corroborate the observed outcomes. Completion preserves every original screenshot, including the old R35 ABORTED record; no historical evidence rewritten.
+
+Full frontend=239 PASS/2 opt-in SKIP/0 FAIL; local UI/transport focused=221 PASS/2 opt-in SKIP/0 FAIL. Fresh full root Go with existing bridge-test hooks, Bridge tests, mod verify, independent TypeScript and production frontend+Bridge build PASS. Skip names and configured Go bridge evidence remain explicit in Completion. Protected source/dependency/lockfile and Generation SourceBaseline remain unchanged.
+
+PROVIDER_CALLS = 0
+PAID_CALLS = 0
+LIVE_CALLS = 0
+REAL_CREDENTIAL_READ = NONE
+REAL_REMOTE_MEDIA_DOWNLOAD = NONE
+API_KEY_SETUP = DEFERRED
+API_KEY_INPUT = SKIPPED
+API_KEY_DETECTION = SKIPPED
+API_KEY_VALIDATION = SKIPPED
+ACCOUNT_CREDENTIAL_CHECK = DEFERRED
+ACCOUNT_BALANCE_CHECK = DEFERRED
+ACCOUNT_ENTITLEMENT_CHECK = DEFERRED
+CHANNEL_SECRET_SETUP = DEFERRED
+LIVE_PROVIDER_VALIDATION = DEFERRED
+LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED
+PUSH = NONE
+MERGE = NONE
+NEXT_ACTION = Independent GPT Audit of R36 Completion; no R37.

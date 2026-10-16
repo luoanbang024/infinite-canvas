@@ -85,3 +85,10 @@ LIVE_PROVIDER_VALIDATION = DEFERRED
 LIVE_AUTHORIZATION = NOT_GRANTED
 
 No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.
+
+
+## R36 Safe Export browser-native dispatch correction
+
+STATE = PENDING_GPT_AUDIT; TYPE = OUR_VERIFICATION_FIX / FRONTEND_ONLY. Only the controller constructor normalizes request; original native fetch is called as a plain function. R30/R33 wire transport, PREPARED→DISPATCHING durable seal/readback, UNKNOWN/NOT_OBSERVED and explicit same-key recovery semantics are unchanged; automatic POST retry=0. R35 failure evidence remains immutable.
+
+Receiver-sensitive RED→GREEN and existing regressions PASS. Human-assisted genuine Chrome/IndexedDB revalidation observed reorder COMMITTED revision 3→4, two distinct export COMMITTED records, explicit VERIFIED, F5 health clearing/reverify and two-tab identity preservation. Screenshot coverage qualifications and exact proxy/readonly-store/hash evidence are recorded in R36 Completion. This records targeted browser validation, not GPT Audit PASS or integrated status. Provider/paid/live=0, real credentials/remote media=NONE; API Key/account work deferred. No push/merge/R37.

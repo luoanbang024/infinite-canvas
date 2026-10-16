@@ -169,3 +169,10 @@ LIVE_PROVIDER_VALIDATION = DEFERRED
 LIVE_AUTHORIZATION = NOT_GRANTED
 
 No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.
+
+
+## R36 narrow receiver-safe fix — pending independent GPT Audit
+
+HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX; BASE_SHA=a231f15a913df0a6755ff8463f3f4fd2f6e989a8; STATE=PENDING_GPT_AUDIT. Production/test local commits: 0bb2263abba76542f415fef14fe501101aa2f975, 57febe571ced1a1f6a32cb3832539d296123dacc. Two controller request normalizations and two receiver-sensitive tests only. Automated root Go/Bridge/mod verify/full frontend/focused/tsc/production build PASS; frontend opt-in skips are explicitly retained. Human-assisted targeted Reorder/Export/VERIFIED/F5/two-tab/IndexedDB gates confirmed PASS, with screenshot coverage qualifications in Completion.
+
+Pending: independent GPT Audit of sealed R36 Completion. No closeout integration, push, merge or R37. Backend/journal/wire/Foundation/legacy export/Provider/dependencies unchanged; no credentials or remote media; API Key/account/live work remains deferred.

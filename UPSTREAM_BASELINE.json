@@ -35,7 +35,44 @@
     "Stable pushed OUR baseline commit is recorded in the closeout completion package, avoiding a self-referential governance commit hash.",
     "Post-v0.8.0 upstream main is not adopted and never replaces this baseline automatically."
   ],
-  "pendingReview": [],
+  "pendingReview": [
+    {
+      "executionId": "HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX",
+      "type": "OUR_VERIFICATION_FIX / NARROW_FIX / FRONTEND_ONLY / NO_PROVIDER",
+      "state": "PENDING_GPT_AUDIT",
+      "baseSha": "a231f15a913df0a6755ff8463f3f4fd2f6e989a8",
+      "featureBranch": "feature/p0-b-r36-browser-fetch-receiver-safe-dispatch",
+      "implementationCommits": [
+        "0bb2263abba76542f415fef14fe501101aa2f975",
+        "57febe571ced1a1f6a32cb3832539d296123dacc"
+      ],
+      "parentAudit": "R35 NEEDS_FIX_CONFIRMED",
+      "r35CompletionSha256": "d0863070b9010c118b0831c9328038d176583aa3d421cc56430fded93e1790bb",
+      "fix": "Normalize selected request once; original fetch invoked as a plain function, no foreign controller receiver",
+      "wireJournalBackendChanges": "NONE",
+      "receiverRegression": "RED_BEFORE_GREEN_AFTER",
+      "browserMode": "HUMAN_BROWSER_ASSISTED",
+      "targetedBrowserResult": "PASS",
+      "observedReorderCommandPOSTs": 1,
+      "observedExportCommandPOSTs": 2,
+      "observedBundleVerificationGETs": 2,
+      "automaticPostRetry": 0,
+      "reload": "Historical receipts retained; ephemeral VERIFIED cleared; explicit reverify VERIFIED",
+      "twoTabs": "Distinct export intents and ExportIDs retained after Tab A reload",
+      "evidenceQualification": "No standalone R36_06 screenshot; second export is not expanded in IndexedDB screenshot. Corroborated with two VERIFIED GETs, journal-only reload UI, exact IDs and human all-seven-PASS declaration; details in Completion",
+      "protectedSource": "All backend/Foundation/service/handler/router/journals/transports/legacy export/Provider/Auth/dependency/lockfile bytes unchanged",
+      "generationSourceBaseline": "UNCHANGED",
+      "providerCalls": 0,
+      "paidCalls": 0,
+      "liveCalls": 0,
+      "realCredentialRead": "NONE",
+      "realRemoteMediaDownload": "NONE",
+      "apiKeyAndAccountWork": "DEFERRED",
+      "push": "NONE",
+      "merge": "NONE",
+      "nextAction": "Independent GPT Audit of R36 Completion; no R37"
+    }
+  ],
   "auditedIntegrations": [
     {
       "executionId": "HN_AI_IC_P0_B_R3_LOCAL_REFERENCE_SNAPSHOT_WIRING",
