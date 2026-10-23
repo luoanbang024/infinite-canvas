@@ -298,9 +298,12 @@ LIVE_AUTHORIZATION = NOT_GRANTED
 
 No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.
 
+## R36 narrow receiver-safe fix — audited integration closeout, final Closeout GPT Review pending
 
-## R36 narrow receiver-safe fix — pending independent GPT Audit
+HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX; BASE_SHA=a231f15a913df0a6755ff8463f3f4fd2f6e989a8; FEATURE_HEAD=d99c36c4806e973897a7c111cf1f2061bdb460f1; STATE=AUDITED_INTEGRATED; GPT_AUDIT=PASS_WITH_RETAINED_QUALIFICATIONS. Reviewed commits are preserved and integrated by FF-only; the closeout changes only the six authorized governance paths.
 
-HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX; BASE_SHA=a231f15a913df0a6755ff8463f3f4fd2f6e989a8; STATE=PENDING_GPT_AUDIT. Production/test local commits: 0bb2263abba76542f415fef14fe501101aa2f975, 57febe571ced1a1f6a32cb3832539d296123dacc. Two controller request normalizations and two receiver-sensitive tests only. Automated root Go/Bridge/mod verify/full frontend/focused/tsc/production build PASS; frontend opt-in skips are explicitly retained. Human-assisted targeted Reorder/Export/VERIFIED/F5/two-tab/IndexedDB gates confirmed PASS, with screenshot coverage qualifications in Completion.
+Automated product verification is qualified: receiver-sensitive frontend, independent TypeScript, root Go, Bridge Go, module verification and production build pass on reviewed inputs; full frontend=239 PASS/2 SKIP/0 FAIL and focused=221 PASS/2 SKIP/0 FAIL require the fixed audit-only Bun 1.4.0 compatibility tool. The canonical project Bun 1.3.14 pin remains unchanged. R22/R26 opt-in handler cases remain SKIP.
 
-Pending: independent GPT Audit of sealed R36 Completion. No closeout integration, push, merge or R37. Backend/journal/wire/Foundation/legacy export/Provider/dependencies unchanged; no credentials or remote media; API Key/account/live work remains deferred.
+Browser evidence remains accepted with explicit limits: no standalone R36_06_REVERIFIED screenshot, second export IndexedDB record not independently expanded, and no full HAR/host packet capture. Real-browser observations are not expanded into broader exactly-once/network-isolation claims.
+
+Closeout still requires exact-F Gate G PASS and final normal non-force remote main equality; actual F and final SHA belong in the Completion. NETWORK_ISOLATION=NOT_AVAILABLE. No Provider/credentials/paid/live work. R37 remains NOT_STARTED.

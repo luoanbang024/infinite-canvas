@@ -828,23 +828,32 @@ LIVE_AUTHORIZATION = NOT_GRANTED
 
 No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.
 
-
-## R36 browser-native fetch receiver fix — pending GPT Audit
+## R36 browser-native fetch receiver fix — audited integration closeout
 
 EXECUTION_ID = HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX
+CLOSEOUT_EXECUTION_ID = HN_AI_IC_P0_B_R36_OWNER_GATED_CONTROLLED_INTEGRATION_R2
 BASE_SHA = a231f15a913df0a6755ff8463f3f4fd2f6e989a8
 TYPE = OUR_VERIFICATION_FIX / NARROW_FIX / FRONTEND_ONLY / NO_PROVIDER
-STATE = PENDING_GPT_AUDIT
-IMPLEMENTATION_COMMITS = 0bb2263abba76542f415fef14fe501101aa2f975, 57febe571ced1a1f6a32cb3832539d296123dacc
-R35_GPT_AUDIT = NEEDS_FIX_CONFIRMED
-R35_COMPLETION_SHA256 = d0863070b9010c118b0831c9328038d176583aa3d421cc56430fded93e1790bb
+STATE = AUDITED_INTEGRATED
+GPT_AUDIT = PASS_WITH_RETAINED_QUALIFICATIONS
+FEATURE_BRANCH = feature/p0-b-r36-browser-fetch-receiver-safe-dispatch
+FEATURE_HEAD = d99c36c4806e973897a7c111cf1f2061bdb460f1
+REVIEWED_COMMITS = 0bb2263abba76542f415fef14fe501101aa2f975, 57febe571ced1a1f6a32cb3832539d296123dacc, d99c36c4806e973897a7c111cf1f2061bdb460f1
+INTEGRATION_METHOD = FAST_FORWARD_ONLY
+PUSH_METHOD = NORMAL_NON_FORCE
+REVIEWED_COMMIT_REWRITE = NONE
+FINAL_STABLE_SHA = recorded only in Closeout Completion
+CLOSEOUT_REVIEW_STATUS = PENDING_INDEPENDENT_GPT_REVIEW
 
-Only R31/R34 controller construction normalizes the selected request into a receiver-safe wrapper calling the original as a plain function. Two existing controller tests add non-arrow receiver-sensitive regressions: load succeeds on the old source, dispatch fails before POST; R36 reaches one POST and durably seals terminal state. Existing arrow-injected behavior remains covered. No transport/header/body/retry/journal/backend change; this is our local verification fix, not an upstream backport.
+Exactly reviewed R36 product/test bytes are integrated without modification. The browser receiver correction remains limited to the R31 reorder and R34 export controller request construction plus the two receiver-sensitive regression tests. No transport/header/body/retry/journal/backend/Foundation/schema/dependency/lockfile behavior is changed.
 
-Human-browser revalidation: one reorder POST COMMITTED (revision 3→4), two separately confirmed export POSTs COMMITTED with distinct intent/ExportID, explicit bundle verification and F5/reverify VERIFIED, historical receipt persistence and two-tab identity preservation. Human confirmed all seven gates PASS. Missing standalone reverify image and unexpanded second export IndexedDB record are disclosed; proxy, journal-only fresh reload UI and readonly DB corroborate the observed outcomes. Completion preserves every original screenshot, including the old R35 ABORTED record; no historical evidence rewritten.
+Human-browser evidence is accepted with retained qualifications: reorder COMMITTED, two export COMMITTED records, explicit bundle verification, F5 reverify and two-tab identity preservation were observed; there is no standalone R36_06_REVERIFIED screenshot, the second export IndexedDB record was not independently expanded, and no full HAR/host packet capture was collected. Historical R35 aborted evidence remains preserved.
 
-Full frontend=239 PASS/2 opt-in SKIP/0 FAIL; local UI/transport focused=221 PASS/2 opt-in SKIP/0 FAIL. Fresh full root Go with existing bridge-test hooks, Bridge tests, mod verify, independent TypeScript and production frontend+Bridge build PASS. Skip names and configured Go bridge evidence remain explicit in Completion. Protected source/dependency/lockfile and Generation SourceBaseline remain unchanged.
+H-bound product verification passed with a toolchain qualification. Receiver-sensitive tests, TypeScript, root Go, Bridge Go, module verification and production build passed with the reviewed canonical tools. Full/focused frontend suites require the fixed audit-only Bun 1.4.0 compatibility tool and passed 239 PASS / 2 SKIP / 0 FAIL and 221 PASS / 2 SKIP / 0 FAIL. The R22/R26 opt-in cases remain SKIP, not PASS. The project Bun 1.3.14 pin is unchanged.
 
+Before final main publication, the controlled closeout requires fresh exact-F Gate G verification with the same qualification. Gate G evidence and the final stable SHA are recorded externally in the Completion package to avoid self-reference.
+
+NETWORK_ISOLATION = NOT_AVAILABLE
 PROVIDER_CALLS = 0
 PAID_CALLS = 0
 LIVE_CALLS = 0
@@ -859,7 +868,6 @@ ACCOUNT_BALANCE_CHECK = DEFERRED
 ACCOUNT_ENTITLEMENT_CHECK = DEFERRED
 CHANNEL_SECRET_SETUP = DEFERRED
 LIVE_PROVIDER_VALIDATION = DEFERRED
-LIVE_VALIDATION_AUTHORIZATION = NOT_GRANTED
-PUSH = NONE
-MERGE = NONE
-NEXT_ACTION = Independent GPT Audit of R36 Completion; no R37.
+LIVE_AUTHORIZATION = NOT_GRANTED
+R37 = NOT_STARTED
+NEXT_ACTION = Complete exact-F Gate G and normal non-force main publication, then independent Closeout GPT Review; do not start R37.

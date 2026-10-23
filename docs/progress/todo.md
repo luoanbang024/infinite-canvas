@@ -170,9 +170,10 @@ LIVE_AUTHORIZATION = NOT_GRANTED
 
 No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work. NEXT_ACTION = Independent GPT Review of R34 Audit Closeout Completion.
 
+## HN P0-B R36 — audited integration closeout
 
-## R36 narrow receiver-safe fix — pending independent GPT Audit
-
-HN_AI_IC_P0_B_R36_BROWSER_FETCH_RECEIVER_SAFE_DISPATCH_FIX; BASE_SHA=a231f15a913df0a6755ff8463f3f4fd2f6e989a8; STATE=PENDING_GPT_AUDIT. Production/test local commits: 0bb2263abba76542f415fef14fe501101aa2f975, 57febe571ced1a1f6a32cb3832539d296123dacc. Two controller request normalizations and two receiver-sensitive tests only. Automated root Go/Bridge/mod verify/full frontend/focused/tsc/production build PASS; frontend opt-in skips are explicitly retained. Human-assisted targeted Reorder/Export/VERIFIED/F5/two-tab/IndexedDB gates confirmed PASS, with screenshot coverage qualifications in Completion.
-
-Pending: independent GPT Audit of sealed R36 Completion. No closeout integration, push, merge or R37. Backend/journal/wire/Foundation/legacy export/Provider/dependencies unchanged; no credentials or remote media; API Key/account/live work remains deferred.
+- R36 receiver-safe browser fetch correction has independent GPT audit PASS_WITH_RETAINED_QUALIFICATIONS. Reviewed feature H `d99c36c4806e973897a7c111cf1f2061bdb460f1` is the only accepted feature head; integration is FF-only and normal non-force publication only.
+- The closeout commit may modify only the six governance paths. Actual F is recorded externally after commit creation; its sole parent must be H. Exact-F Gate G must pass before final main push.
+- Gate G qualification: V02 full frontend and V03 focused frontend use the fixed audit-only Bun 1.4.0 binary; the project Bun 1.3.14 pin is not upgraded. Historical successful shapes are 239 PASS/2 SKIP and 221 PASS/2 SKIP; fresh exact-F counts are authoritative. R22/R26 opt-in tests remain SKIP unless separately authorized.
+- Browser evidence limitations remain explicit: no standalone R36_06_REVERIFIED screenshot, second export IndexedDB record not independently expanded, no full HAR/host packet capture. NETWORK_ISOLATION remains NOT_AVAILABLE.
+- Provider/API Key/account/channel/live work remains deferred; Provider/paid/live calls=0; no credentials or remote media. R37 must not start until the R36 Closeout Completion receives independent GPT review.
