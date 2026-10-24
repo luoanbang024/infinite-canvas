@@ -874,27 +874,41 @@ LIVE_AUTHORIZATION = NOT_GRANTED
 R37 = NOT_STARTED   (HISTORICAL - as-of-R36-closeout boundary; not a statement about the current state, see the block below)
 NEXT_ACTION = Complete exact-F Gate G and normal non-force main publication, then independent Closeout GPT Review; do not start R37.   (HISTORICAL - as-of-R36-closeout)
 
-## R37 current governance state
+## R37 current governance state — CLOSED
 
-Recorded by R37-03. This block states current facts only; it is not a completion, closeout or integration claim.
+Reconciled by R38-02 from the sealed R37 Final Closeout GPT Audit. This block states current facts only.
+
+- R37 = CLOSED. R37 final integration = PASS. R37 final closeout = PASS.
+- Gate G = PASS.
+- local `our-main` = `a97af3f7be1953874ce222f13c451e231aaf0662`. Sealed remote `our-main` = `a97af3f7be1953874ce222f13c451e231aaf0662`.
+- R37 feature = `a97af3f7be1953874ce222f13c451e231aaf0662`. Sealed remote R37 feature = `a97af3f7be1953874ce222f13c451e231aaf0662`.
+- Worktree/index = CLEAN. No further R37 FIX, governance edit, Git action, WorkBuddy execution or closeout step is required.
+- Reconciliation basis: `R37_FINAL_CLOSEOUT_GPT_AUDIT_20261024` (decision PASS), sealed inside `HN_AI_IC_R37_FINAL_CLOSEOUT_GPT_AUDIT_20261024.zip`, SHA256 `104e407fb1de94c1387c5dbc2f5ed4d4b6b0aaf0bccac7370d7f5e47bde6ad0f`. That audit accepts `HN_AI_IC_R37_WORKBUDDY_FINAL_CLOSEOUT_R1_COMPLETION.zip` SHA256 `d5a6567d47b9b574af1a683366bc07bca6440d3d9cc2dff80ed1c4c92e33d994` (2313 bytes, 4 members), which seals `HN_AI_IC_R37_FINAL_CONTROLLED_INTEGRATION_R1_COMPLETION.zip` SHA256 `c32f2131d1d087f4570a0dcd0d822d36cabf70dcc789cacab8652431489af8b4` (72684 bytes) and `HN_AI_IC_R37_FINAL_GPT_AUDIT_20261024.zip` SHA256 `03eb8921c999fe1cacede14610960dd89ce78b1ad8e3a4f2213b4c88bb5881d9` (3680 bytes); the closeout index and report both match their manifest entry.
+- Retained environment debt: the stale persistent Git proxy pointing at `127.0.0.1:7890` is unchanged and unresolved; it is non-blocking for R37 closure and must not be read as resolved by it.
+
+### R37-01/R37-02/R37-03 execution history (unchanged; not current publication facts)
 
 - R37-01 diagnosis occurred locally and is complete as a read-only discovery plus diagnosis: the frontend suites pass on canonical Bun 1.3.14 when `git` is resolvable and the repository object store is present, and no product or test byte needed to change. It also established that the earlier apparent incompatibility was a missing-`git` prerequisite failure followed by a Bun 1.3.14 `node:test` cascade.
 - R37-02 governance correction was committed locally: `6f7717d17d56fd225dd632034379eb08609c4d89`, parent F, on `feature/p0-b-r37-canonical-toolchain-test-reproducibility`.
 - R37-03 provenance correction is the second and latest local commit on that branch. Its SHA is recorded only in the R37-03 Completion package, not here, to avoid self-reference.
-- PUBLICATION = PENDING. INTEGRATION = PENDING. `our-main` remains F (`8949961810f389181bf43cbafff71abbc684ccbf`). Nothing has been pushed, no remote ref was written, and no Gate G has been claimed.
-- R37 = NOT_CLOSED and NOT_INTEGRATED. The historical `R37 = NOT_STARTED` line above remains as the R36-closeout boundary record and is superseded by this block.
+- HISTORICAL / as-of-R37-03 pre-publication snapshot, retained and explicitly superseded: PUBLICATION was PENDING, INTEGRATION was PENDING, `our-main` was F (`8949961810f389181bf43cbafff71abbc684ccbf`), R37 was NOT_CLOSED and NOT_INTEGRATED, and no Gate G had been claimed. Those values describe the R37-03 moment only; they are not current state and are superseded by the CLOSED block above.
+- The historical `R37 = NOT_STARTED` line at the end of the R36 block above remains the R36-closeout boundary record and is superseded by this section.
 
 
-## R38 canonical local verification entry point — local implementation, audit pending
+## R38 canonical local verification entry point — technically accepted, publication pending
 
-Recorded by R38-01. This block states current facts only; it is not a completion, closeout or integration claim.
+Recorded by R38-01 and restated by R38-02. This block states current facts only; it is not a completion, closeout or integration claim.
 
-- Scope: one committed local verification entry point (`tools/verify/verify_local.ps1`, canonical on this Windows host, plus `tools/verify/verify_local.sh` as a POSIX peer), its README, and `docs/hn/canonical_verification_entry_point.md`. No product source, test source, CI, package, config, module or lockfile byte changed.
-- Zero-edit activation probe ran at exact `a97af3f7be1953874ce222f13c451e231aaf0662` before the branch existed: the three contract tests guarded by `HN_R22_BUN` / `HN_R26_BUN` (`TestHNR22ProductionHTTPFrontendResponseLossRecovery`, `TestHNR26ProductionHTTPFrontendCommittedLossBarrier`, `TestR28ProductionHTTPBunClientRecovery`) went from 3 SKIP to 3 PASS with no repository edit. Had any failed or still skipped, the round would have stopped before branching.
-- The entry point reproduces Gate G (G01 receiver-sensitive 2/0, G02 FULL 239/2/0, G03 FOCUSED 221/2/0, G04 TypeScript, G05B root Go, G06 Bridge Go, G07 go mod verify, G08 production build) and adds G05A, which runs the three previously dormant contract tests with the pinned Bun and requires 3 PASS / 0 SKIP.
+- R38-01 implementation commit = `9c2b13dda89e80f5454d6620f273d7dfc734ac0d`; parent = `a97af3f7be1953874ce222f13c451e231aaf0662`; subject `tools(hn): add canonical local verification entry point`.
+- Independent GPT technical audit = ACCEPTED as `TECHNICAL_PASS_GOVERNANCE_RECONCILIATION_REQUIRED`: the implementation is technically accepted and must be preserved; only stale predecessor-governance state blocked publication, and that state is reconciled by this commit.
+- Zero-edit dormant activation = 3 PASS / 0 SKIP: the three contract tests guarded by `HN_R22_BUN` / `HN_R26_BUN` (`TestHNR22ProductionHTTPFrontendResponseLossRecovery`, `TestHNR26ProductionHTTPFrontendCommittedLossBarrier`, `TestR28ProductionHTTPBunClientRecovery`) went from 3 SKIP at exact `a97af3f7be1953874ce222f13c451e231aaf0662` to 3 PASS with no repository edit, before the branch existed. Had any failed or still skipped, the round would have stopped before branching.
+- Canonical verification = G01-G08 PASS including G05A: G01 2 PASS / 0 FAIL, G02 239 PASS / 2 SKIP / 0 FAIL, G03 221 PASS / 2 SKIP / 0 FAIL, G04 TypeScript PASS, G05A 3 PASS / 0 SKIP, G05B root Go PASS, G06 Bridge Go PASS, G07 `go mod verify` PASS, G08 production build PASS. Those are R38-01 results; no gate was re-executed in this governance-only round.
+- Scope: one committed local verification entry point (`tools/verify/verify_local.ps1`, canonical on this Windows host, plus `tools/verify/verify_local.sh` as a POSIX peer), its README, and `docs/hn/canonical_verification_entry_point.md`. No product source, test source, CI, package, config, module or lockfile byte changed, and every such byte is re-proved identical to R38H in this round.
 - Toolchain identity is enforced, not documented: Bun `0187f68d843f825a72ada4a7eca60db896ed753759a7f8252edcd31ac1bf1b9c` (1.3.14) before any gate, Go `7609132b0d289bf42ca9dba23b849824ecdf4af5323094e9cfb5ea1633e3866a` (1.25.14) before the Go gates, Go offline with GOPROXY=off, GOSUMDB=off, GOTOOLCHAIN=local, GOFLAGS=-mod=readonly, GOTELEMETRY=off and the fixed audited module cache.
-- Three negative controls were executed and all behaved as required: a non-matching Bun file is rejected at BUN_IDENTITY before any gate; a synthetic failing assertion in an audit-local throwaway clone makes the entry point exit non-zero naming G02 while the source repository stays untouched; a child PATH without Git is rejected at GIT_PREREQUISITE before the frontend gates.
-- CI trigger alignment is deliberately out of scope for this round. `.github/workflows/ci.yml` and `web/package.json` remain byte-identical to upstream v0.8.0; making CI fire for `our-main` is a separate authorization with its own upstream-divergence bookkeeping.
+- Three negative controls behaved as required: N1 a non-matching Bun file is rejected at BUN_IDENTITY before any gate; N2 a synthetic failing assertion in an audit-local throwaway clone makes the entry point exit non-zero naming G02 while the source repository stays untouched; N3 a child PATH without Git is rejected at GIT_PREREQUISITE before the frontend gates.
+- CI trigger alignment is out of scope for this round: `.github/workflows/ci.yml` and `web/package.json` remain byte-identical to upstream v0.8.0; making CI fire for `our-main` is a separate authorization with its own upstream-divergence bookkeeping.
 - The POSIX entry point has not been executed end to end on a POSIX host. Only `bash -n` and gate-plan parity against the PowerShell entry point were verified, so no POSIX gate result is claimed.
-- PUBLICATION = PENDING. INTEGRATION = PENDING. `our-main` remains `a97af3f7be1953874ce222f13c451e231aaf0662`. Nothing was pushed, no remote ref was written, and no Gate G is claimed here.
-- R38 = NOT_CLOSED and NOT_INTEGRATED. `NETWORK_ISOLATION` remains NOT_AVAILABLE and real-browser acceptance remains NOT_CLAIMED.
+- PUBLICATION = PENDING. INTEGRATION = PENDING. `our-main` remains `a97af3f7be1953874ce222f13c451e231aaf0662`. R38 remote write = 0: nothing was pushed, no remote ref was written, no fetch/pull occurred and no merge into `our-main` was made.
+- R38 = NOT_CLOSED and NOT_INTEGRATED. Publication and integration need a new explicit authorization.
+- Gate G for the R38-02 governance-only round = NOT_RUN / inherited evidence, not a fresh PASS. R38-01 gate results are inherited unmodified because every verification-tool and product/test byte is proven byte-identical to R38H.
+- Standing qualifications: NETWORK_ISOLATION = NOT_AVAILABLE; real-browser acceptance = NOT_CLAIMED; POSIX verification end-to-end = NOT_CLAIMED; CI alignment = OUT_OF_SCOPE; stale persistent Git proxy = environment debt; fresh Windows `core.autocrlf=true` historical-byte assertion sensitivity = portability limitation; R39 = NOT_STARTED.

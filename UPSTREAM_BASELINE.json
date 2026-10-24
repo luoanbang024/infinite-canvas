@@ -28,12 +28,35 @@
     "r3701Diagnosis": "COMPLETE_LOCALLY (no product or test change required)",
     "r3702GovernanceCorrection": "COMMITTED_LOCALLY",
     "r3703ProvenanceCorrection": "COMMITTED_LOCALLY",
-    "publication": "PENDING",
-    "integration": "PENDING",
-    "ourMain": "8949961810f389181bf43cbafff71abbc684ccbf",
-    "gateG": "NOT_CLAIMED",
-    "r37Closed": false,
-    "note": "Current state only. Not a completion, closeout or integration claim. Historical R36-closeout statements that R37 was not started remain recorded in the R36 block and in the progress documents, labelled as as-of-R36 history."
+    "publication": "PASS",
+    "integration": "PASS",
+    "ourMain": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "gateG": "PASS",
+    "r37Closed": true,
+    "note": "Current state only. R37 = CLOSED: final integration PASS, final closeout PASS, Gate G PASS, and local plus sealed remote our-main and R37 feature all equal a97af3f7be1953874ce222f13c451e231aaf0662. R37 required no product or test change. Historical R36-closeout statements that R37 was not started remain recorded in the R36 block and in the progress documents, labelled as as-of-R36 history.",
+    "reconciledBy": "HN_AI_IC_R38_02_WORKBUDDY_GOVERNANCE_RECONCILIATION_R1",
+    "reconciliationBasis": "R37_FINAL_CLOSEOUT_GPT_AUDIT_20261024 (decision PASS; sealed ZIP SHA256 104e407fb1de94c1387c5dbc2f5ed4d4b6b0aaf0bccac7370d7f5e47bde6ad0f)",
+    "finalIntegration": "PASS",
+    "finalCloseout": "PASS",
+    "r37Feature": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "remoteOurMain": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "remoteR37Feature": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "worktree": "CLEAN",
+    "historicalPrePublicationAsOfR37_03": {
+      "label": "HISTORICAL / as-of-R37-03",
+      "superseded": true,
+      "publicationAtThatStage": "PENDING_AS_OF_R37_03_SUPERSEDED",
+      "integrationAtThatStage": "PENDING_AS_OF_R37_03_SUPERSEDED",
+      "ourMainAtThatStage": "8949961810f389181bf43cbafff71abbc684ccbf",
+      "gateGAtThatStage": "NOT_CLAIMED_AS_OF_R37_03_SUPERSEDED",
+      "closureAtThatStage": "NOT_CLOSED_NOT_INTEGRATED_AS_OF_R37_03_SUPERSEDED",
+      "note": "Meaning of the R37-03 current-state block before publication actually happened. Retained so the historical record is not rewritten. None of these values describe the current state; they are superseded by the CLOSED fields in this block."
+    },
+    "environmentDebt": {
+      "stalePersistentGitProxy": "127.0.0.1:7890",
+      "resolved": false,
+      "blocking": false
+    }
   },
   "r38GovernanceState": {
     "recordedBy": "HN_AI_IC_P0_B_R38_CANONICAL_VERIFICATION_ENTRY_POINT_R1",
@@ -42,8 +65,8 @@
     "baseF": "a97af3f7be1953874ce222f13c451e231aaf0662",
     "localCommitsBeyondBase": 1,
     "commitSubject": "tools(hn): add canonical local verification entry point",
-    "commitSha": "recorded only in the R38-01 Completion to avoid self-reference",
-    "activationProbe": "PASS_WITHOUT_EDITS (3 dormant contract tests SKIP -> 3 PASS at exact baseline)",
+    "commitSha": "9c2b13dda89e80f5454d6620f273d7dfc734ac0d",
+    "activationProbe": "PASS_WITHOUT_EDITS (3 dormant contract tests SKIP -> 3 PASS at exact baseline; 3 PASS / 0 SKIP)",
     "newPaths": [
       "tools/verify/verify_local.ps1",
       "tools/verify/verify_local.sh",
@@ -56,7 +79,23 @@
     "integration": "PENDING",
     "ourMain": "a97af3f7be1953874ce222f13c451e231aaf0662",
     "r38Closed": false,
-    "note": "Current state only. Not a completion, closeout or integration claim. No push and no merge occurred; our-main is unchanged."
+    "note": "Current state only. R38 = NOT_CLOSED: the implementation commit is technically accepted but publication and integration are still PENDING, no push and no merge occurred, no remote ref was written and local our-main remains a97af3f7be1953874ce222f13c451e231aaf0662.",
+    "reconciledBy": "HN_AI_IC_R38_02_WORKBUDDY_GOVERNANCE_RECONCILIATION_R1",
+    "r38H": "9c2b13dda89e80f5454d6620f273d7dfc734ac0d",
+    "parentR38H": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "technicalAudit": "ACCEPTED (R38_01_GPT_AUDIT = TECHNICAL_PASS_GOVERNANCE_RECONCILIATION_REQUIRED)",
+    "canonicalVerification": "G01-G08 PASS including G05A (G01 2 PASS/0 FAIL; G02 239 PASS/2 SKIP/0 FAIL; G03 221 PASS/2 SKIP/0 FAIL; G04 TypeScript PASS; G05A 3 PASS/0 SKIP; G05B root Go PASS; G06 Bridge Go PASS; G07 go mod verify PASS; G08 production build PASS)",
+    "gateGThisRound": "NOT_RUN_INHERITED_EVIDENCE (governance-only round; no fresh PASS claimed)",
+    "remoteWrite": 0,
+    "standingQualifications": {
+      "networkIsolation": "NOT_AVAILABLE",
+      "realBrowserAcceptance": "NOT_CLAIMED",
+      "posixVerificationEndToEnd": "NOT_CLAIMED",
+      "ciAlignment": "OUT_OF_SCOPE",
+      "stalePersistentGitProxy": "ENVIRONMENT_DEBT",
+      "freshWindowsCoreAutocrlfTrueHistoricalByteAssertion": "PORTABILITY_LIMITATION",
+      "r39": "NOT_STARTED"
+    }
   },
   "auditedPatches": [
     {

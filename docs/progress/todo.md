@@ -177,14 +177,25 @@ No R35, open-folder/editor/Jianying, compound, drag/drop or credential/live work
 - R36 historical execution provenance: V02 full frontend and V03 focused frontend actually ran on the fixed audit-only Bun 1.4.0 compatibility binary (the project Bun 1.3.14 pin was not upgraded) and produced FULL 239 PASS/2 SKIP/0 FAIL and FOCUSED 221 PASS/2 SKIP/0 FAIL.
 - Current Gate G prerequisite (R37-01 diagnosis, recorded by R37-02/R37-03): the same product/test bytes are reproducible on the canonical pinned Bun 1.3.14, so the audit-only Bun 1.4.0 binary is historical execution and diagnostic evidence only and is not a required future prerequisite. The verification environment must have `git` resolvable and the repository Git object store/history available, because tests assert historical byte preservation through `git show <sha>:<path>`; a missing `git` fails those assertions first and can make Bun 1.3.14 cascade into `node:test` nested-test `NotImplementedError` messages, which must not be read as a Bun incompatibility. Authoritative runtime references remain FULL 239 PASS/2 SKIP/0 FAIL and FOCUSED 221 PASS/2 SKIP/0 FAIL; fresh exact-F counts are authoritative. R22/R26 opt-in tests remain SKIP unless separately authorized. NETWORK_ISOLATION remains NOT_AVAILABLE.
 - Browser evidence limitations remain explicit: no standalone R36_06_REVERIFIED screenshot, second export IndexedDB record not independently expanded, no full HAR/host packet capture. NETWORK_ISOLATION remains NOT_AVAILABLE.
-- Provider/API Key/account/channel/live work remains deferred; Provider/paid/live calls=0; no credentials or remote media. R37 must not start until the R36 Closeout Completion receives independent GPT review (HISTORICAL, as-of-R36-closeout boundary; it has since been passed, and the current R37 state is recorded in PATCH_LEDGER.md and UPSTREAM_BASELINE.json — R37-01 diagnosis and the R37-02 local governance commit exist locally, publication and integration pending).
+- Provider/API Key/account/channel/live work remains deferred; Provider/paid/live calls=0; no credentials or remote media. R37 must not start until the R36 Closeout Completion receives independent GPT review (HISTORICAL, as-of-R36-closeout boundary; that review passed and R37 has since been executed, audited, integrated, published and closed — see the R37 closure record below and PATCH_LEDGER.md / UPSTREAM_BASELINE.json).
 
 
-## R38 canonical local verification entry point — local implementation, audit pending
+## HN P0-B R37 — CLOSED
 
-- EXECUTION_ID = HN_AI_IC_P0_B_R38_CANONICAL_VERIFICATION_ENTRY_POINT; TYPE = OUR_EXTENSION / VERIFICATION_TOOLING / LOCAL_ONLY / NO_PROVIDER; BRANCH = `feature/p0-b-r38-canonical-verification-entry-point`; BASE = `a97af3f7be1953874ce222f13c451e231aaf0662`; exactly one local commit expected.
+- R37 = CLOSED; R37 final integration = PASS; R37 final closeout = PASS; Gate G = PASS.
+- local and sealed remote `our-main` = `a97af3f7be1953874ce222f13c451e231aaf0662`; local and sealed remote R37 feature = `a97af3f7be1953874ce222f13c451e231aaf0662`; worktree/index CLEAN.
+- Reconciled by R38-02 from the sealed R37 Final Closeout GPT Audit (`104e407fb1de94c1387c5dbc2f5ed4d4b6b0aaf0bccac7370d7f5e47bde6ad0f`). R37 produced no product or test change: R37-01 proved the frontend suites reproduce on canonical Bun 1.3.14 once `git` is resolvable and the object store is present, correcting the earlier R36 misattribution.
+- No further R37 action is required. The as-of-R37-03 pre-publication statements (publication/integration PENDING, R37 NOT_CLOSED, `our-main` = F) remain only as labelled history in PATCH_LEDGER.md and are superseded.
+- NETWORK_ISOLATION = NOT_AVAILABLE; Provider/credential/live work remains deferred; stale persistent Git proxy remains environment debt.
+
+## R38 canonical local verification entry point — technically accepted, publication pending
+
+- EXECUTION_ID = HN_AI_IC_P0_B_R38_CANONICAL_VERIFICATION_ENTRY_POINT; TYPE = OUR_EXTENSION / VERIFICATION_TOOLING / LOCAL_ONLY / NO_PROVIDER; BRANCH = `feature/p0-b-r38-canonical-verification-entry-point`; R38H = `9c2b13dda89e80f5454d6620f273d7dfc734ac0d`; parent = `a97af3f7be1953874ce222f13c451e231aaf0662`.
+- Independent GPT technical audit = ACCEPTED (`TECHNICAL_PASS_GOVERNANCE_RECONCILIATION_REQUIRED`); zero-edit dormant activation = 3 PASS / 0 SKIP; canonical verification = G01-G08 PASS including G05A.
 - What now exists: one command that reproduces Gate G and additionally drives the three Go-to-Bun bridge contract tests that were previously never invoked, plus a POSIX peer with the same contract.
 - Why it mattered: before this, CI could not fire for `our-main` or `feature/*`, its only web steps were install and build, `web/package.json` had no test or typecheck script, and three contract tests skipped silently unless `HN_R22_BUN` / `HN_R26_BUN` were set by hand. Coverage existed but was never executed.
 - Deliberately out of scope: CI trigger alignment. `ci.yml` and `web/package.json` stay byte-identical to upstream v0.8.0.
-- Still not claimed: real-browser acceptance, NETWORK_ISOLATION, and POSIX end-to-end execution of the shell entry point.
-- NEXT_ACTION = Independent GPT Review of the R38-01 Completion. No push, no merge into `our-main`, no R39, and no CI work until separately authorized.
+- Still not claimed: real-browser acceptance, NETWORK_ISOLATION, and POSIX end-to-end execution of the shell entry point. Fresh Windows `core.autocrlf=true` historical-byte assertion sensitivity remains a portability limitation.
+- R38 = NOT_CLOSED; R38 publication = PENDING; R38 integration = PENDING; R38 remote write = 0; local `our-main` remains `a97af3f7be1953874ce222f13c451e231aaf0662`.
+- Gate G in the R38-02 governance-only round = NOT_RUN / inherited evidence, not a fresh PASS.
+- NEXT_ACTION = controlled R38 publication decision under a new explicit authorization. No push, no merge into `our-main`, no R39, and no CI work until separately authorized.
