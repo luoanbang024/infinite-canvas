@@ -309,3 +309,11 @@ Subsequent R37 diagnosis (R37-01, recorded by R37-02/R37-03): the same product/t
 Browser evidence remains accepted with explicit limits: no standalone R36_06_REVERIFIED screenshot, second export IndexedDB record not independently expanded, and no full HAR/host packet capture. Real-browser observations are not expanded into broader exactly-once/network-isolation claims.
 
 Closeout still requires exact-F Gate G PASS and final normal non-force remote main equality; actual F and final SHA belong in the Completion. NETWORK_ISOLATION=NOT_AVAILABLE. No Provider/credentials/paid/live work. R37 was NOT_STARTED as of this R36 closeout (HISTORICAL boundary, not the current state); the current R37 state — R37-01 diagnosis and the R37-02 local governance commit exist locally, publication and integration pending — is recorded in PATCH_LEDGER.md and UPSTREAM_BASELINE.json.
+
+
+## R38 canonical local verification entry point — local implementation, audit pending
+
+- Newly automated: the three contract tests guarded by `HN_R22_BUN` / `HN_R26_BUN` now run through the canonical entry point as gate G05A and must report 3 PASS / 0 SKIP. Their previous SKIP was a qualification, not a defect: the fixture is injected by those very Go tests, so a frontend-only run could never have executed them.
+- Still manual, unchanged: real-browser acceptance of every local Canvas workflow (IndexedDB/localforage persistence, dialog close/reopen, hard reload, two real tabs, theme/layout/accessibility, rapid click/cancel, large-bundle verification responsiveness). Controlled render, injected storage and localhost HTTP evidence does not replace it.
+- Newly recorded limitation: `R22 add-only historical method leaves every prior R20 source byte unchanged` compares `git show <sha>:<path>` bytes against the working-tree file, so a fresh Windows clone with `core.autocrlf=true` fails it by line-ending representation alone. The long-lived worktree holds LF files and passes. Not fixed here; editing that test is outside the R38 allowlist.
+- Unchanged qualifications: NETWORK_ISOLATION = NOT_AVAILABLE; Provider/credential/live work deferred; real credential, remote media and Provider calls = 0 for this round.

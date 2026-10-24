@@ -883,3 +883,18 @@ Recorded by R37-03. This block states current facts only; it is not a completion
 - R37-03 provenance correction is the second and latest local commit on that branch. Its SHA is recorded only in the R37-03 Completion package, not here, to avoid self-reference.
 - PUBLICATION = PENDING. INTEGRATION = PENDING. `our-main` remains F (`8949961810f389181bf43cbafff71abbc684ccbf`). Nothing has been pushed, no remote ref was written, and no Gate G has been claimed.
 - R37 = NOT_CLOSED and NOT_INTEGRATED. The historical `R37 = NOT_STARTED` line above remains as the R36-closeout boundary record and is superseded by this block.
+
+
+## R38 canonical local verification entry point — local implementation, audit pending
+
+Recorded by R38-01. This block states current facts only; it is not a completion, closeout or integration claim.
+
+- Scope: one committed local verification entry point (`tools/verify/verify_local.ps1`, canonical on this Windows host, plus `tools/verify/verify_local.sh` as a POSIX peer), its README, and `docs/hn/canonical_verification_entry_point.md`. No product source, test source, CI, package, config, module or lockfile byte changed.
+- Zero-edit activation probe ran at exact `a97af3f7be1953874ce222f13c451e231aaf0662` before the branch existed: the three contract tests guarded by `HN_R22_BUN` / `HN_R26_BUN` (`TestHNR22ProductionHTTPFrontendResponseLossRecovery`, `TestHNR26ProductionHTTPFrontendCommittedLossBarrier`, `TestR28ProductionHTTPBunClientRecovery`) went from 3 SKIP to 3 PASS with no repository edit. Had any failed or still skipped, the round would have stopped before branching.
+- The entry point reproduces Gate G (G01 receiver-sensitive 2/0, G02 FULL 239/2/0, G03 FOCUSED 221/2/0, G04 TypeScript, G05B root Go, G06 Bridge Go, G07 go mod verify, G08 production build) and adds G05A, which runs the three previously dormant contract tests with the pinned Bun and requires 3 PASS / 0 SKIP.
+- Toolchain identity is enforced, not documented: Bun `0187f68d843f825a72ada4a7eca60db896ed753759a7f8252edcd31ac1bf1b9c` (1.3.14) before any gate, Go `7609132b0d289bf42ca9dba23b849824ecdf4af5323094e9cfb5ea1633e3866a` (1.25.14) before the Go gates, Go offline with GOPROXY=off, GOSUMDB=off, GOTOOLCHAIN=local, GOFLAGS=-mod=readonly, GOTELEMETRY=off and the fixed audited module cache.
+- Three negative controls were executed and all behaved as required: a non-matching Bun file is rejected at BUN_IDENTITY before any gate; a synthetic failing assertion in an audit-local throwaway clone makes the entry point exit non-zero naming G02 while the source repository stays untouched; a child PATH without Git is rejected at GIT_PREREQUISITE before the frontend gates.
+- CI trigger alignment is deliberately out of scope for this round. `.github/workflows/ci.yml` and `web/package.json` remain byte-identical to upstream v0.8.0; making CI fire for `our-main` is a separate authorization with its own upstream-divergence bookkeeping.
+- The POSIX entry point has not been executed end to end on a POSIX host. Only `bash -n` and gate-plan parity against the PowerShell entry point were verified, so no POSIX gate result is claimed.
+- PUBLICATION = PENDING. INTEGRATION = PENDING. `our-main` remains `a97af3f7be1953874ce222f13c451e231aaf0662`. Nothing was pushed, no remote ref was written, and no Gate G is claimed here.
+- R38 = NOT_CLOSED and NOT_INTEGRATED. `NETWORK_ISOLATION` remains NOT_AVAILABLE and real-browser acceptance remains NOT_CLAIMED.

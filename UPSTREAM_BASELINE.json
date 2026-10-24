@@ -35,6 +35,29 @@
     "r37Closed": false,
     "note": "Current state only. Not a completion, closeout or integration claim. Historical R36-closeout statements that R37 was not started remain recorded in the R36 block and in the progress documents, labelled as as-of-R36 history."
   },
+  "r38GovernanceState": {
+    "recordedBy": "HN_AI_IC_P0_B_R38_CANONICAL_VERIFICATION_ENTRY_POINT_R1",
+    "executionId": "HN_AI_IC_P0_B_R38_CANONICAL_VERIFICATION_ENTRY_POINT",
+    "branch": "feature/p0-b-r38-canonical-verification-entry-point",
+    "baseF": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "localCommitsBeyondBase": 1,
+    "commitSubject": "tools(hn): add canonical local verification entry point",
+    "commitSha": "recorded only in the R38-01 Completion to avoid self-reference",
+    "activationProbe": "PASS_WITHOUT_EDITS (3 dormant contract tests SKIP -> 3 PASS at exact baseline)",
+    "newPaths": [
+      "tools/verify/verify_local.ps1",
+      "tools/verify/verify_local.sh",
+      "tools/verify/README.md",
+      "docs/hn/canonical_verification_entry_point.md"
+    ],
+    "ciAlignment": "OUT_OF_SCOPE (ci.yml and web/package.json remain byte-identical to upstream v0.8.0)",
+    "posixEntryPointExecution": "NOT_CLAIMED (bash -n plus gate-plan parity only)",
+    "publication": "PENDING",
+    "integration": "PENDING",
+    "ourMain": "a97af3f7be1953874ce222f13c451e231aaf0662",
+    "r38Closed": false,
+    "note": "Current state only. Not a completion, closeout or integration claim. No push and no merge occurred; our-main is unchanged."
+  },
   "auditedPatches": [
     {
       "patchId": "HN-AI-IC-P0-R1-RW-BRIDGE-001",
