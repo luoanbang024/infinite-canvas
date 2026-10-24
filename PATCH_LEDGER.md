@@ -849,11 +849,11 @@ Exactly reviewed R36 product/test bytes are integrated without modification. The
 
 Human-browser evidence is accepted with retained qualifications: reorder COMMITTED, two export COMMITTED records, explicit bundle verification, F5 reverify and two-tab identity preservation were observed; there is no standalone R36_06_REVERIFIED screenshot, the second export IndexedDB record was not independently expanded, and no full HAR/host packet capture was collected. Historical R35 aborted evidence remains preserved.
 
-H-bound product verification passed. Receiver-sensitive tests, TypeScript, root Go, Bridge Go, module verification and production build passed with the reviewed canonical tools. Full/focused frontend suites passed 239 PASS / 2 SKIP / 0 FAIL and 221 PASS / 2 SKIP / 0 FAIL. The R22/R26 opt-in cases remain SKIP, not PASS. The project Bun 1.3.14 pin is unchanged.
+H-bound product verification passed. Receiver-sensitive tests, TypeScript, root Go, Bridge Go, module verification and production build passed with the reviewed canonical tools. The full/focused frontend suites ran on the fixed audit-only Bun 1.4.0 compatibility binary (historical execution provenance: that is the binary the successful R36 H-bound V02/V03 runs actually executed, and the project Bun 1.3.14 pin was not upgraded) and produced 239 PASS / 2 SKIP / 0 FAIL and 221 PASS / 2 SKIP / 0 FAIL. The R22/R26 opt-in cases remain SKIP, not PASS.
 
-Corrected verification prerequisite (R37-01 diagnosis, corrected here by R37-02): the frontend suites are reproducible on the canonical pinned Bun 1.3.14 and no audit-only toolchain is required. The verification process must have `git` resolvable, and the repository Git object store/history must be available, because several tests assert historical byte preservation through `git show <sha>:<path>`. When `git` is unresolvable those assertions fail, and Bun 1.3.14 can then cascade into `node:test` nested-test `NotImplementedError` messages raised while later files register; that cascade alone must not be read as proof that Bun 1.3.14 is incompatible. The audit-only Bun 1.4.0 binary is retained as historical diagnostic evidence only, not as a required verification prerequisite. Authoritative runtime references remain FULL 239 PASS / 2 SKIP / 0 FAIL and FOCUSED 221 PASS / 2 SKIP / 0 FAIL. NETWORK_ISOLATION remains NOT_AVAILABLE.
+Subsequent R37 diagnosis (R37-01, recorded here by R37-02/R37-03). This is a later finding about capability; it does not describe, and must not be read as describing, the binary used by the historical R36 run above. The same product/test bytes are reproducible on the canonical pinned Bun 1.3.14, so the audit-only Bun 1.4.0 binary remains historical execution and diagnostic evidence only and is not a required future verification prerequisite. The verification process must have `git` resolvable and the repository Git object store/history available, because several tests assert historical byte preservation through `git show <sha>:<path>`. When `git` is unresolvable those assertions fail first, and Bun 1.3.14 can then cascade into `node:test` nested-test `NotImplementedError` messages raised while later files register; that cascade alone must not be read as proof that Bun 1.3.14 is incompatible. Authoritative runtime references remain FULL 239 PASS / 2 SKIP / 0 FAIL and FOCUSED 221 PASS / 2 SKIP / 0 FAIL. NETWORK_ISOLATION remains NOT_AVAILABLE.
 
-Before final main publication, the controlled closeout requires fresh exact-F Gate G verification under the corrected prerequisite above: canonical Bun 1.3.14 with `git` resolvable and the repository object store present. Gate G evidence and the final stable SHA are recorded externally in the Completion package to avoid self-reference.
+Before final main publication, the controlled closeout requires fresh exact-F Gate G verification under the current prerequisite: canonical Bun 1.3.14 with `git` resolvable and the repository object store present. Gate G evidence and the final stable SHA are recorded externally in the Completion package to avoid self-reference.
 
 NETWORK_ISOLATION = NOT_AVAILABLE
 PROVIDER_CALLS = 0
@@ -871,5 +871,15 @@ ACCOUNT_ENTITLEMENT_CHECK = DEFERRED
 CHANNEL_SECRET_SETUP = DEFERRED
 LIVE_PROVIDER_VALIDATION = DEFERRED
 LIVE_AUTHORIZATION = NOT_GRANTED
-R37 = NOT_STARTED
-NEXT_ACTION = Complete exact-F Gate G and normal non-force main publication, then independent Closeout GPT Review; do not start R37.
+R37 = NOT_STARTED   (HISTORICAL - as-of-R36-closeout boundary; not a statement about the current state, see the block below)
+NEXT_ACTION = Complete exact-F Gate G and normal non-force main publication, then independent Closeout GPT Review; do not start R37.   (HISTORICAL - as-of-R36-closeout)
+
+## R37 current governance state
+
+Recorded by R37-03. This block states current facts only; it is not a completion, closeout or integration claim.
+
+- R37-01 diagnosis occurred locally and is complete as a read-only discovery plus diagnosis: the frontend suites pass on canonical Bun 1.3.14 when `git` is resolvable and the repository object store is present, and no product or test byte needed to change. It also established that the earlier apparent incompatibility was a missing-`git` prerequisite failure followed by a Bun 1.3.14 `node:test` cascade.
+- R37-02 governance correction was committed locally: `6f7717d17d56fd225dd632034379eb08609c4d89`, parent F, on `feature/p0-b-r37-canonical-toolchain-test-reproducibility`.
+- R37-03 provenance correction is the second and latest local commit on that branch. Its SHA is recorded only in the R37-03 Completion package, not here, to avoid self-reference.
+- PUBLICATION = PENDING. INTEGRATION = PENDING. `our-main` remains F (`8949961810f389181bf43cbafff71abbc684ccbf`). Nothing has been pushed, no remote ref was written, and no Gate G has been claimed.
+- R37 = NOT_CLOSED and NOT_INTEGRATED. The historical `R37 = NOT_STARTED` line above remains as the R36-closeout boundary record and is superseded by this block.
