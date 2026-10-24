@@ -1246,8 +1246,12 @@
       "closeoutExecution": "HN_AI_IC_P0_B_R36_OWNER_GATED_CONTROLLED_INTEGRATION_R2",
       "closeoutReviewStatus": "PENDING_INDEPENDENT_GPT_REVIEW",
       "finalStableShaLocation": "Closeout Completion",
-      "fullFrontendVerification": "239 PASS / 2 SKIP / 0 FAIL with fixed audit-only Bun 1.4.0",
-      "focusedFrontendVerification": "221 PASS / 2 SKIP / 0 FAIL with fixed audit-only Bun 1.4.0",
+      "fullFrontendVerification": "239 PASS / 2 SKIP / 0 FAIL on canonical Bun 1.3.14",
+      "focusedFrontendVerification": "221 PASS / 2 SKIP / 0 FAIL on canonical Bun 1.3.14",
+      "frontendVerificationPrerequisite": "Canonical Bun 1.3.14 is sufficient for full and focused frontend verification. The verification process must have git resolvable, and the repository Git object store/history must be available, because several tests assert historical byte preservation through git show <sha>:<path>. When git is unresolvable those assertions fail, and Bun 1.3.14 can then cascade into node:test nested-test NotImplementedError messages raised while later files register; that cascade alone must not be read as proof that Bun 1.3.14 is incompatible.",
+      "auditOnlyBun140Role": "HISTORICAL_DIAGNOSTIC_EVIDENCE_ONLY_NOT_A_REQUIRED_PREREQUISITE",
+      "verificationPrerequisiteCorrectedBy": "HN_AI_IC_R37_02_GOVERNANCE_CORRECTION_R1",
+      "optInCases": "R22/R26 REMAIN SKIP WITHOUT FIXTURES",
       "projectBunPin": "1.3.14 UNCHANGED",
       "networkIsolation": "NOT_AVAILABLE"
     }
