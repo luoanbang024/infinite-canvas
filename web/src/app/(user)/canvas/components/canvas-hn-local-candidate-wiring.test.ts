@@ -54,10 +54,11 @@ test("R22 production archive-entry interlock blocks both simultaneous orders dur
 
 test("R22 add-only historical method leaves every prior R20 source byte unchanged", async () => {
     const path = "web/src/app/(user)/canvas/components/hn-local-canvas-archive.ts";
-    const original = execFileSync("git", ["show", "53fdd43a7c2f849145c35cb053164afcab9dfdfb:" + path]);
+    const historicalOid = execFileSync("git", ["rev-parse", "53fdd43a7c2f849145c35cb053164afcab9dfdfb:" + path]).toString().trim();
     const current = await readFile(new URL("./hn-local-canvas-archive.ts", import.meta.url));
     const start = current.indexOf(Buffer.from("    async readHistoricalArchiveReceipt(")), end = current.indexOf(Buffer.from("    async inspect("), start);
-    assert.ok(start > 0 && end > start); assert.deepEqual(Buffer.concat([current.subarray(0, start), current.subarray(end)]), original);
+    assert.ok(start > 0 && end > start);
+    assert.equal(execFileSync("git", ["hash-object", "--path=" + path, "--stdin"], { input: Buffer.concat([current.subarray(0, start), current.subarray(end)]) }).toString().trim(), historicalOid);
     const method = current.subarray(start, end).toString(); assert.ok(method.includes("this.history(")); assert.equal(/\.setItem\(|\.notify\(|await source\(|await owner\(|\.inspect\(|readBlob|fetch\(/.test(method), false);
 });
 

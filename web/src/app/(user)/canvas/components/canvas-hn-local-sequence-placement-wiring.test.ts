@@ -14,7 +14,9 @@ test("R26 exact UI wiring, six new admission edges and frozen R24 controller/req
         const original = execFileSync("git", ["show", base + ":" + root + "components/hn-local-canvas-selection.ts"], { encoding: "utf8" }); assert.equal(selection.slice(selection.indexOf(marker)).replace(/\r\n/g, "\n"), original.slice(original.indexOf(marker)), marker);
     }
     for (const file of ["hn-local-canvas-archive.ts", "hn-local-canvas-candidate.ts"]) {
-        const original = execFileSync("git", ["show", base + ":" + root + "components/" + file]); const raw = await readFile(new URL(file, import.meta.url)); assert.equal(raw.toString().replace(/\r\n/g, "\n"), original.toString());
+        const path = root + "components/" + file;
+        const historicalOid = execFileSync("git", ["rev-parse", base + ":" + path]).toString().trim(); const raw = await readFile(new URL(file, import.meta.url));
+        assert.equal(execFileSync("git", ["hash-object", "--path=" + path, "--stdin"], { input: raw }).toString().trim(), historicalOid);
     }
     assert.ok(controller.includes('import { addSequenceItem, type HNSequenceItem }')); assert.equal(/ensureCandidate\(|selectCandidate\(|reorderSequence\(|commitArchivedResultToSequence\(|exportLocalSequence\(|readBlob|createVideoGenerationTask|downloadRemoteMedia|useUserStore|useConfigStore/.test(controller), false);
 });
