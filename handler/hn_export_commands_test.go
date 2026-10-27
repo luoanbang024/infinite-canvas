@@ -1,13 +1,61 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/google/uuid"
+	"github.com/tigerowo/infinite-canvas/hn/foundation"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
+
+// D-12: the real cause now travels inside the Go error chain. The public class must not move -
+// every chain that carries the sentinel answers 503 EXPORT_STORE_UNAVAILABLE - and the body must
+// stay free of the filesystem path, the OS text and the internal classification.
+func TestR39ExportUnavailableResponseKeepsFixedClass(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "metadata", "export-locks", "f3a1.lock")
+	permission := &os.PathError{Op: "open", Path: path, Err: os.ErrPermission}
+	cases := []struct {
+		name string
+		e    error
+	}{
+		{"sentinel-only", foundation.ErrExportUnavailable},
+		{"path-error-cause", fmt.Errorf("%w: %w", foundation.ErrExportUnavailable, permission)},
+		{"permission-cause", fmt.Errorf("%w: %w", foundation.ErrExportUnavailable, os.ErrPermission)},
+		{"cause-also-classified", fmt.Errorf("%w: %w", foundation.ErrExportUnavailable, foundation.ErrExportIntegrity)},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			out := httptest.NewRecorder()
+			hnExportCommandResponse(out, nil, c.e)
+			if out.Code != http.StatusServiceUnavailable {
+				t.Fatalf("status = %d, want 503", out.Code)
+			}
+			var body struct {
+				Code int    `json:"code"`
+				Msg  string `json:"msg"`
+			}
+			if err := json.Unmarshal(out.Body.Bytes(), &body); err != nil {
+				t.Fatalf("body is not JSON: %q", out.Body.String())
+			}
+			if body.Code != 1 || body.Msg != "EXPORT_STORE_UNAVAILABLE" {
+				t.Fatalf("body = %q, want the fixed EXPORT_STORE_UNAVAILABLE message", out.Body.String())
+			}
+			text := out.Body.String()
+			for _, leak := range []string{path, "f3a1.lock", "metadata", "Access is denied",
+				os.ErrPermission.Error(), "EXPORT_INTEGRITY_CONFLICT", "EXPORT_INPUT_INVALID"} {
+				if strings.Contains(text, leak) {
+					t.Fatalf("response body leaks %q: %q", leak, text)
+				}
+			}
+		})
+	}
+}
 
 func TestR33HandlerStrictBoundaryBeforeSequenceAndClosedBody(t *testing.T) {
 	t.Setenv("HN_PROJECTS_ROOT", t.TempDir())

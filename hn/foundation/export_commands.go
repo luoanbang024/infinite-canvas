@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/google/uuid"
 	"math"
 	"path"
@@ -22,6 +21,24 @@ var (
 	ErrExportUnavailable = errors.New("EXPORT_STORE_UNAVAILABLE")
 	ErrExportInProgress  = errors.New("EXPORT_IN_PROGRESS")
 )
+
+// exportUnavailableError is the D-12 carrier for a store that is present but unusable.
+//
+// The public class has to stay EXPORT_STORE_UNAVAILABLE, so Is pins the sentinel instead of
+// relying on the cause; Unwrap keeps the operating-system reason inside the standard Go error
+// chain, where errors.Is / errors.As recover it (*os.PathError, os.ErrPermission, ...).
+// Nothing here is ever serialised: the HTTP layer answers with a fixed message.
+type exportUnavailableError struct{ cause error }
+
+func (e *exportUnavailableError) Error() string {
+	return ErrExportUnavailable.Error() + ": " + e.cause.Error()
+}
+
+// Is keeps errors.Is(err, ErrExportUnavailable) independent of whatever the cause is.
+func (e *exportUnavailableError) Is(target error) bool { return target == ErrExportUnavailable }
+
+// Unwrap exposes the real cause to errors.As and to cause-level errors.Is.
+func (e *exportUnavailableError) Unwrap() error { return e.cause }
 
 const ExportFormat = "hn-offline-bundle-v1"
 const MaxExportAttempts = 3
@@ -513,11 +530,11 @@ func (w *Workspace) executeExportCommand(c ExportCommand, barrier func(string)) 
 		return status, nil
 	}
 	if e != nil {
-		// D-12: keep the sentinel contract (errors.Is still matches) but carry the real
-		// cause so operators can distinguish peer contention from a broken store. The HTTP
-		// handler maps the sentinel to a fixed message, so no path or OS detail reaches a
-		// client; the cause only lives in the internal error chain and in logs.
-		return status, fmt.Errorf("%w: %v", ErrExportUnavailable, e)
+		// D-12: the sentinel stays the public class while the real cause is kept in the chain,
+		// so an operator or a log can tell peer contention from a broken store. The HTTP
+		// classifier pins EXPORT_STORE_UNAVAILABLE ahead of the conflict sentinels, so a cause
+		// can never re-classify the response, and nothing here is serialised to a client.
+		return status, &exportUnavailableError{cause: e}
 	}
 	defer release()
 	j, e := w.exportReserve(c)

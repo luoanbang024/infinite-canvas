@@ -77,20 +77,33 @@ func TestR39ExportBlockedLockPathIsNotInProgress(t *testing.T) {
 	}
 }
 
-// C. D-12: the sentinel must survive errors.Is while the cause travels with it, and the
-// shipped HTTP contract must still classify the failure as EXPORT_STORE_UNAVAILABLE.
+// C. D-12: the sentinel AND the real cause must both come back through the standard error-chain
+// API. The fixture is a lock file this process may not write, so the cause is a genuine
+// permission failure rather than contention. A directory at the lock path would yield EISDIR,
+// which never exercises the permission class, so it is used by test B only.
 func TestR39ExportUnavailableCarriesCause(t *testing.T) {
 	w, c := r33Fixture(t)
-	p, e := w.exportLockPath(c.ExportIntentID)
-	okay(t, e)
-	okay(t, os.MkdirAll(p, 0700))
+	p := r39LockPath(t, w, c)
+	okay(t, os.WriteFile(p, nil, 0600))
+	okay(t, os.Chmod(p, 0400))
+	t.Cleanup(func() { _ = os.Chmod(p, 0600) })
 
-	_, e = w.ExecuteExportCommand(c)
+	_, e := w.ExecuteExportCommand(c)
 	if e == nil {
-		t.Fatalf("expected the export to fail on an unusable lock path")
+		t.Fatalf("expected the export to fail on a lock file the process may not write")
 	}
 	if !errors.Is(e, ErrExportUnavailable) {
-		t.Fatalf("errors.Is(err, ErrExportUnavailable) must still hold, got %v", e)
+		t.Fatalf("errors.Is(err, ErrExportUnavailable) must hold, got %v", e)
+	}
+	if !errors.Is(e, os.ErrPermission) {
+		t.Fatalf("D-12: the real cause is not in the chain, errors.Is(err, os.ErrPermission) is false for %v", e)
+	}
+	var pathErr *os.PathError
+	if !errors.As(e, &pathErr) {
+		t.Fatalf("D-12: errors.As(err, *os.PathError) must hold, got %v", e)
+	}
+	if pathErr.Op != "open" || pathErr.Path != p {
+		t.Fatalf("unexpected path error carried: op=%q path=%q", pathErr.Op, pathErr.Path)
 	}
 	msg := e.Error()
 	if !strings.Contains(msg, ErrExportUnavailable.Error()) {

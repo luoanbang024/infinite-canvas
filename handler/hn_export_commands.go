@@ -24,6 +24,13 @@ func hnExportCommandResponse(w http.ResponseWriter, data any, e error) {
 		OK(w, data)
 		return
 	}
+	// The store-unavailable class is pinned ahead of the conflict sentinels: the real cause now
+	// travels inside the error chain (D-12), and a cause must never re-classify the public
+	// response, which stays a fixed 503 for every export failure that carries this sentinel.
+	if errors.Is(e, foundation.ErrExportUnavailable) {
+		FailWithStatus(w, 503, "EXPORT_STORE_UNAVAILABLE")
+		return
+	}
 	status, msg := 503, "EXPORT_STORE_UNAVAILABLE"
 	for _, v := range []struct {
 		e      error
