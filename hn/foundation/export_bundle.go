@@ -15,6 +15,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var exportSourceIntegrity = errors.New("EXPORT_SOURCE_INTEGRITY")
@@ -28,34 +29,134 @@ func exportStageRelative(j *exportJob) string {
 }
 func exportJSON(v any) []byte           { b, _ := json.MarshalIndent(v, "", "  "); return append(b, '\n') }
 func exportDigestBytes(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
-func (w *Workspace) exportAcquire(intent string) (func(), error) {
+// exportLockOpenAttempts bounds how long a competing creator is tolerated before the
+// acquisition is classified. Worst case is a single 100 ms window; there is no spin.
+const (
+	exportLockOpenAttempts = 5
+	exportLockOpenBackoff  = 20 * time.Millisecond
+)
+
+// exportLockOpener is the seam the deterministic tests use to reproduce an open-time
+// denial exactly as the operating system produced it. It is package-private and is not
+// part of the product API; production always uses exportLockOpenDefault.
+type exportLockOpener func(string) (*os.File, error)
+
+func exportLockOpenDefault(p string) (*os.File, error) {
+	return os.OpenFile(p, os.O_CREATE|os.O_RDWR, 0600)
+}
+
+func (w *Workspace) exportLockPath(intent string) (string, error) {
 	k, _ := json.Marshal([]any{w.ProjectID, "main", 1, intent})
-	p, e := w.Resolve("metadata/export-locks/" + exportDigestBytes(k) + ".lock")
+	return w.Resolve("metadata/export-locks/" + exportDigestBytes(k) + ".lock")
+}
+
+func (w *Workspace) exportAcquire(intent string) (func(), error) {
+	return w.exportAcquireWith(intent, exportLockOpenDefault)
+}
+
+func (w *Workspace) exportAcquireWith(intent string, open exportLockOpener) (func(), error) {
+	p, e := w.exportLockPath(intent)
 	if e != nil {
 		return nil, e
 	}
 	if e = os.MkdirAll(filepath.Dir(p), 0700); e != nil {
 		return nil, e
 	}
-	p, e = w.Resolve("metadata/export-locks/" + exportDigestBytes(k) + ".lock")
+	p, e = w.exportLockPath(intent)
 	if e != nil {
 		return nil, e
 	}
-	f, e := os.OpenFile(p, os.O_CREATE|os.O_RDWR, 0600)
+	f, unlock, e := exportOpenAndLock(p, open)
 	if e != nil {
-		return nil, e
-	}
-	info, e := f.Stat()
-	if e != nil || !info.Mode().IsRegular() {
-		f.Close()
-		return nil, ErrExportIntegrity
-	}
-	unlock, e := exportKernelLock(f)
-	if e != nil {
-		f.Close()
 		return nil, e
 	}
 	return func() { unlock(); f.Close() }, nil
+}
+
+// exportOpenAndLock acquires the cross-process mutex backing one export intent.
+//
+// The 2026-10 investigation showed that a peer which has just created the lock file can
+// make the loser's open fail with "Access is denied" BEFORE any lock call happens. That is
+// peer contention, not an unavailable store. Retrying absorbs the short creation window;
+// after that the error class is decided by evidence: a read-only handle is still possible
+// while an exclusive peer lock exists, so observing ERROR_LOCK_VIOLATION there proves
+// contention, while a read-only open that also fails means the path itself is unusable and
+// the original error must stand.
+func exportOpenAndLock(p string, open exportLockOpener) (*os.File, func(), error) {
+	var first error
+	for attempt := 0; attempt < exportLockOpenAttempts; attempt++ {
+		if attempt > 0 {
+			time.Sleep(exportLockOpenBackoff)
+		}
+		f, e := open(p)
+		if e != nil {
+			if first == nil {
+				first = e
+			}
+			continue
+		}
+		info, se := f.Stat()
+		if se != nil || !info.Mode().IsRegular() {
+			f.Close()
+			if se != nil {
+				return nil, nil, se
+			}
+			return nil, nil, ErrExportIntegrity
+		}
+		unlock, le := exportKernelLock(f)
+		if le == nil {
+			return f, unlock, nil
+		}
+		f.Close()
+		if errors.Is(le, ErrExportInProgress) {
+			return nil, nil, le
+		}
+		if first == nil {
+			first = le
+		}
+	}
+	// Bounded retries exhausted. Prove the class instead of guessing it.
+	proved, e := exportPeerHoldsLock(p)
+	if proved {
+		return nil, nil, ErrExportInProgress
+	}
+	if e != nil && first == nil {
+		first = e
+	}
+	if first == nil {
+		first = ErrExportUnavailable
+	}
+	return nil, nil, first
+}
+
+// exportPeerHoldsLock reports whether a peer currently holds the exclusive lock. It only
+// ever returns true when the lock attempt itself observed ERROR_LOCK_VIOLATION on a handle
+// that opened successfully, so permission problems and non-regular paths can never be
+// mistaken for contention.
+func exportPeerHoldsLock(p string) (bool, error) {
+	f, e := os.OpenFile(p, os.O_RDONLY, 0)
+	if e != nil {
+		return false, e
+	}
+	info, se := f.Stat()
+	if se != nil || !info.Mode().IsRegular() {
+		f.Close()
+		if se != nil {
+			return false, se
+		}
+		return false, ErrExportIntegrity
+	}
+	unlock, le := exportKernelLock(f)
+	if le == nil {
+		unlock()
+		f.Close()
+		return false, nil
+	}
+	f.Close()
+	if errors.Is(le, ErrExportInProgress) {
+		return true, nil
+	}
+	return false, le
 }
 
 type exportMarker struct {

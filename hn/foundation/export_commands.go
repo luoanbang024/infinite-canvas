@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"math"
 	"path"
@@ -512,7 +513,11 @@ func (w *Workspace) executeExportCommand(c ExportCommand, barrier func(string)) 
 		return status, nil
 	}
 	if e != nil {
-		return status, ErrExportUnavailable
+		// D-12: keep the sentinel contract (errors.Is still matches) but carry the real
+		// cause so operators can distinguish peer contention from a broken store. The HTTP
+		// handler maps the sentinel to a fixed message, so no path or OS detail reaches a
+		// client; the cause only lives in the internal error chain and in logs.
+		return status, fmt.Errorf("%w: %v", ErrExportUnavailable, e)
 	}
 	defer release()
 	j, e := w.exportReserve(c)
